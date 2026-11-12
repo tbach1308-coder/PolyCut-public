@@ -1,0 +1,24 @@
+{
+ "id": "khui_hop",
+ "ten": "Khui hộp",
+ "mo_ta": "Đập hộp / đóng gói 20–50s: mở đầu 3 cảnh nháy, chớp trắng chỗ đổi ý, phụ đề cả câu, kết địa chỉ.",
+ "bo_mau": "luc_bao",
+ "phu_de": "lb_cau_to",
+ "kieu": {
+  "chu": "bong_bong",
+  "phu_de": "ca_cau",
+  "mo_dau": "montage",
+  "chuyen_dong": "zoom_vao",
+  "nhip": "nhanh",
+  "chuyen_canh": "nhay_trang",
+  "diem_nhan": "chop_trang",
+  "mau": "am_nhe",
+  "lop_phu": "khong",
+  "ket": "the_xanh",
+  "thanh_tien_trinh": "khong",
+  "am_nhan": "co"
+ },
+ "thu_tu": 3,
+ "anh_bia": "khui_hop.jpg",
+ "phien_ban": 1
+}

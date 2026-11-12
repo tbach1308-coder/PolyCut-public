@@ -1,0 +1,27 @@
+{
+ "id": "lia_ngang",
+ "loai": "poly-chuyen-1",
+ "ten": "Lia nhanh ngang",
+ "nhom": "lia",
+ "mo_ta": "Hai cảnh liền nhau quét ngang thật nhanh, mờ theo hướng lia — nhịp nhanh, sang máy khác",
+ "giay": 0.32,
+ "giay_min": 0.22,
+ "giay_max": 0.51,
+ "tron": "phu",
+ "mo_chuyen_dong": 0.85,
+ "A": {
+  "vien": "guong",
+  "x": [[0, 0], [1, -1, "io5"]]
+ },
+ "B": {
+  "vien": "trong",
+  "x": [[0, 1], [1, 0, "io5"]]
+ },
+ "xfade_du_phong": "slideleft",
+ "premiere_match": "AE.Impact_Whip",
+ "premiere_gan_nhat": "Impact Whip (AE.Impact_Whip)",
+ "xem_truoc": "css: translateX + lọc SVG feGaussianBlur chỉ ngang (đã có #xcMo trong _mod-xem-chuyen.js)",
+ "y_tuong": "Whip pan / swipe (CapCut 'Swipe', Film Impact 'Whip')",
+ "giay_phep": "CC0 — Poly tự viết (chuyen_moi.py), không dùng mã / tài nguyên ngoài",
+ "thay": ["mo_chuyen_dong", "truot_ngang", "truot_ngang_muot", "truot_phai_muot"]
+}

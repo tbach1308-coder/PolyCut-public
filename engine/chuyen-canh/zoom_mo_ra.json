@@ -1,0 +1,28 @@
+{
+ "id": "zoom_mo_ra",
+ "loai": "poly-chuyen-1",
+ "ten": "Zoom lùi mờ",
+ "nhom": "zoom",
+ "mo_ta": "Cảnh trước lùi xa có mờ, cảnh sau từ cận lùi về vừa khung — lộ toàn máy, mở hộp",
+ "giay": 0.4,
+ "giay_min": 0.28,
+ "giay_max": 0.64,
+ "tron": "cat",
+ "cat_tai": 0.5,
+ "mo_chuyen_dong": 0.8,
+ "A": {
+  "vien": "keo",
+  "zoom": [[0, 1], [0.5, 0.76, "in3"]]
+ },
+ "B": {
+  "vien": "guong",
+  "zoom": [[0.5, 1.7], [1, 1, "out3"]]
+ },
+ "xfade_du_phong": "fade",
+ "premiere_match": "AE.AE_Impact_Zoom_Blur",
+ "premiere_gan_nhat": "Impact Zoom Blur (AE.AE_Impact_Zoom_Blur), hướng ra",
+ "xem_truoc": "css: transform scale + filter blur",
+ "y_tuong": "Zoom blur out / Pull out",
+ "giay_phep": "CC0 — Poly tự viết (chuyen_moi.py), không dùng mã / tài nguyên ngoài",
+ "thay": ["zoom_ra"]
+}

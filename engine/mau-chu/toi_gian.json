@@ -1,0 +1,64 @@
+{
+ "id": "toi_gian",
+ "ten": "Tối giản trắng–vàng",
+ "ho": "but_da",
+ "phien_ban": 1,
+ "anh": "toi_gian.jpg",
+ "mo_ta": "Không khối: chữ trắng bóng mềm, từ khoá trên 'bút dạ' vàng chữ xanh; căn trái theo lề x 90; giá bằng số hẹp cao.",
+ "font_so": "archivo_hep",
+ "hook": {
+  "co": [
+   96,
+   64
+  ],
+  "dam": [
+   "Black",
+   "Black"
+  ],
+  "mau": [
+   "trang",
+   "xanh"
+  ],
+  "xuong_dong": 0.8,
+  "nho_nhat": 56
+ },
+ "nhan": {
+  "co": 74,
+  "goc": -2
+ },
+ "gia": {
+  "co_gia": 184,
+  "mau_gia": "trang",
+  "mau_don_vi": "vang"
+ },
+ "ten_may": {
+  "co": 96
+ },
+ "ket": {
+  "nut": "vang"
+ },
+ "phu_de": [
+  {
+   "id": "tg_trang_bong",
+   "ten": "Trắng bóng mềm",
+   "loai": "cum",
+   "kieu": "cum_trang",
+   "co": 82
+  },
+  {
+   "id": "tg_but_da",
+   "ten": "Từ khoá bút dạ vàng",
+   "loai": "cum",
+   "kieu": "cum_but_da",
+   "co": 80
+  },
+  {
+   "id": "tg_cau_gach",
+   "ten": "Cả câu, từ đang đọc gạch vàng",
+   "loai": "cau",
+   "kieu": "cau_gach",
+   "co": 64
+  }
+ ],
+ "thu_tu": 2
+}

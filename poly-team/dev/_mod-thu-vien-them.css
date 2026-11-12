@@ -1,0 +1,155 @@
+/* ============================== THƯ VIỆN THÊM (r20, 4/11 tối) — dev/_mod-thu-vien-them.js ============================== */
+/* thanh tìm + mục lọc (tab Chuyển cảnh / Hiệu ứng / Âm thanh) */
+.tvl{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;position:sticky;top:-10px;z-index:5;margin:-2px -2px 0;padding:6px 2px 7px;background:var(--surface-2,#161616);border-bottom:1px solid #222}
+.tvl-tim{position:relative;display:block}
+.tvl-tim .ic{position:absolute;left:9px;top:50%;width:14px;height:14px;transform:translateY(-50%);color:var(--dim);pointer-events:none}
+.tvl-tim input{width:100%;padding:6px 10px 6px 29px;font-size:12.5px;min-width:0}
+.tvl-muc{display:flex;flex-wrap:wrap;gap:4px 5px}
+.tvl-m{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;border:1px solid #333;background:#181818;color:var(--muted);font:600 11.5px/1.35 var(--f);cursor:pointer;white-space:nowrap}
+.tvl-m b{font-weight:700;font-size:10.5px;color:var(--dim)}
+.tvl-m:hover{color:var(--ink);border-color:#444}
+.tvl-m.on{background:var(--brand-soft);border-color:var(--brand-hover);color:var(--brand-text)}
+.tvl-m.on b{color:var(--brand-text)}
+.tvl-m:focus-visible{outline:2px solid var(--brand-hover);outline-offset:1px}
+.tvl-sec{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;min-width:0}
+.tvl-h{display:flex;align-items:baseline;gap:6px;margin:4px 0 -1px;font:700 11px/1.2 var(--f);color:#c9c9c9;letter-spacing:.02em}
+.tvl-h::before{content:"";width:3px;height:10px;border-radius:2px;background:var(--gold);align-self:center}
+.tvl-h span{font-weight:600;color:var(--dim);font-size:10.5px}
+.tvl-con{margin-top:2px}
+.tvl-an{display:none !important}
+#libPane .tvl-rong{padding:6px 0}
+/* đếm số trên tab */
+.tvt .tv-dem{font:700 9.5px/1 var(--f);color:var(--dim);padding:1px 4px;border-radius:6px;background:#1d1d1d}
+.tvt.on .tv-dem{color:var(--brand-text);background:var(--brand-soft)}
+.edit.tv-thu .tvt .tv-dem,.edit.tv-tu-thu .tvt .tv-dem{display:none}
+@container thuvien (max-width:379px){
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt:not(.on) .tv-dem{display:none}
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt.on .tv-dem{margin-left:1px}
+}
+@container thuvien (max-width:309px){
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt .tv-dem{display:none}
+  .tvl-m{padding:3px 7px;font-size:11px}
+}
+@container thuvien (max-width:299px){   /* 8 tab (thêm Âm thanh) ở 270px: biểu tượng hẹp hơn chút để tab đang chọn vẫn hiện đủ tên */
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt:not(.on){min-width:19px;padding:0}
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt:not(.on) .ic{width:16px;height:16px}
+}
+/* Thư viện rộng: tên + số trên 1 dòng (chỗ tên là lưới 2 hàng icon / chữ) */
+#edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt .tv-dem{grid-row:auto}
+@container thuvien (min-width:380px){
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt{position:relative}
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt .tv-dem{position:absolute;top:2px;right:2px;padding:1px 3px;font-size:9px}
+}
+/* menu con dài (35 chuyển cảnh ở bấm phải cảnh): cuộn trong menu, không tràn khỏi màn 768px */
+.cmenu.con{max-height:calc(100vh - 12px);overflow-y:auto;scrollbar-width:thin}
+/* chữ gọn (4/11 tối anh: "mấy phần chữ này bị chiếm chỗ nhiều quá"): câu hướng dẫn = dấu (i) nhỏ cạnh tiêu đề mục, rê chuột / Tab tới mới hiện;
+   trạng thái trống = 1 hàng (chữ ngắn + nút nhỏ) cùng kiểu thanh thư mục; lỗi / cảnh báo vẫn hiện như cũ */
+.tv-i{flex:none;display:inline-grid;place-items:center;width:20px;height:20px;margin:-4px 0 -4px -5px;padding:0;border:0;border-radius:50%;background:none;color:var(--dim);cursor:help;vertical-align:-5px}
+.tv-i .ic{width:15px;height:15px}
+.tv-i:hover,.tv-i:focus-visible{color:var(--ink);background:#262626}   /* như .tt-i khung phải */
+.tv-h .tv-i{align-self:center;margin-right:auto}
+.tv-tm .tv-i{margin:0 -2px 0 -4px}
+#libPane .tv-trong{padding:4px 4px 4px 10px;min-height:36px}
+.tv-trong .tv-tmt > span{font-size:12.5px;line-height:1.35;color:var(--muted)}
+.tv-trong .btn.small{flex:none;white-space:nowrap}
+.tv-trang .tv-i{margin-left:2px}
+
+/* ---------- tab Âm thanh ---------- */
+.am{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.am-ds{display:grid;gap:4px}
+.am-bai,.am-dong{display:flex;align-items:center;gap:8px;padding:5px 8px 5px 5px;border-radius:9px;border:1px solid #262626;background:#171717;min-width:0}
+.am-bai{cursor:pointer;touch-action:none}
+.am-bai:hover{border-color:#3d3d3d;background:#1c1c1c}
+.am-bai:focus-visible{outline:2px solid var(--brand-hover);outline-offset:1px}
+.am-dong.on{border-color:var(--gold);background:#1f1a10}
+.am-nghe{flex:none;width:28px;height:28px;border-radius:50%;border:1px solid #3a3a3a;background:#202020;color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0}
+.am-nghe .ic{width:12px;height:12px}
+.am-nghe:hover,.am-nghe.on{border-color:var(--brand-hover);color:var(--brand-text)}
+.am-t,.am-toi{display:grid;gap:1px;min-width:0;flex:1}
+.am-toi{border:0;background:none;color:inherit;text-align:left;padding:0;cursor:pointer;font:inherit}
+.am-t b,.am-toi b{font-size:12.5px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.am-t small,.am-toi small{font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.am-them{flex:none;color:var(--dim);display:grid;place-items:center}
+.am-them .ic{width:15px;height:15px}
+.am-bai:hover .am-them{color:var(--brand-text)}
+.am-trong .btn.icon{flex:none}
+
+/* ---------- làn Âm thanh trên timeline ---------- */
+.trk.am{border-top:1px solid #1e1e1e}
+.trk.am.tha{background:rgba(255,214,0,.06);box-shadow:inset 0 0 0 1px #6b5a1c}
+.bar.am{height:19px;display:flex;align-items:center;gap:4px;padding:0 5px;background:#2a2312;color:#ffe08a;border-color:#5c4b1d;touch-action:none;cursor:grab;z-index:1}
+.bar.am:hover{border-color:#8a7330}
+.bar.am.sel{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold);z-index:2}
+.bar.am .ic{width:11px;height:11px;flex:none}
+.bar.am span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px}
+.bar.am.trong{width:150px;background:transparent;border:1px dashed #3a3a3a;color:var(--dim);cursor:pointer}
+.bar.am.trong:hover{color:var(--ink);border-color:#8a7330}
+
+/* ---------- xem trước 15 chuyển cảnh mới (rê chuột chạy, như _thu-vien.css) ---------- */
+@property --tvp{syntax:'<percentage>';inherits:false;initial-value:0%}
+.xv.xc-fadeDai .xb{animation-name:xcFadeDai}
+.xv.xc-phaiMuot .xa{animation-name:xcPhaiA;animation-timing-function:cubic-bezier(.65,0,.35,1)}.xv.xc-phaiMuot .xb{animation-name:xcPhaiB;animation-timing-function:cubic-bezier(.65,0,.35,1)}
+.xv.xc-dePhai .xb{animation-name:xcPhaiB;animation-timing-function:cubic-bezier(.7,0,.25,1)}
+.xv.xc-keoNgang .xb{opacity:1}.xv.xc-keoNgang .xa{z-index:2;animation-name:xcNgangA}
+.xv.xc-lauXuong .xb{-webkit-mask-image:linear-gradient(180deg,#000 0 48%,transparent 66% 100%);mask-image:linear-gradient(180deg,#000 0 48%,transparent 66% 100%);-webkit-mask-size:100% 300%;mask-size:100% 300%;animation-name:xcLauXuong}
+.xv.xc-lauPhai .xb{-webkit-mask-image:linear-gradient(90deg,#000 0 48%,transparent 66% 100%);mask-image:linear-gradient(90deg,#000 0 48%,transparent 66% 100%);-webkit-mask-size:300% 100%;mask-size:300% 100%;animation-name:xcLauPhai}
+.xv.xc-cheoNguoc .xb{animation-name:xcCheoNguoc}
+.xv.xc-lauLen .xb{animation-name:xcLauLen}
+.xv.xc-latDoc .xb{-webkit-mask-image:linear-gradient(90deg,#000 var(--tvp),transparent var(--tvp));mask-image:linear-gradient(90deg,#000 var(--tvp),transparent var(--tvp));-webkit-mask-size:20% 100%;mask-size:20% 100%;animation-name:xcLatDoc}
+.xv.xc-zoomRa .xa{animation-name:xcZoomRaA}.xv.xc-zoomRa .xb{animation-name:xcZoomRaB}
+.xv.xc-cuaNgang .xb{animation-name:xcCuaNgang;animation-timing-function:cubic-bezier(.65,0,.35,1)}
+.xv.xc-cuaLua .xb{opacity:1}.xv.xc-cuaLua .xa{opacity:0}
+.xv.xc-cuaLua::before,.xv.xc-cuaLua::after{content:"";position:absolute;inset:0;z-index:2;background:var(--a) center/cover no-repeat;animation:1.8s cubic-bezier(.65,0,.35,1) infinite both;animation-play-state:paused;animation-delay:var(--giua,-.86s)}
+.xv.xc-cuaLua::before{clip-path:inset(0 50% 0 0);animation-name:xcLuaT}
+.xv.xc-cuaLua::after{clip-path:inset(0 0 0 50%);animation-name:xcLuaP}
+.tvx:not([disabled]):hover .xv.xc-cuaLua::before,.tvx:not([disabled]):hover .xv.xc-cuaLua::after,.tvx:focus-visible .xv.xc-cuaLua::before,.tvx:focus-visible .xv.xc-cuaLua::after{animation-play-state:running;animation-delay:0s}
+.xv.xc-latThe{background:#03231a}.xv.xc-latThe .xa{animation-name:xcLatTheA}.xv.xc-latThe .xb{animation-name:xcLatTheB}
+.xv.xc-lacKeo .xa{animation-name:xcLacA}.xv.xc-lacKeo .xb{animation-name:xcLacB}
+.xv.xc-epNgang .xb{opacity:1}.xv.xc-epNgang .xa{z-index:2;animation-name:xcEpNgang}
+@keyframes xcFadeDai{0%,22%{opacity:0}78%,100%{opacity:1}}
+@keyframes xcPhaiA{0%,30%{transform:translateX(0)}65%,100%{transform:translateX(100%)}}
+@keyframes xcPhaiB{0%,30%{transform:translateX(-100%)}65%,100%{transform:translateX(0)}}
+@keyframes xcLauXuong{0%,30%{-webkit-mask-position:0 100%;mask-position:0 100%}65%,100%{-webkit-mask-position:0 0;mask-position:0 0}}
+@keyframes xcLauPhai{0%,30%{-webkit-mask-position:100% 0;mask-position:100% 0}65%,100%{-webkit-mask-position:0 0;mask-position:0 0}}
+@keyframes xcCheoNguoc{0%,30%{clip-path:polygon(100% 100%,100% 100%,100% 100%)}65%,100%{clip-path:polygon(100% 100%,-110% 100%,100% -110%)}}
+@keyframes xcLauLen{0%,30%{clip-path:inset(100% 0 0 0)}62%,100%{clip-path:inset(0 0 0 0)}}
+@keyframes xcLatDoc{0%,30%{--tvp:0%}65%,100%{--tvp:100%}}
+@keyframes xcZoomRaA{0%,30%{transform:scale(1);opacity:1}62%,100%{transform:scale(1.25);opacity:0}}
+@keyframes xcZoomRaB{0%,30%{transform:scale(1.5);opacity:0}65%,100%{transform:scale(1);opacity:1}}
+@keyframes xcCuaNgang{0%,30%{clip-path:inset(50% 0 50% 0)}65%,100%{clip-path:inset(0 0 0 0)}}
+@keyframes xcLuaT{0%,30%{transform:translateX(0)}65%,100%{transform:translateX(-52%)}}
+@keyframes xcLuaP{0%,30%{transform:translateX(0)}65%,100%{transform:translateX(52%)}}
+@keyframes xcLatTheA{0%,30%{transform:scaleX(1);opacity:1}47.9%{transform:scaleX(0);opacity:1}48%,100%{opacity:0}}
+@keyframes xcLatTheB{0%,47.9%{transform:scaleX(0);opacity:0}48%{transform:scaleX(0);opacity:1}66%,100%{transform:scaleX(1);opacity:1}}
+@keyframes xcLacA{0%,26%{transform:translateX(0) scale(1);opacity:1}32%{transform:translateX(-7%) scale(1.12)}38%{transform:translateX(6%) scale(1.15)}44%{transform:translateX(-4%) scale(1.15);opacity:1}54%,100%{transform:translateX(2%) scale(1.12);opacity:0}}
+@keyframes xcLacB{0%,44%{opacity:0;transform:translateX(3%) scale(1.1)}60%,100%{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes xcEpNgang{0%,30%{transform:scaleY(1);opacity:1}62%{transform:scaleY(0);opacity:.6}63%,100%{transform:scaleY(0);opacity:0}}
+
+/* ---------- xem trước 15 hiệu ứng hình mới ---------- */
+.xv.hu-vienToi .xf{opacity:1;background:radial-gradient(ellipse at 50% 50%,transparent 48%,rgba(0,0,0,.6) 100%)}
+.xv.hu-hatPhim .xf{opacity:.4;mix-blend-mode:overlay;filter:grayscale(1);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");animation-name:huHat;animation-duration:.5s;animation-timing-function:steps(4,end)}
+.xv.hu-netRo .xb{animation-name:huNetRo;animation-direction:alternate}
+.xv.hu-min .xb{animation-name:huMin;animation-direction:alternate}
+.xv.hu-netGiua .xf{opacity:1;background:var(--b) center/cover no-repeat;filter:blur(3px);-webkit-mask-image:linear-gradient(180deg,#000 0,transparent 30% 70%,#000 100%);mask-image:linear-gradient(180deg,#000 0,transparent 30% 70%,#000 100%);animation-name:huNetGiua;animation-direction:alternate}
+.xv.hu-glow .xf{opacity:.5;background:var(--b) center/cover no-repeat;filter:brightness(1.7) contrast(1.4) blur(5px);mix-blend-mode:screen;animation-name:huGlow;animation-direction:alternate}
+.xv.hu-thuKhung .xf{opacity:1;background:linear-gradient(180deg,#000 0 var(--tvp),transparent var(--tvp) calc(100% - var(--tvp)),#000 calc(100% - var(--tvp)));animation-name:huThuKhung;animation-direction:alternate}
+.xv.hu-moVao{--giua:-.6s;background:#000}.xv.hu-moVao .xb{animation-name:huMoVao}
+.xv.hu-chopMem{--giua:-.08s}.xv.hu-chopMem .xf{animation-name:huChopMem}
+.xv.hu-nhaySang{--giua:-.05s}.xv.hu-nhaySang .xb{animation-name:huNhaySang;animation-timing-function:steps(1,end)}
+.xv.hu-rungNhe{--giua:-.12s}.xv.hu-rungNhe .xb{animation-name:huRungNhe}
+.xv.hu-zoomLui{--giua:-.1s}.xv.hu-zoomLui .xb{animation-name:huZoomLui}
+.xv.hu-denTrang .xb{animation-name:huDenTrang;animation-direction:alternate}
+.xv.hu-tongLanh .xf{mix-blend-mode:soft-light;background:#3f7fff;animation-name:huTong;animation-direction:alternate}
+.xv.hu-tongAm .xf{mix-blend-mode:soft-light;background:#ff9a2e;animation-name:huTong;animation-direction:alternate}
+@keyframes huNetRo{0%,25%{filter:none}75%,100%{filter:contrast(1.35) saturate(1.08) brightness(1.02)}}
+@keyframes huMin{0%,25%{filter:none}75%,100%{filter:blur(.7px) saturate(.96) brightness(1.03)}}
+@keyframes huNetGiua{0%,25%{opacity:0}75%,100%{opacity:1}}
+@keyframes huGlow{0%,25%{opacity:0}75%,100%{opacity:.55}}
+@keyframes huThuKhung{0%,25%{--tvp:0%}75%,100%{--tvp:9%}}
+@keyframes huMoVao{0%{opacity:0}18%,100%{opacity:1}}
+@keyframes huChopMem{0%{opacity:.95}10%,100%{opacity:0}}
+@keyframes huNhaySang{0%,3%{filter:brightness(1.7)}4%,6%{filter:none}7%,9%{filter:brightness(1.6)}10%,100%{filter:none}}
+@keyframes huRungNhe{0%{transform:translate(0,0) scale(1.05)}4%{transform:translate(-2.5%,1%) scale(1.05)}8%{transform:translate(2%,-1.5%) scale(1.04)}12%{transform:translate(-1%,1%) scale(1.03)}16%,100%{transform:translate(0,0) scale(1)}}
+@keyframes huZoomLui{0%{transform:scale(1.5)}15%,100%{transform:scale(1)}}
+@keyframes huDenTrang{0%,25%{filter:none}75%,100%{filter:grayscale(1) contrast(1.05)}}
+@keyframes huTong{0%,25%{opacity:0}75%,100%{opacity:.35}}

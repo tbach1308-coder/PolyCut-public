@@ -1,0 +1,24 @@
+{
+ "id": "ban_may_sang",
+ "ten": "Bán máy sang",
+ "mo_ta": "Video bán 1 máy: hook bong bóng, thẻ tên + giá, kết kêu comment. Nhịp vừa, màu thật.",
+ "bo_mau": "luc_bao",
+ "phu_de": "lb_cum_vien",
+ "kieu": {
+  "chu": "bong_bong",
+  "phu_de": "cum_ngan",
+  "mo_dau": "punch_mo",
+  "chuyen_dong": "zoom_xen_ke",
+  "nhip": "vua",
+  "chuyen_canh": "cat_cung",
+  "diem_nhan": "khong",
+  "mau": "trung_tinh",
+  "lop_phu": "khong",
+  "ket": "the_comment",
+  "thanh_tien_trinh": "khong",
+  "am_nhan": "co"
+ },
+ "thu_tu": 1,
+ "anh_bia": "ban_may_sang.jpg",
+ "phien_ban": 1
+}

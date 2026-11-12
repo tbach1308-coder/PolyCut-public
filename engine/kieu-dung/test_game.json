@@ -1,0 +1,24 @@
+{
+ "id": "test_game",
+ "ten": "Test game, hiệu năng",
+ "mo_ta": "Cảnh chơi game đổi 2–3s, chữ nổi khối, rung nhịp ở chỗ cắt, tương phản.",
+ "bo_mau": "kinh",
+ "phu_de": "kn_noi_3d",
+ "kieu": {
+  "chu": "nen_xanh",
+  "phu_de": "cum_ngan",
+  "mo_dau": "punch_mo",
+  "chuyen_dong": "zoom_xen_ke",
+  "nhip": "nhanh",
+  "chuyen_canh": "cat_cung",
+  "diem_nhan": "rung_nhip",
+  "mau": "tuong_phan",
+  "lop_phu": "toi_vien",
+  "ket": "the_comment",
+  "thanh_tien_trinh": "co",
+  "am_nhan": "co"
+ },
+ "thu_tu": 5,
+ "anh_bia": "test_game.jpg",
+ "phien_ban": 1
+}

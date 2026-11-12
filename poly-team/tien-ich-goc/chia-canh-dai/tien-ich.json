@@ -1,0 +1,17 @@
+{
+ "loai": "script",
+ "phien_ban": "1.0",
+ "thang": "2026-11",
+ "tac_gia": "Claude",
+ "nguon": "goc",
+ "ten": "Chia cảnh dài",
+ "mo_ta": "Cảnh nào dài hơn số giây đã chọn thì chia đều thành các đoạn ngắn hơn (TikTok nên đổi khung mỗi 2–4 giây). Chia xong vẫn là cùng clip, phụ đề không bị mất.",
+ "hoi": [
+  {
+   "ten": "toi_da",
+   "nhan": "Mỗi đoạn dài tối đa (giây)",
+   "mac_dinh": "4",
+   "kieu": "so"
+  }
+ ]
+}

@@ -1,0 +1,180 @@
+[
+ {
+  "ten": "IMG_5123",
+  "ngay": "2026-10-27",
+  "kieu": {
+   "mo_dau": "montage",
+   "chuyen_dong": "zoom_vao",
+   "nhip": "vua",
+   "chuyen_canh": "hoa_tan_nhanh",
+   "chu": "dai_trang",
+   "vi_tri_chu": "tren",
+   "mau": "am_nhe",
+   "ket": "the_den",
+   "thanh_tien_trinh": "khong",
+   "diem_nhan": "khong",
+   "lop_phu": "khong",
+   "duong": "may_chu"
+  }
+ },
+ {
+  "ten": "IMG_5123-v3",
+  "ngay": "2026-10-27",
+  "kieu": {
+   "mo_dau": "dong_bang",
+   "chuyen_dong": "zoom_xen_ke",
+   "nhip": "vua",
+   "chuyen_canh": "mo_tron",
+   "chu": "vang_tieu_de",
+   "vi_tri_chu": "giua_tren",
+   "mau": "tuong_phan",
+   "ket": "vong_lap",
+   "thanh_tien_trinh": "co",
+   "diem_nhan": "khong",
+   "lop_phu": "hat_film",
+   "duong": "may_chu"
+  }
+ },
+ {
+  "ten": "IMG_5123-v4-gu",
+  "ngay": "2026-10-27",
+  "kieu": {
+   "mo_dau": "chu_zoom",
+   "chuyen_dong": "punch_nhip",
+   "nhip": "nhanh",
+   "chuyen_canh": "cat_cung",
+   "chu": "bong_bong",
+   "phu_de": "cum_ngan",
+   "vi_tri_chu": "tren",
+   "mau": "am_nhe",
+   "ket": "the_comment",
+   "thanh_tien_trinh": "khong",
+   "diem_nhan": "chop_trang",
+   "lop_phu": "khong",
+   "duong": "may_chu"
+  }
+ },
+ {
+  "ten": "ipad-pro-129-v6",
+  "ngay": "2026-10-28",
+  "kieu": {
+   "mo_dau": "chu_zoom",
+   "chuyen_dong": "punch_nhip",
+   "nhip": "nhanh",
+   "chuyen_canh": "cat_cung",
+   "chu": "toi_gian",
+   "phu_de": "cum_ngan",
+   "vi_tri_chu": "tren",
+   "mau": "trung_tinh",
+   "ket": "the_xanh",
+   "thanh_tien_trinh": "khong",
+   "diem_nhan": "khong",
+   "lop_phu": "khong",
+   "duong": "premiere"
+  }
+ },
+ {
+  "ten": "ipad-pro-129-v7",
+  "ngay": "2026-10-28",
+  "kieu": {
+   "mo_dau": "chu_zoom",
+   "chuyen_dong": "punch_nhip",
+   "nhip": "nhanh",
+   "chuyen_canh": "cat_cung",
+   "chu": "toi_gian",
+   "phu_de": "cum_ngan",
+   "vi_tri_chu": "tren",
+   "mau": "trung_tinh",
+   "ket": "the_xanh",
+   "thanh_tien_trinh": "khong",
+   "diem_nhan": "khong",
+   "lop_phu": "khong",
+   "duong": "premiere"
+  }
+ },
+ {
+  "ten": "ipad-pro-129-v8",
+  "ngay": "2026-10-28",
+  "kieu": {
+   "mo_dau": "chu_zoom",
+   "chuyen_dong": "punch_nhip",
+   "nhip": "nhanh",
+   "chuyen_canh": "cat_cung",
+   "chu": "toi_gian",
+   "phu_de": "cum_ngan",
+   "vi_tri_chu": "tren",
+   "mau": "trung_tinh",
+   "ket": "the_xanh",
+   "thanh_tien_trinh": "khong",
+   "diem_nhan": "khong",
+   "lop_phu": "khong",
+   "duong": "premiere"
+  }
+ },
+ {
+  "ten": "ipad-pro-129-v9b",
+  "ngay": "2026-10-29",
+  "kieu": {
+   "mo_dau": "chu_zoom",
+   "chuyen_dong": "zoom_xen_ke",
+   "nhip": "nhanh",
+   "chuyen_canh": "tron_poly",
+   "chu": "nhan_lon",
+   "phu_de": "ca_cau",
+   "vi_tri_chu": "tren",
+   "mau": "trung_tinh",
+   "ket": "the_den",
+   "thanh_tien_trinh": "khong",
+   "diem_nhan": "zoom_dap",
+   "lop_phu": "khong",
+   "am_nhan": "co",
+   "bo_font": "tiktok_dam",
+   "hoat_hinh": "mov",
+   "duong": "premiere"
+  }
+ },
+ {
+  "ten": "noi-thu-v1",
+  "ngay": "2026-11-03",
+  "kieu": {
+   "mo_dau": "punch_mo",
+   "chuyen_dong": "zoom_vao",
+   "nhip": "nhanh",
+   "chuyen_canh": "truot_doc",
+   "chu": "bong_bong",
+   "phu_de": "cum_ngan",
+   "vi_tri_chu": "tren",
+   "mau": "am_nhe",
+   "ket": "the_comment",
+   "thanh_tien_trinh": "khong",
+   "diem_nhan": "khong",
+   "lop_phu": "khong",
+   "am_nhan": "khong",
+   "bo_font": "poly_goc",
+   "hoat_hinh": "keyframe",
+   "duong": "may_chu"
+  }
+ },
+ {
+  "ten": "noi-thu-v2",
+  "ngay": "2026-11-03",
+  "kieu": {
+   "mo_dau": "punch_mo",
+   "chuyen_dong": "zoom_vao",
+   "nhip": "nhanh",
+   "chuyen_canh": "truot_doc",
+   "chu": "bong_bong",
+   "phu_de": "cum_ngan",
+   "vi_tri_chu": "tren",
+   "mau": "am_nhe",
+   "ket": "the_comment",
+   "thanh_tien_trinh": "khong",
+   "diem_nhan": "khong",
+   "lop_phu": "khong",
+   "am_nhan": "khong",
+   "bo_font": "poly_goc",
+   "hoat_hinh": "keyframe",
+   "duong": "may_chu"
+  }
+ }
+]

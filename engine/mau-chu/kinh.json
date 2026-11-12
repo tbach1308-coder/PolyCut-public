@@ -1,0 +1,82 @@
+{
+ "id": "kinh",
+ "ten": "Thẻ kính mờ",
+ "ho": "kinh",
+ "phien_ban": 1,
+ "anh": "kinh.jpg",
+ "mo_ta": "Tấm kính làm mờ cảnh phía sau, phủ lục bảo ~60%, viền trắng mảnh; điểm vàng nhỏ. Dựng bằng Premiere: kính đục (không làm mờ).",
+ "bo_goc": 34,
+ "kinh": {
+  "mo": 26,
+  "phu": 0.58,
+  "duc": 0.84,
+  "bao_hoa": 0.35
+ },
+ "hook": {
+  "co": [
+   84,
+   72
+  ],
+  "dam": [
+   "ExtraBold",
+   "Black"
+  ],
+  "mau": [
+   "trang",
+   "vang"
+  ],
+  "vien": 2.5,
+  "duoi": {
+   "ben": "trai",
+   "vi_tri": 0.13,
+   "dai": 66,
+   "rong": 80
+  },
+  "pad": [
+   50,
+   32,
+   40
+  ],
+  "xuong_dong": 0.8,
+  "nho_nhat": 56
+ },
+ "nhan": {
+  "co": 70
+ },
+ "gia": {
+  "co_gia": 120,
+  "mau_gia": "vang"
+ },
+ "ten_may": {
+  "co": 86
+ },
+ "ket": {
+  "nut": "vang"
+ },
+ "phu_de": [
+  {
+   "id": "kn_vien_kinh",
+   "ten": "Cụm trên viên kính",
+   "loai": "cum",
+   "kieu": "cum_the",
+   "co": 72,
+   "nen": "kinh"
+  },
+  {
+   "id": "kn_cau_kinh",
+   "ten": "Cả câu trên tấm kính",
+   "loai": "cau",
+   "kieu": "cau_kinh",
+   "co": 60
+  },
+  {
+   "id": "kn_noi_3d",
+   "ten": "Cụm nổi khối lục bảo",
+   "loai": "cum",
+   "kieu": "cum_noi",
+   "co": 88,
+   "noi": 8
+  }
+ ],
+ "thu_tu": 3
+}

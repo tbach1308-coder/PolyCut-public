@@ -1,0 +1,25 @@
+{
+ "id": "so_sanh",
+ "ten": "So sánh 2 máy",
+ "mo_ta": "Chia đôi màn trên / dưới, thẻ tên 2 máy, nhãn VS, từ khoá to 2 tầng.",
+ "bo_mau": "luc_bao",
+ "phu_de": "lb_tu_khoa",
+ "kieu": {
+  "chu": "bong_bong",
+  "phu_de": "cum_ngan",
+  "mo_dau": "chu_zoom",
+  "chuyen_dong": "dung_yen",
+  "nhip": "vua",
+  "chuyen_canh": "cat_cung",
+  "diem_nhan": "khong",
+  "mau": "trung_tinh",
+  "lop_phu": "khong",
+  "ket": "the_comment",
+  "thanh_tien_trinh": "khong",
+  "am_nhan": "khong"
+ },
+ "thu_tu": 6,
+ "anh_bia": "so_sanh.jpg",
+ "phien_ban": 1,
+ "sap_co": "Sắp có: cần bố cục chia đôi màn (chưa làm)"
+}

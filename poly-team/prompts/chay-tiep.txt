@@ -1,0 +1,18 @@
+Lượt trước của video "{ten}" bị dừng hoặc lỗi giữa chừng. Xem lại task list, thư mục video ({thu_muc_video}) và kết quả lệnh Premiere (ket-qua/ trong {premiere_dir}), làm tiếp từ bước còn dở theo skill dung-video; bước đã xong thì không làm lại. Không hỏi anh.
+Lệnh Premiere đã gửi mà chưa có kết quả: kiểm project trước (đọc kết quả, xem_timeline), chỉ gửi lại phần còn thiếu bằng gui_lenh.py --hau-to r2 (không đặt trùng cảnh / chữ). Project bị hỏng hay không chắc thì dựng lại vào thư mục v<n+1> MỚI.
+Duyệt kế hoạch trước: {duyet_truoc} (đã có ke-hoach-xem.json và anh chưa duyệt thì dừng lại ở đó, in CHO_DUYET= như skill).
+Dựng bằng: {duong}. Bộ dựng: {engine}.
+Premiere chưa mở thì chính gui_lenh.py tự mở Premiere và chờ bảng Poly Bridge (app đã bật sẵn; bạn không tự mở Premiere bằng cách khác). gui_lenh.py vẫn báo Premiere / bảng Poly Bridge không nhận lệnh (mã 2) thì dừng, dòng cuối LOI=Mở Premiere + bảng Poly Bridge rồi bấm Chạy tiếp.
+Viết lệnh để không bị chặn quyền (chạy ngầm không ai bấm cho phép được):
+- Mỗi lệnh Bash làm 1 việc, đường dẫn đầy đủ trong ngoặc kép, dùng dấu / (vd "E:/Tool/poly-edit/…"). Không dùng biến ($A), {a,b}, vòng for, &&, |, dấu "\ ", không ghi ra /tmp hay thư mục tạm của Windows (dùng thư mục video).
+- Chạy script của bộ dựng: python "<bộ dựng>/<script>.py" … (python trên PATH đã là python của bộ dựng). Python dài hơn 3 dòng: Write ra file .py trong "<thư mục video>/lam/script/" rồi python "<file>", không dùng python -c nhiều dòng.
+- Tạo thư mục, chép file: mkdir -p "…" và cp "…" "…" từng lệnh; không dùng PowerShell có biến, khối { } hay nhiều đường dẫn trong 1 lệnh.
+- Lệnh chờ lâu (dựng Premiere, xuất video) chạy với timeout dài, không chạy nền rồi bỏ quên.
+- Không đọc hay tìm trong {home}\.claude. Giao việc cho agent con thì đưa đường dẫn tuyệt đối và dặn agent cũng viết lệnh như trên.
+Agent duyệt (poly-video:duyet-video) luôn gọi với model "opus" (tham số model của Agent), kể cả khi phiên này chạy model khác.
+Xong video: ghi "<thư mục video>/ket-qua.json" đúng như skill (mp4, prproj, kieu_ten, giay, duyet, caption, hashtag, ghi_chu, khung_dau, to_duyet).
+Trả lời cuối cùng thật ngắn, 1–3 câu tiếng Việt (vd "Xong video 82 giây, đã qua duyệt."). App không hiện bảng hay danh sách dài nên không viết chúng; chỗ chưa chắc thì tự chọn phương án an toàn nhất. Có đổi chữ hook / số so với đơn của anh thì thêm đúng 1 dòng "Đã đổi so với đơn: <đổi gì, tối đa 20 chữ>" (không đổi thì bỏ dòng này). Việc chỉ anh quyết được (giá, khuyến mãi, cảnh có mặt khách, máy còn trong kho không, chữ anh viết mà bạn buộc phải đổi) thì thêm tối đa 3 dòng dạng: HOI_FEN: <câu hỏi ngắn> | <cách bạn đang làm> | <cách khác> (tối đa 4 lựa chọn, mỗi lựa chọn ≤ 8 chữ). App hiện thành nút để anh bấm chọn, lựa chọn đầu là cách đang làm. Không hỏi việc tự quyết được.
+Dựng không được (thiếu bộ dựng, clip hỏng, Premiere không nhận lệnh…) thì thêm 1 dòng LOI=<lý do ngắn, anh cần làm gì>.
+Dòng cuối cùng đúng dạng (có mp4 thì MP4 đứng ngay trước):
+MP4=<đường dẫn đầy đủ file mp4>
+THU_MUC_VIDEO=<đường dẫn đầy đủ thư mục video>

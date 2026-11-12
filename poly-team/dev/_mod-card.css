@@ -1,0 +1,25 @@
+/* ---- CARD ĐỒ HOẠ (10/11): dev/_mod-card.js — trạng thái + (i) + công tắc ở hàng nút cuối hộp Xuất video, dòng trạng thái ở tab Bản xuất.
+   Nhóm phẳng (không hộp lồng hộp), câu dài vào (i). Màu: lục bảo #074D3A + vàng #FFD600 qua biến (đổi theme được), không neon. */
+:root{--cd-luc:#074D3A;--cd-luc-vien:#1f6b55;--cd-vang:#FFD600;--cd-chu:var(--ink);--cd-mo:var(--muted)}
+.mbox .acts > .cd-hang{display:flex;align-items:center;gap:10px;margin-right:auto;min-width:0;flex:1 1 auto}   /* hàng nút cuối hộp Xuất: trạng thái + (i) + công tắc bên trái nút */
+.cd-dong{display:inline-flex;align-items:center;gap:4px;min-width:0;flex:0 1 auto}
+.cd-tt{display:inline-flex;align-items:center;gap:8px;min-width:0;font-size:13px;line-height:1.35;color:var(--cd-chu);overflow-x:clip}
+.cd-tt .cd-chu{min-width:0;white-space:nowrap;overflow-x:clip;text-overflow:ellipsis}   /* tên card quá dài: … (đủ tên trong (i)); clip ngang, không cắt dấu */
+.cd-cham{flex:none;width:8px;height:8px;border-radius:50%;background:var(--cd-mo)}
+.cd-tt.card .cd-cham{background:var(--cd-vang);box-shadow:0 0 0 3px var(--cd-luc)}
+.cd-tt.card .cd-chu{font-weight:600}
+.cd-tt.dang .cd-cham{background:var(--cd-vang);animation:cdNhap 1.1s ease-in-out infinite}
+.cd-tt.dang .cd-chu{color:var(--cd-mo)}
+.cd-tt.tat .cd-chu,.cd-tt.cpu .cd-chu{color:var(--cd-chu)}
+@keyframes cdNhap{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.cd-tt.dang .cd-cham{animation:none}}
+.cd-i{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;padding:0;border:0;border-radius:50%;background:none;color:var(--dim);cursor:help}
+.cd-i:hover,.cd-i:focus-visible{color:var(--ink);background:#262626}
+.cd-i .ic{width:15px;height:15px}
+.cd-sw-o{display:inline-flex;align-items:center;flex:none}
+.cd-sw button.on{background:var(--cd-luc);color:#fff;box-shadow:inset 0 0 0 1px var(--cd-luc-vien)}
+.cd-sw button[data-cd="cpu"].on{background:#2a2a2a;color:var(--ink);box-shadow:inset 0 0 0 1px #4a4a4a}
+/* tab Bản xuất */
+.cd-ban{display:flex;align-items:center;margin-top:8px;min-width:0}
+.cd-lan{margin:4px 0 0;font-size:12px;color:var(--cd-mo)}
+.cd-lan.lui{color:var(--warn)}

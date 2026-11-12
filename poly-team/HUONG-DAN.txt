@@ -1,0 +1,186 @@
+POLY TEAM (bản 2.0 của Poly Dựng Video) — đặt cách dựng video TikTok, bấm Chạy, Claude tự dựng trong Premiere
+==========================================================================================================
+
+KHÁC GÌ BẢN 1
+- TÊN APP: POLY Cut (3/11, trước tên POLY Team). App riêng: thư mục E:\Tool\poly-team (giữ tên thư mục), icon "POLY Cut" ngoài Desktop (logo xanh dương, có số 2), cổng 8790.
+  Bản 1 (Poly Dung Video, logo xanh lá, E:\Tool\poly-dung-video, cổng 8779) vẫn giữ nguyên, mở song song được.
+- Dùng chung bộ dựng của bản 1 (Python, ffmpeg, máy nghe, 25 giọng AI trong E:\Tool\poly-dung-video\engine): không cài lại.
+  Lịch sử kiểu dựng cũng chung, nên 2 app không bốc trùng kiểu của 5 video gần nhất.
+- Video vẫn lưu ở E:\Tool\poly-edit như bản 1. Danh sách video (Hàng dựng) của mỗi app riêng.
+- Đừng bấm dựng bằng Premiere ở 2 app cùng lúc: 2 app cùng gửi lệnh vào 1 Premiere sẽ lẫn nhau.
+- Giao diện: Hàng dựng luôn nằm cột phải (cửa sổ từ khoảng 1180 px trở lên); chưa có video thì cột phải hiện
+  "Video sắp dựng": tóm tắt đơn đang soạn (clip, loại, hook, giọng, kiểu anh chọn, nơi lưu) + các bước Claude sẽ làm.
+
+CÀI (1 LẦN)
+1. Bộ dựng: đã cài ở bản 1. Nếu app báo thiếu bộ dựng: bấm đúp CAI-DAT.bat trong E:\Tool\poly-dung-video.
+2. Bấm đúp TAO-LOI-TAT.vbs trong thư mục này để có icon "POLY Cut" ngoài Desktop (có icon cũ "POLY Team" thì nó đổi tên icon đó).
+3. Bấm icon POLY Cut. Chip "Claude" ở góc trên bên phải phải có chấm xanh.
+   Chưa đăng nhập thì bấm Đăng nhập, trình duyệt mở ra chọn tài khoản Claude (gói Max). Chỉ làm 1 lần.
+
+DỰNG 1 VIDEO  (màn hình chia 3 cột: Đơn dựng | khung điện thoại xem phác | Hàng dựng)
+1. Cột trái, mục Clip: bấm "Chọn thư mục" (hoặc dán đường dẫn rồi Enter). Bảng chọn hiện các thư mục trong E:\Video
+   dạng thẻ có ảnh clip, số clip, ngày quay (mới nhất lên đầu, có ô Tìm). Bấm thẻ có clip = chọn luôn; thẻ chỉ có
+   thư mục con = mở vào; "↑ Lên" / thanh đường dẫn để lùi ra; Esc để đóng.
+   Bấm vào clip muốn dùng; không chọn clip nào = dùng cả thư mục. Số vàng trên clip là thứ tự gợi ý.
+   Nút ▶ trên clip để xem nhanh clip đó.
+2. Chọn loại video, máy + giá (video bán máy), hook, thẻ kết, độ dài. Để trống hook thì Claude tự viết theo gu kênh.
+   Không ghi giá thì video không có thẻ giá.
+   Giọng: "Lời nói trong clip" hoặc "Giọng đọc AI" → chọn 1 trong 25 giọng VieNeu (Adam, Adam bựa, Hải Đăng, Mai Anh,
+   Trúc Ly…, chia theo miền Nam / Bắc / Trung; chạy ngay trên máy, không cần mạng) hoặc 2 giọng Microsoft (Hoài My,
+   Nam Minh, cần mạng) + tốc độ, bấm "▶ Nghe thử" (lần đầu chờ khoảng nửa phút). Claude tự viết lời đọc theo clip
+   (muốn tự viết thì dán vào ô Dặn Claude). Khi đăng bật nhãn nội dung AI.
+3. Kiểu dựng: "Claude xoay vòng" (mỗi video một kiểu, không trùng 5 video trước), "Đúng gu kênh",
+   hoặc "Tự chọn". Khung điện thoại ở giữa lấy hình clip thật, có giao diện TikTok vẽ phác + khung vàng = chỗ TikTok
+   không che (giữ chữ trong khung vàng). Kiểu chữ, phụ đề, thẻ kết chọn ngay dưới khung.
+4. Muốn xem trước cảnh + hook rồi mới dựng: bật "Duyệt kế hoạch trước" (cạnh nút Chạy).
+   Claude làm xong kế hoạch thì thẻ video bên phải hiện danh sách cảnh, anh sửa hook / dặn thêm rồi bấm "Dựng theo kế hoạch".
+5. Bấm Chạy (nút xanh dưới cột trái). Video thành 1 thẻ trong Hàng dựng bên phải, có thanh bước Claude đang làm.
+   Dựng bằng Premiere: không cần mở trước. Tới bước dựng mà Premiere chưa mở thì app tự mở Premiere (kèm project
+   gần nhất để bảng Poly Bridge tự lên) rồi dựng tiếp. Bảng Poly Bridge không tự lên thì thẻ video báo: mở menu
+   Window › UXP Plugins › Poly Bridge rồi bấm Chạy tiếp.
+6. Xong: bấm hình video trên thẻ để xem, "Chép caption". "Mở trong Premiere", "Mở thư mục"… nằm trong nút "Thêm".
+   Thẻ video xong đã xem tự thu gọn 1 dòng, bấm vào để mở lại.
+   Muốn sửa: bấm "Sửa video" trên thẻ, gõ (hoặc bấm gợi ý có sẵn) → Claude dựng thành bản mới v2, v3… bản cũ vẫn giữ.
+7. Claude hỏi anh (ô vàng "Claude hỏi anh" trên thẻ): bấm chọn rồi "Gửi trả lời". Giữ "đang làm" thì Claude không đổi gì.
+8. Muốn làm video giống video cũ: "Thêm" › "Dùng lại cài đặt cho video mới" trên thẻ cũ → cột trái điền sẵn, sửa chỗ cần rồi bấm Chạy.
+
+SỬA TAY (tự sửa, không tốn lượt Claude, không cần Premiere) — thêm 31/10/2026, gộp vào màn hình chính 2/11/2026
+Mở POLY Cut là vào thẳng trình sửa, mở video sửa gần nhất (3/11 tối: không còn trang chủ / danh sách video).
+- Nút TÊN VIDEO ▾ trên cùng: bấm để thấy video gần đây (bấm 1 video = mở) và "＋ Video mới từ clip…" (hộp nổi: bấm thẻ thư mục →
+  bấm clip theo thứ tự, số vàng = thứ tự → đặt tên → Tạo và sửa). Chưa có video nào thì app tự mở hộp này.
+- F5 vẫn mở lại đúng video đang sửa.
+- Xem trước khung 9:16 ngay trong app: bấm ▶ (hoặc phím cách). Lần đầu mở 1 video app tạo "bản xem nhẹ" cho từng clip
+  (clip iPhone 4K mất khoảng nửa phút đến 1 phút mỗi clip), trong lúc chờ khung hiện ảnh tĩnh.
+- Timeline dưới cùng: kéo MÉP VÀNG của cảnh để cắt đầu / cuối, kéo THÂN cảnh để đổi chỗ, đưa vạch đỏ vào giữa cảnh rồi
+  bấm "✂ Chia ở vạch đỏ" (phím S), "Xoá cảnh" (phím Delete), "+ Thêm cảnh" (từ clip đang có hoặc thư mục clip khác).
+- THANH DƯỚI TIMELINE (3/11), giống CapCut, đều làm ở chỗ vạch đỏ:
+  ✂ Chia (S) · ⇤ Cắt đầu (Q: bỏ phần trước vạch đỏ của cảnh đang đứng) · Cắt cuối ⇥ (W: bỏ phần sau vạch đỏ) ·
+  ⧉ Nhân đôi (Ctrl+D, cảnh đang chọn) · ⇄ Thay clip (đổi cảnh đang chọn sang clip khác, giữ chỗ + độ dài; nhãn, thẻ giá giữ;
+  phụ đề lời cũ của cảnh đó ẩn) · + Thêm cảnh · Xoá (Delete) | T Nhãn (T) · ₫ Thẻ giá (G, đã có thì dời tới vạch đỏ) · ≡ Phụ đề (P):
+  thêm xong app mở đúng tab và đặt con trỏ vào ô chữ, gõ luôn.
+- KHUNG CANH LỀ (3/11): ô "Khung" dưới khung xem: Không / Vùng an toàn (khung vàng = chỗ TikTok không che) / Giao diện TikTok
+  (vẽ phác nút LIVE, tab, cột tim–comment, tên + caption) / TikTok có link sản phẩm. Chỉ để canh chữ, không dựng vào video.
+- Phụ đề, nhãn, thẻ giá dính với cảnh của nó: cắt / đổi chỗ cảnh thì chữ tự đi theo đúng lời nói.
+- Tab Chữ: hook 2 dòng + vị trí, nhãn chữ, thẻ giá, thẻ kết (mặc định / tự viết / không có), chữ POLY STORE, tiêu đề ghim.
+- PHỤ ĐỀ TỰ ĐỘNG (3/11): video vừa tạo từ clip ("✂ Tự dựng tay" hoặc "Tạo và sửa") tự nghe lời nói trong clip và tạo phụ đề
+  (câu 3–6 từ, dính theo cảnh), mất vài giây tới khoảng 1/3 độ dài clip; máy nghe chạy trên máy, không cần Claude, không cần mạng.
+  Video khác: tab Phụ đề › "🎙 Tạo phụ đề từ lời nói" (đang có phụ đề thì hỏi trước khi thay). Ctrl+Z để bỏ. Máy nghe hay sai tên
+  máy và số ("mười ba triệu chín"): đọc lại, sửa ngay trong ô, hoặc nhờ Claude sửa. Video giọng đọc AI không dùng nút này.
+  Phụ đề kiểu "cả câu, tô từ" giờ cũng in hoa hết khi dựng (như kiểu cụm).
+  Tab Phụ đề: sửa chữ nghe sai ngay trong ô, thêm / xoá câu. Tab Kiểu: đổi kiểu chữ, phụ đề, chuyển cảnh, font…
+- Ctrl+Z hoàn tác, Ctrl+Y làm lại. Đóng trang giữa chừng không mất: mở lại video là thấy bản đang sửa dở.
+- "Xuất bản nháp": dựng nhanh bản 540p (khoảng 2 lần độ dài video) rồi chuyển khung xem sang "Bản nháp" để xem đúng chuyển cảnh,
+  phụ đề tô chữ, âm thanh. Xem nhanh (không nháp) là cắt thẳng, không có chuyển cảnh / zoom đặc biệt.
+- "Xuất video": dựng bản đẹp 1080×1920 bằng ffmpeg vào thư mục mới v2, v3… (bản cũ vẫn giữ), thẻ video trong Hàng dựng tự đổi
+  sang bản này. Mất khoảng 3–4 lần độ dài video (video 90 giây ≈ 5–6 phút), máy vẫn dùng được trong lúc đó.
+- Sửa tay xong vẫn bấm "Sửa video" (Claude) trên thẻ được: Claude sửa tiếp từ bản anh đã sửa.
+- Đang có Claude dựng / sửa đúng video đó trong Hàng dựng thì trang Sửa tay báo đỏ và không cho xuất (tránh ghi đè nhau).
+- Bản xuất bằng ffmpeg không có âm nhấn và chữ động dựng sẵn (2 thứ này chỉ đường Premiere có).
+- NHỜ CLAUDE (thêm 3/11): nút tím "✦ Nhờ Claude" trên cùng (hoặc tab "✦ Claude"). Gõ việc cần sửa, vd "cắt còn 45 giây, giữ đoạn
+  nói giá", "hook ngắn lại", "thêm nhãn Pin 98% ở đây" (= chỗ vạch đỏ), "bỏ cảnh rung", rồi bấm Gửi Claude (hoặc Ctrl+Enter).
+  Claude xem kế hoạch + ảnh các cảnh, đề xuất danh sách thay đổi (thường 10–40 giây); bỏ dấu tích cái không muốn rồi bấm Đồng ý
+  mới áp. Áp rồi vẫn Ctrl+Z được. Yêu cầu chưa rõ thì Claude hỏi lại, không đổi gì. Claude không nghe được tiếng trong clip
+  (chỉ đọc phụ đề có sẵn), không bịa giá / thông số. Mỗi lần nhờ dùng 1 lượt Claude của tài khoản đang đăng nhập trên máy.
+  Từ chiều 3/11 Claude ghi KẾ HOẠCH từng bước trước, rồi làm bằng thao tác thường, bằng tiện ích có sẵn trên máy, hoặc tự viết
+  script cho việc lặp nhiều cảnh. Anh thấy kế hoạch + từng thay đổi, bấm Đồng ý mới chạy. Script Claude viết mà dùng lại được thì
+  có nút "Lưu thành tiện ích".
+- TIỆN ÍCH / SCRIPT (3/11): nút "⚡ Tiện ích" trên cùng: bấm 1 tiện ích là chạy trên video đang mở (có ô hỏi thì hỏi trước, vd
+  giá), chạy xong là 1 bước Ctrl+Z. Có sẵn: Chia cảnh dài · Thẻ giá ở cảnh cuối · Cắt video còn X giây · Nhãn theo mô tả cảnh ·
+  Bỏ cảnh quá ngắn. "Quản lý tiện ích…": bật / tắt, sửa, xoá (vào thư mục tien-ich\.thung-rac, lấy lại được), "+ Script mới"
+  (viết JavaScript, bảng bên phải có các lệnh ed.chia, ed.catDau, ed.nhan, ed.theGia, ed.kieu…, "▶ Chạy thử" trên video
+  đang mở). Mỗi tiện ích là 1 thư mục trong E:\Tool\poly-team\tien-ich\ (tien-ich.json + script.js): chép thư mục sang máy
+  khác là có. Script chạy riêng, không mạng, quá 4 giây là tự dừng, không đổi được clip nguồn; chạy lỗi thì video không đổi gì.
+- TAB KIỂU (3/11): chia 3 nhóm Chữ / Chuyển động / Hình & lớp phủ. Đổi 1 mục là khung video cho xem mẫu ngay: kiểu chữ, font,
+  phụ đề, thẻ kết -> vạch đỏ nhảy tới chỗ có chữ đó; chuyển cảnh, chuyển động, nhịp, điểm nhấn, màu, lớp phủ, mở đầu -> app dựng
+  nhanh 1 đoạn mẫu ~3 giây từ 2 cảnh quanh vạch đỏ (bản nháp, không tiếng, vài giây) rồi phát lặp trong khung; ✕ để đóng.
+  Nút ▶ cạnh mỗi mục = xem lại (mẫu đã dựng thì hiện ngay).
+- PHÍM TẮT (3/11): cách = phát · ← → 1 khung (Shift: 1 giây) · ↑ ↓ tới chỗ đổi cảnh trước / sau · Home / End đầu / cuối ·
+  S hoặc Ctrl+B chia · Q / W cắt đầu / cuối ở vạch đỏ · Ctrl+D nhân đôi · T nhãn · G thẻ giá · P phụ đề · Delete xoá đúng thứ
+  đang chọn (bấm thanh chữ / câu rồi Delete là xoá câu đó, bấm cảnh rồi Delete là xoá cảnh) · Ctrl+Z / Ctrl+Y · Esc thoát ô
+  chữ · lăn chuột trên timeline = cuộn ngang, Ctrl + lăn = phóng to / thu nhỏ, nút "Vừa khung" (Ctrl+0) cho cả video vừa timeline.
+- BỐ CỤC 4 KHU (3/11 tối, kiểu trình dựng CapCut): trái = Thư viện (Clip · Chữ · Chuyển cảnh · Hiệu ứng · Giọng AI · Nhạc · Tiện ích), giữa =
+  khung xem (thanh trên có nút thu / mở thư viện, cảnh báo, Khung canh lề), phải = bảng Cảnh / Chữ / Phụ đề / Kiểu / Bản xuất /
+  Claude, dưới = timeline full ngang. Kéo đường chia trái / phải / trên timeline để nới; bấm đúp về mặc định. Màn hẹp thì thư viện
+  tự thu thành hàng icon (bấm icon mở bảng nổi).
+  · Clip: clip trong thư mục của video (✓ = đang dùng), bấm 1 clip = thêm cảnh sau cảnh đang chọn; "Đổi thư mục".
+  · Chữ: bấm ô Nhãn / Thẻ giá / Phụ đề / Hook / Thẻ kết = thêm ở vạch đỏ; "Tạo phụ đề từ lời nói"; kiểu chữ cả video.
+  · Chuyển cảnh: rê chuột vào ô để xem chạy thử, bấm = chuyển cảnh VÀO cảnh đang chọn (khung xem dựng mẫu ~3 giây). Ô có chữ
+    "chậm" = đẹp nhưng xuất lâu hơn 4–11 giây mỗi chỗ, mỗi video nên 1–3 chỗ. Có Áp cho mọi cảnh / Bỏ hết.
+  · Hiệu ứng: chuyển động khung của cảnh, hiệu ứng hình của cảnh (làm nét, khử nhiễu, màu sản phẩm, trắng sạch, mờ chuyển động;
+    đầu cảnh: zoom nảy, lấy nét vào, vệt sáng quét), hiệu ứng cả video.
+  · Timeline: nút ◆ giữa 2 cảnh = chỗ nối (vàng = có chuyển cảnh riêng); bấm để chọn kiểu, bấm phải ra menu hiệu ứng.
+- MENU CHUỘT PHẢI (3/11): bấm phải vào cảnh / chữ trên timeline, chỗ trống timeline, khung video, thẻ cảnh hoặc dòng chữ ở bảng
+  phải -> đúng lệnh cho chỗ đó, kèm phím tắt (thay menu của Edge; trong ô gõ chữ vẫn là menu chép / dán thường). ↑ ↓ chọn, → mở
+  menu con, Enter làm, Esc đóng. Lệnh "ở chỗ này" làm đúng chỗ vừa bấm trên timeline (khỏi kéo vạch đỏ trước).
+  · Cảnh: Hiệu ứng (chuyển cảnh vào cảnh này, chuyển động khung: đứng yên / zoom vào / zoom ra / phóng sát / lia trái phải; "Áp
+    cho mọi cảnh"), chia / cắt bỏ phần trước, sau ở chỗ bấm, Chỉnh giờ chính xác… (nhập Từ giây / đến), nhân đôi, thay clip, đưa
+    lên trước / xuống sau, thêm chữ, xoá. Chọn hiệu ứng là khung video dựng mẫu luôn ~3 giây quanh cảnh đó. Cảnh có chuyển cảnh
+    riêng: hình thoi vàng ở mép trái khối cảnh; có chuyển động riêng: dấu nhỏ góc phải.
+  · Khung video / chỗ trống timeline: Hiệu ứng cả video (chuyển cảnh, chuyển động, điểm nhấn, lớp phủ, nhịp = như tab Kiểu),
+    thêm chữ, khung canh lề, xuất, hoàn tác.
+  · Chữ (hook, nhãn, thẻ giá, phụ đề, thẻ kết): sửa, tua tới, dời về chỗ bấm, xoá.
+- THẺ CẢNH (3/11): chọn cảnh không còn bung ô Từ giây / đến, nút, ghi chú. Giờ chính xác: chuột phải -> Chỉnh giờ chính xác…
+- CLIP NGUỒN MẤT (3/11): clip bị đổi tên / xoá / ổ chưa cắm -> băng rôn đỏ nêu tên clip + các cảnh dùng nó, khối cảnh tô sọc đỏ.
+  Vẫn sửa, tự lưu được; bấm "Tìm lại clip…" chọn đúng file (các cảnh, chữ giữ nguyên) hoặc "Xoá các cảnh dùng clip này". Xuất
+  thì báo rõ clip nào mất. Tự lưu bản sửa dở mà lỗi thì báo ở thanh trạng thái (trước im lặng).
+- CÔNG CỤ CHỈ CÒN ICON (3/11): thanh dưới timeline, nút phát, hoàn tác chỉ còn icon; rê chuột vào là hiện tên + phím tắt.
+- KÉO ĐƯỜNG CHIA (3/11): kéo đường giữa khung video và bảng bên phải để nới / thu bảng; kéo đường trên timeline để timeline cao /
+  thấp. App nhớ cỡ đã kéo; bấm đúp vào đường chia để về như cũ.
+- PHÓNG TO / THU NHỎ TIMELINE: góc phải thanh dưới timeline có − [thanh kéo] +. Kéo sang phải để xem chi tiết từng khung, sang
+  trái để thấy cả video; vạch đỏ đứng yên chỗ cũ khi phóng. Ctrl + / Ctrl − và Ctrl + lăn chuột (phóng quanh chỗ chuột) cũng được.
+- Cảnh báo chữ bị đè / bị cắt gom 1 dòng dưới khung xem, bấm "Xem" để mở; dòng nào có giờ thì bấm vào là tua tới.
+- XUẤT VIDEO (3/11): bấm "Xuất video" là xuất luôn theo định dạng đã chọn lần trước (rê chuột vào nút để xem). Nút ▾ cạnh bên
+  (hoặc tab Bản xuất › Định dạng…) để chọn: Chất lượng Nhẹ / Chuẩn / Cao (Cao nét nhất, lâu hơn ~1,5 lần) · Khung/giây 24–60 (TikTok
+  30 là đủ) · Bản chính MP4 1080×1920 H.264 (đăng TikTok / Reels / Shorts) · Xuất thêm tuỳ chọn: MP4 720p nhẹ (gửi Zalo, Messenger),
+  MP4 HEVC (nhỏ hơn ~40%), MOV (iMovie / Final Cut). Các bản thêm nằm cùng thư mục v<n>, có nút Xem / Thư mục ở tab Bản xuất.
+- Hộp "Video mới từ clip": bấm chọn clip là app làm bản xem nhẹ luôn, tới lúc "Tạo và sửa" khung xem có hình nhanh hơn.
+- Xuất video không hỏi lại nữa (bản cũ vẫn giữ, có nút Dừng). Đang xem "Bản nháp" mà sửa tiếp thì app tự về "Xem nhanh".
+- MỚI 3/11 TỐI:
+  · GIỌNG ĐỌC AI: Thư viện › Giọng AI (hoặc bấm làn "Giọng AI" dưới timeline, hoặc chuột phải › Giọng đọc AI…). Gõ lời đọc mỗi
+    câu 1 dòng, chọn giọng + tốc độ, "Tạo giọng", nghe thử, "Áp vào video" (phụ đề theo giọng luôn, Ctrl+Z để bỏ). Lúc xuất app tự
+    hạ tiếng trong clip khi có giọng. Chuột phải khối giọng › Bỏ giọng AI.
+  · TAB CẢNH (bảng phải) = chỉnh riêng cảnh đang chọn: Hình (thu phóng, lấy phần trái / phải của clip quay ngang, chuyển động, hiệu
+    ứng hình) · Âm thanh (âm lượng, tắt tiếng) · Màu (sáng, tương phản, đậm màu, ấm / lạnh) · Chuyển cảnh vào. Kéo thanh là khung xem
+    đổi ngay; mỗi thanh có nút về mặc định. Khối cảnh có dấu loa / khung khi đã chỉnh. "Tất cả cảnh" mở danh sách cảnh.
+  · KÉO THẢ: kéo clip từ Thư viện xuống timeline để chèn đúng chỗ; kéo chuyển cảnh lên nút ◆, hiệu ứng lên khối cảnh, nhãn / phụ đề
+    lên làn chữ. Bấm phải ô trong Thư viện: thêm ở đầu / cuối, thay clip, xem clip, xem mẫu chưa áp.
+  · NÚT: nút nối cảnh ◆ thành ô vuông có icon giữa làn cảnh, nút phát tròn to, thanh công cụ timeline có chữ ở màn rộng (≥ 1500px).
+  · HẾT RUNG: chuyển động khung (lia / zoom) chạy liền 1 chiều cả cảnh, không lắc qua lại mỗi 2 giây như trước.
+  · Trong cửa sổ POLY Cut: logo + chip Claude nằm chung 1 hàng với thanh trên của trình sửa (đỡ tốn chỗ ở màn 1366).
+- MỚI 4/11:
+  · NHẠC NỀN (không bắt buộc, kênh vẫn gắn nhạc trend lúc đăng TikTok được): Thư viện › Nhạc. "Nhạc của tiệm" = thư mục nhạc anh
+    chọn (nút "Đổi thư mục"), "Nhạc miễn phí" = 4 bài kèm app (tự tạo, CC0). ▶ nghe thử; bấm 1 bài hoặc kéo xuống timeline = thêm,
+    hiện ở làn "Nhạc" dưới làn Giọng AI. "Bắt đầu từ…" chọn đoạn nhạc. Bài ngắn hơn video tự lặp, mờ đầu / cuối. "Tự hạ nhạc khi có
+    giọng AI / người nói" (bật sẵn). Cân tiếng: 3 thanh Nhạc / Giọng AI / Tiếng clip. Ctrl+Z để bỏ. Chỉ bản xuất của app có nhạc
+    (dựng bằng Premiere bỏ qua nhạc).
+  · TỰ CHIA CẢNH: nút "Tự chia" trên thanh timeline (hoặc chuột phải cảnh) › cảnh đang chọn / cả video. App tìm chỗ ngừng nói + chỗ
+    đổi góc máy, vẽ vạch vàng đề xuất trên cảnh: bấm vạch để bỏ / lấy lại, bấm "Chia" mới chia (1 lần Ctrl+Z). Không cắt giữa chữ.
+    Đoạn im lặng dài tách thành cảnh riêng tô sọc xám "Im lặng" + nút "Xoá N đoạn im lặng" (app không tự xoá).
+  · TỰ CHỈNH MÀU + BỘ LỌC: tab Cảnh › Màu. "Tự chỉnh màu" › Cảnh này / Mọi cảnh: máy đo màu clip rồi tự cân (đèn vàng về trắng hơn,
+    cảnh tối sáng lên), xong vẫn kéo thanh được; giữ nút "Giữ xem gốc" để so với lúc chưa chỉnh. "Bộ lọc màu": Sản phẩm, Trắng sạch,
+    Ấm áp, Lục bảo Poly + thanh Cường độ (cũng có ở Thư viện › Hiệu ứng › Bộ lọc). Khung xem chỉ GẦN ĐÚNG màu bộ lọc, muốn chắc bấm
+    "Xem mẫu thật" (dựng 3 giây đúng như bản xuất). Dựng bằng Premiere bỏ qua bộ lọc + màu riêng cảnh.
+  · KIỂU CHỮ CÓ SẴN: bấm 1 chữ trên timeline (nhãn, thẻ giá, hook, tiêu đề) rồi Thư viện › Chữ › Kiểu chữ: 10 mẫu màu Poly (Giá vàng
+    nổi, Giá khối xanh, Nhãn vàng viền đen…) + 8 font đủ dấu. Bảng phải: đổi Font, Cỡ + / −, "Bỏ kiểu riêng". Chuột phải chữ ›
+    Kiểu chữ cũng được. Có cả ở bản xuất của app lẫn Premiere; phụ đề vẫn theo kiểu cả video.
+  · GIỌNG AI THAY HẲN TIẾNG CLIP: áp giọng mới thì tiếng gốc trong clip tắt hẳn (cả xem trước lẫn bản xuất). Muốn giữ tiếng clip nhỏ
+    làm nền: Thư viện › Giọng AI › Tiếng clip › "Giữ nhỏ làm nền" (Ctrl+Z được).
+  · BẢNG PHẢI GỌN KHI HẸP: kéo bảng phải hẹp thì nút đầu mỗi ô chỉ còn biểu tượng (rê chuột xem tên), không còn thanh cuộn ngang,
+    chữ không bị cắt.
+  · XEM TRƯỚC NÉT HƠN: bản xem nhẹ giờ 720×1280 (trước 540×960), làm clip của cảnh đang chọn trước; clip đã có bản cũ thì phát tạm
+    bản cũ rồi tự đổi sang bản nét, không cần F5.
+  · THƯ VIỆN 7 TAB (Clip · Chữ · Chuyển cảnh · Hiệu ứng · Giọng AI · Nhạc · Tiện ích): màn 1366 / thư viện hẹp chỉ hiện biểu tượng,
+    tab đang chọn mới có tên; rê chuột vào biểu tượng để xem tên. Màn rộng (1920) hiện đủ tên.
+
+LƯU Ý
+- Premiere chỉ dựng 1 video 1 lúc: bấm Chạy nhiều video thì các video sau tự xếp hàng, xong video trước tự chạy.
+- Tắt app không sao: Claude vẫn dựng ngầm, mở lại app là xem tiếp.
+- Lúc Claude đang dựng: đừng tắt Premiere, đừng đóng bảng Poly Bridge (Premiere văng thì app tự mở lại). Muốn dừng thì bấm "Dừng" trong app trước.
+  Anh vẫn mở project khác trong Premiere được, nhớ lưu.
+- Video lưu ở E:\Tool\poly-edit\<tên video>\ (mỗi lần dựng một thư mục v1, v2…). Clip gốc trong E:\Video không bị sửa.
+- Video dừng giữa chừng: đọc dòng đỏ trên thẻ, làm theo (vd mở Premiere) rồi bấm "Chạy tiếp".
+- Premiere văng giữa lúc đang dựng: app tự mở lại đúng project rồi làm tiếp (như Poly Bridge MCP trước đây).
+  Premiere treo hoặc hiện hộp báo lỗi thì app không tắt gì, chỉ dừng và báo anh xem màn hình.
+- Lỗi lạ: "Thêm" › "Nhật ký Claude" › Chi tiết kỹ thuật, chụp màn hình gửi Claude.
+- Chip "Premiere" ở góc trên: chấm xanh = Premiere + bảng Poly Bridge đang nghe lệnh. Bấm vào để xem cách mở.
+- Sau khi Claude cập nhật app: bấm đúp KHOI-DONG-LAI.vbs trong E:\Tool\poly-team (hoặc tắt máy mở lại).

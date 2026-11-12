@@ -1,0 +1,21 @@
+{
+ "_ghi_chu": "Mẫu cài đặt app POLY Cut (trước tên POLY Team, Poly Dựng Video 2.0). Muốn đổi gì thì chép file này thành config.json (cùng thư mục) rồi sửa. Không có config.json thì app dùng đúng các giá trị dưới. Bản 2.0 dùng cổng 8790 (bản 1: 8779) và dùng chung bộ dựng của bản 1.",
+ "port": 8790,
+ "engine_dir": "E:\\Tool\\poly-dung-video\\engine",
+ "thu_muc_ra": "E:\\Tool\\poly-edit",
+ "thu_muc_clip": "E:\\Video",
+ "premiere_dir": "E:\\Tool\\poly-premiere",
+ "them_thu_muc": [
+  "E:\\Video",
+  "E:\\Tool\\poly-edit",
+  "E:\\Tool\\poly-premiere"
+ ],
+ "model": "",
+ "dang_chay_toi_da": 1,
+ "premiere_tu_mo_lai": true,
+ "premiere_tu_mo": true,
+ "telegram_token": "",
+ "telegram_chat": "",
+ "kho_effect": "",
+ "_ghi_chu_kho_effect": "Kho effect của tiệm (thư mục Google Drive for desktop, vd G:\\My Drive\\Poly Store MKT\\Kho effect Poly Cut), dùng chung các máy. Âm thanh / nhạc: app chép file kho về _cache/kho-effect khi dùng (r37). Dựng tự động: bộ kiểu ở <kho>/dung-tu-dong/<tên>.json đè bộ cùng tên của app (r38). Trống = không dùng kho, chỉ dùng đồ kèm app."
+}

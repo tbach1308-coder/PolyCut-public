@@ -1,0 +1,222 @@
+{
+ "_ghi_chu": "Danh sách giọng AI cho app Poly Dựng Video. vieneu: 25 giọng VieNeu-TTS v3 Turbo (chạy trên máy, không cần mạng sau khi cài; dùng thương mại được; KHÔNG có watermark: máy tiệm không cài gói resemble-perth). microsoft: edge-tts (cần mạng).",
+ "mac_dinh": "vn-adam",
+ "vieneu": [
+  {
+   "id": "vn-adam-bua",
+   "ten": "Adam bựa",
+   "gioi": "nam",
+   "mien": "miền Bắc",
+   "cach": "tự nhiên",
+   "noi_bat": 1
+  },
+  {
+   "id": "vn-truc-ly",
+   "ten": "Trúc Ly",
+   "gioi": "nữ",
+   "mien": "miền Bắc",
+   "cach": "tự nhiên",
+   "noi_bat": 2
+  },
+  {
+   "id": "vn-thien-minh",
+   "ten": "Thiện Minh",
+   "gioi": "nam",
+   "mien": "miền Bắc",
+   "cach": "kể chuyện",
+   "noi_bat": 3
+  },
+  {
+   "id": "vn-mai-anh",
+   "ten": "Mai Anh",
+   "gioi": "nữ",
+   "mien": "miền Bắc",
+   "cach": "tin tức",
+   "noi_bat": 4
+  },
+  {
+   "id": "vn-hai-dang",
+   "ten": "Hải Đăng",
+   "gioi": "nam",
+   "mien": "miền Bắc",
+   "cach": "tự nhiên",
+   "noi_bat": 5
+  },
+  {
+   "id": "vn-thuy-dung",
+   "ten": "Thùy Dung",
+   "gioi": "nữ",
+   "mien": "miền Nam",
+   "cach": "tin tức",
+   "noi_bat": 6
+  },
+  {
+   "id": "vn-thien-tam-duc",
+   "ten": "Thiền Tâm Đức",
+   "gioi": "nam",
+   "mien": "miền Bắc",
+   "cach": "kể chuyện",
+   "noi_bat": 7
+  },
+  {
+   "id": "vn-ngoc-huyen",
+   "ten": "Ngọc Huyền",
+   "gioi": "nữ",
+   "mien": "miền Bắc",
+   "cach": "tự nhiên",
+   "noi_bat": 8
+  },
+  {
+   "id": "vn-quang-son",
+   "ten": "Quang Sơn",
+   "gioi": "nam",
+   "mien": "miền Trung",
+   "cach": "tự nhiên",
+   "noi_bat": 9
+  },
+  {
+   "id": "vn-ngoc-tran",
+   "ten": "Ngọc Trân",
+   "gioi": "nữ",
+   "mien": "miền Trung",
+   "cach": "tự nhiên",
+   "noi_bat": 10
+  },
+  {
+   "id": "vn-minh-duc",
+   "ten": "Minh Đức",
+   "gioi": "nam",
+   "mien": "miền Bắc",
+   "cach": "tin tức",
+   "noi_bat": null
+  },
+  {
+   "id": "vn-pham-tuyen",
+   "ten": "Phạm Tuyên",
+   "gioi": "nam",
+   "mien": "miền Bắc",
+   "cach": "tự nhiên",
+   "noi_bat": null
+  },
+  {
+   "id": "vn-thai-son",
+   "ten": "Thái Sơn",
+   "gioi": "nam",
+   "mien": "miền Nam",
+   "cach": "kể chuyện",
+   "noi_bat": null
+  },
+  {
+   "id": "vn-xuan-vinh",
+   "ten": "Xuân Vĩnh",
+   "gioi": "nam",
+   "mien": "miền Bắc",
+   "cach": "tự nhiên",
+   "noi_bat": null
+  },
+  {
+   "id": "vn-thanh-binh",
+   "ten": "Thanh Bình",
+   "gioi": "nam",
+   "mien": "miền Bắc",
+   "cach": "kể chuyện",
+   "noi_bat": null
+  },
+  {
+   "id": "vn-ngoc-linh",
+   "ten": "Ngọc Linh",
+   "gioi": "nữ",
+   "mien": "miền Bắc",
+   "cach": "kể chuyện",
+   "noi_bat": null
+  },
+  {
+   "id": "vn-doan-trang",
+   "ten": "Đoan Trang",
+   "gioi": "nữ",
+   "mien": "miền Bắc",
+   "cach": "tự nhiên",
+   "noi_bat": null
+  },
+  {
+   "id": "vn-thuc-doan",
+   "ten": "Thục Đoan",
+   "gioi": "nữ",
+   "mien": "miền Nam",
+   "cach": "kể chuyện",
+   "noi_bat": null
+  },
+  {
+   "id": "vn-minh-triet",
+   "ten": "Minh Triết",
+   "gioi": "nam",
+   "mien": "miền Nam",
+   "cach": "tin tức",
+   "noi_bat": null
+  },
+  {
+   "id": "vn-my-duyen",
+   "ten": "Mỹ Duyên",
+   "gioi": "nữ",
+   "mien": "miền Nam",
+   "cach": "đọc truyện",
+   "noi_bat": null
+  },
+  {
+   "id": "vn-quynh-anh",
+   "ten": "Quỳnh Anh",
+   "gioi": "nữ",
+   "mien": "miền Bắc",
+   "cach": "đọc truyện",
+   "noi_bat": null
+  },
+  {
+   "id": "vn-duc-tri",
+   "ten": "Đức Trí",
+   "gioi": "nam",
+   "mien": "miền Nam",
+   "cach": "đọc truyện",
+   "noi_bat": null
+  },
+  {
+   "id": "vn-kim-thanh",
+   "ten": "Kim Thanh",
+   "gioi": "nữ",
+   "mien": "miền Nam",
+   "cach": "đọc truyện",
+   "noi_bat": null
+  },
+  {
+   "id": "vn-adam",
+   "ten": "Adam",
+   "gioi": "nam",
+   "mien": "miền Nam",
+   "cach": "tự nhiên",
+   "noi_bat": null
+  },
+  {
+   "id": "vn-quoc-tuan",
+   "ten": "Quốc Tuấn",
+   "gioi": "nam",
+   "mien": "miền Bắc",
+   "cach": "tự nhiên",
+   "noi_bat": null
+  }
+ ],
+ "microsoft": [
+  {
+   "id": "nu",
+   "ten": "Hoài My",
+   "gioi": "nữ",
+   "mien": "miền Bắc",
+   "cach": "Microsoft, cần mạng"
+  },
+  {
+   "id": "nam",
+   "ten": "Nam Minh",
+   "gioi": "nam",
+   "mien": "miền Bắc",
+   "cach": "Microsoft, cần mạng"
+  }
+ ]
+}

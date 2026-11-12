@@ -1,0 +1,35 @@
+{
+ "id": "chop_mat",
+ "loai": "poly-chuyen-1",
+ "ten": "Chớp mắt",
+ "nhom": "co_ban",
+ "mo_ta": "Hai mép tối khép lại như chớp mắt / màn trập rồi mở ra cảnh sau — đổi góc máy, nhịp nhạc",
+ "giay": 0.3,
+ "giay_min": 0.21,
+ "giay_max": 0.48,
+ "tron": "cat",
+ "cat_tai": 0.5,
+ "mo_chuyen_dong": 0,
+ "A": {
+  "vien": "guong",
+  "zoom": [[0, 1], [0.5, 1.03, "in2"]]
+ },
+ "B": {
+  "vien": "guong",
+  "zoom": [[0.5, 1.06], [1, 1, "out2"]]
+ },
+ "lop": [
+  {
+   "kieu": "rem",
+   "mem": 0.1,
+   "manh": [[0, 0], [0.5, 1, "in3"], [1, 0, "out3"]]
+  }
+ ],
+ "xfade_du_phong": "fadeblack",
+ "premiere": "cross dissolve",
+ "premiere_gan_nhat": "dip to black",
+ "xem_truoc": "css: lớp F nền đen + mask linear-gradient 2 đầu (như lau mềm), độ khép theo p",
+ "y_tuong": "Blink / shutter (blink cut)",
+ "giay_phep": "CC0 — Poly tự viết (chuyen_moi.py), không dùng mã / tài nguyên ngoài",
+ "thay": ["nhay_den"]
+}

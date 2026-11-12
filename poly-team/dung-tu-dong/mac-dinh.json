@@ -1,0 +1,17 @@
+{
+ "_ghi_chu": "BỘ KIỂU của nút Dựng tự động (POLY Cut r38 11/11/2026; r40 bước 2 11/11: đổi sang mẫu mới anh đã duyệt). Phần tự gắn (bộ mẫu chữ, hook, thẻ giá, nhãn, chuyển cảnh, nhạc, âm thanh, thẻ kết) đọc từ file này. Muốn đổi kiểu: sửa file này, hoặc thả 1 file <tên>.json cùng dạng (chỉ cần ghi mục muốn đổi) vào <kho effect>/dung-tu-dong/ (config.json khoá kho_effect) hoặc vào thư mục dung-tu-dong của app. Mã bộ mẫu chữ: engine/mau-chu/<mã>.json (bo_mau.ma; bo_mau.phu_de = phu_de[].id của bộ; \"bo_mau\": null = mẫu chữ cũ); mã mẫu chữ riêng: engine/kieu_chu.json (mau[].id; null = theo bộ mẫu); mã chuyển cảnh: engine/chuyen-canh/<mã>.json (kiểu mới) hoặc engine/kieu_dung.json (chuyen_canh_ky_thuat); nhạc: nhac-mien-phi/nhac.json (nhom = phong_cach, hoặc file); âm thanh: am-thanh/am-thanh.json (tên file). Mã không có thì dùng mặc định và ghi trong bảng tóm tắt (i). Video mới từ clip thường (không bấm Dựng tự động) vẫn trơn, không đọc file này.",
+ "ten": "Mặc định",
+ "mo_ta": "Lục bảo sang, chuyển cảnh mới nhẹ, vút nhẹ + tiếng tiền, nhạc sang trọng",
+ "bo_mau": {"ma": "luc_bao", "phu_de": "lb_cum_vien"},
+ "zoom": {"dong": "phong_sat"},
+ "hook": {"bat": true, "mau_chu": null, "toi_da_ky_tu": 22},
+ "the_gia": {"bat": true, "mau_chu": null, "giay": 3.0, "phu": "tu_khoa", "som": 0.1},
+ "nhan": {"bat": true, "loai": ["pin", "gb", "inch"], "mau_chu": null, "giay": 2.2, "toi_da": 4, "cach_nhau": 2.5,
+          "y": 700, "co": 92, "som": 0.1},
+ "phu_de": {"to_tu_khoa": true},
+ "chuyen": {"bat": true, "cho": "doi_clip", "ds": ["zoom_mo_vao", "lia_ngang", "hoa_tan_mo"]},
+ "nhac": {"bat": true, "nhom": "Sang trọng", "file": null, "am_luong": 0.8, "ha_khi_noi": true, "vao": 0.3, "ra": 1.5},
+ "am_thanh": {"bat": true, "chuyen": "vut-nhe.wav", "gia": "ket-tien.wav", "nhan": null, "am_luong": 0.6},
+ "ket": {"kieu": null, "chu": null},
+ "kieu_video": {}
+}

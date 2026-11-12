@@ -1,0 +1,17 @@
+{
+ "loai": "script",
+ "phien_ban": "1.0",
+ "thang": "2026-11",
+ "tac_gia": "Claude",
+ "nguon": "goc",
+ "ten": "Bỏ cảnh quá ngắn",
+ "mo_ta": "Xoá các cảnh ngắn hơn số giây chọn (mảnh vụn sau khi cắt, chớp nháy). Luôn giữ lại ít nhất 1 cảnh.",
+ "hoi": [
+  {
+   "ten": "duoi",
+   "nhan": "Xoá cảnh ngắn hơn (giây)",
+   "mac_dinh": "0.6",
+   "kieu": "so"
+  }
+ ]
+}

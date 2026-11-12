@@ -1,0 +1,96 @@
+{
+ "id": "luc_bao",
+ "ten": "Lục bảo sang",
+ "ho": "khoi",
+ "phien_ban": 1,
+ "anh": "luc_bao.jpg",
+ "mo_ta": "Khối lục bảo đổ dải viền trắng đặc, bong bóng thoại đuôi rõ, chữ đậm to, bóng gọn; căn giữa vùng an toàn.",
+ "bo_goc": 30,
+ "hook": {
+  "co": [
+   86,
+   74
+  ],
+  "dam": [
+   "ExtraBold",
+   "Black"
+  ],
+  "mau": [
+   "trang",
+   "vang"
+  ],
+  "vien": 5,
+  "duoi": {
+   "ben": "trai",
+   "vi_tri": 0.13,
+   "dai": 74,
+   "rong": 86
+  },
+  "pad": [
+   50,
+   32,
+   40
+  ],
+  "xuong_dong": 0.8,
+  "nho_nhat": 56
+ },
+ "nhan": {
+  "co": 104,
+  "vien": 6,
+  "vien_mau": "xanh_toi",
+  "noi": 9,
+  "noi_mau": "xanh",
+  "goc": -4
+ },
+ "gia": {
+  "co_gia": 124,
+  "mau_gia": "vang",
+  "vien": 3
+ },
+ "ten_may": {
+  "co": 88,
+  "vien": 3
+ },
+ "ket": {
+  "nut": "trang",
+  "duoi_comment": true
+ },
+ "phu_de": [
+  {
+   "id": "lb_cum_vien",
+   "ten": "Cụm nảy, viền mảnh",
+   "loai": "cum",
+   "kieu": "cum_vien",
+   "co": 84,
+   "vien": 5,
+   "vien_mau": "xanh_toi"
+  },
+  {
+   "id": "lb_cum_the",
+   "ten": "Cụm trên thẻ lục bảo",
+   "loai": "cum",
+   "kieu": "cum_the",
+   "co": 72,
+   "nen": "xanh"
+  },
+  {
+   "id": "lb_cau_to",
+   "ten": "Cả câu, từ đang đọc nền vàng",
+   "loai": "cau",
+   "kieu": "cau_o",
+   "co": 62,
+   "vien": 4
+  },
+  {
+   "id": "lb_tu_khoa",
+   "ten": "Từ khoá to 2 tầng",
+   "loai": "cum",
+   "kieu": "tu_khoa",
+   "co": [
+    54,
+    118
+   ]
+  }
+ ],
+ "thu_tu": 1
+}

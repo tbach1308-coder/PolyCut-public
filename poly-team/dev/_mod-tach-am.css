@@ -1,0 +1,47 @@
+/* ---- tách âm thanh (4/11, dev/_mod-tach-am.js): làn "Tiếng tách", khối có sóng âm, dấu cảnh đã tách, bảng bên phải ---- */
+.trk.tach{border-top:1px solid #1e1e1e}
+.bar.tach{height:21px;padding:0;display:block;background:#062b22;color:#e3f4ec;border-color:#0f4f3d;overflow:hidden;cursor:grab;touch-action:none}
+.bar.tach:hover{border-color:#1f7a5d}
+.bar.tach:active{cursor:grabbing}
+.bar.tach.sel{border-color:#FFD600;box-shadow:0 0 0 1px rgba(255,214,0,.3);z-index:3}
+.bar.tach.tat{background:#1a1f1d;border-color:#2c3632}
+.bar.tach .ta-song{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.bar.tach .ta-song path{fill:#2f8a6b;opacity:.9}
+.bar.tach.sel .ta-song path{fill:#3fa07e}
+.bar.tach .ta-cho{position:absolute;left:0;right:0;top:50%;height:1px;background:repeating-linear-gradient(90deg,#2f8a6b 0 4px,transparent 4px 8px);pointer-events:none}
+.bar.tach .ta-mo{position:absolute;top:0;bottom:0;pointer-events:none}
+.bar.tach .ta-mo.dau{left:0;background:linear-gradient(90deg,rgba(3,18,14,.9),transparent)}
+.bar.tach .ta-mo.cuoi{right:0;background:linear-gradient(270deg,rgba(3,18,14,.9),transparent)}
+.bar.tach .ta-nhan{position:sticky;left:0;display:inline-flex;align-items:center;gap:5px;max-width:100%;height:19px;padding:0 9px;font:600 10.5px/19px var(--f);text-shadow:0 1px 2px rgba(0,0,0,.85);pointer-events:none}
+.bar.tach .ta-nhan>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar.tach .ta-nhan .ic{width:12px;height:12px;flex:none;color:#FFD600}
+.bar.tach .h{position:absolute;top:0;bottom:0;width:7px;cursor:ew-resize;z-index:4}
+.bar.tach .h.l{left:0}.bar.tach .h.r{right:0}
+.bar.tach:hover .h{background:rgba(255,214,0,.25)}
+.bar.tach.sel .h{background:rgba(255,214,0,.9)}
+/* nút mờ vào / ra (kéo ngang), như CapCut: chấm tròn ở góc trên */
+.bar.tach .ta-fh{position:absolute;top:1px;width:9px;height:9px;margin:0 3px;border-radius:50%;background:#e9f6ef;border:1px solid #062b22;cursor:col-resize;z-index:5;opacity:0;transition:opacity .12s}
+.bar.tach:hover .ta-fh,.bar.tach.sel .ta-fh{opacity:1}
+.trk.tach .bar.tach .ta-fh:hover{background:#FFD600}
+#nmTach .ic{color:#FFD600}
+/* dấu trên khối cảnh đã tách */
+.blk .hu-a.tach{background:#074D3A;color:#FFD600;box-shadow:0 0 0 1px rgba(255,214,0,.45)}
+/* bảng bên phải: khối tiếng (theo bảng gọn dev/_mod-ben-phai.css: nhóm phẳng, hàng nhãn · thanh · ô số · ↺) */
+#pane .ta-dau .th{position:relative}
+#pane .ta-dau .ta-th{position:absolute;left:50%;bottom:3px;transform:translateX(-50%);display:grid;place-items:center;width:20px;height:16px;border-radius:4px;background:#074D3A;color:#FFD600;box-shadow:0 0 0 1px rgba(255,214,0,.4)}
+#pane .ta-dau .ta-th .ic{width:12px;height:12px}
+#pane .ta-dau .ta-lech{color:#FFD600}
+#pane .ta-dau .ta-khop{color:var(--brand-text)}
+#pane .ta-box .row.ta-nut{display:flex;gap:6px;flex-wrap:wrap}
+#pane .ta-box .row.ta-nut .btn.small{height:28px;padding:0 10px;gap:5px;font-size:12px}
+#pane .ta-cuoi > .row:first-child{gap:6px;flex-wrap:wrap}
+#pane .ta-cuoi .btn.small{height:28px;padding:0 10px;gap:5px;font-size:12px}
+#pane .tt-box > p.note.giu.ta-bao-do{padding:6px 9px;border-radius:7px;background:#2a2410;border:1px solid #5a4a12;color:#f3e3a6}
+/* tab Cảnh › Âm thanh của cảnh đã tách: 1 dòng báo lục bảo + nút, thanh âm lượng khoá */
+#pane .ta-bao{display:flex;gap:8px;align-items:flex-start;padding:7px 10px;border-radius:8px;background:#062b22;border:1px solid #0f4f3d;color:#d9efe5;font-size:12.5px;line-height:1.45}
+#pane .ta-bao > .ic{flex:none;width:15px;height:15px;margin-top:2px;color:#FFD600}
+#pane .ta-bao b{color:#fff;font-weight:650}
+#pane .tt-box > .row.ta-bao-n{display:flex;gap:6px;flex-wrap:wrap}
+#pane .ta-bao-n .btn.small{height:28px;padding:0 10px;gap:5px;font-size:12px}
+/* nút "Tách âm" thanh dưới: đang ở cảnh đã tách -> "Lấy lại tiếng" chữ vàng */
+#bTachAm.on{border-color:#5a4a12;color:#FFD600}

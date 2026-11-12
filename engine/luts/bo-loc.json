@@ -1,0 +1,18 @@
+{
+ "_ghi_chu": "Bộ lọc màu (LUT .cube) cho canh.loc của POLY Cut (dung_may_chu.loc_canh). 4 LUT Poly tự tạo 03/11/2026 bằng ffmpeg haldclutsrc + chuỗi filter ghi ở đầu mỗi file. Giấy phép CC0 1.0 (xem /home/claude/tai-nguyen/GIAY-PHEP.md). Thêm LUT: chép .cube (tên chữ thường a-z 0-9 _) vào đây + thêm 1 dòng ds.",
+ "giay_phep": "CC0 1.0",
+ "ds": [
+  {"v": "poly_san_pham", "ten": "Sản phẩm", "mo_ta": "Tăng nhẹ tương phản và độ tươi, máy nổi khối hơn"},
+  {"v": "poly_trang_sach", "ten": "Trắng sạch", "mo_ta": "Sáng hơn, hơi mát: nền trắng sạch, hợp máy màu bạc / trắng"},
+  {"v": "poly_am_ap", "ten": "Ấm áp", "mo_ta": "Hơi ấm, dịu mắt: hợp clip nói chuyện, mở hộp"},
+  {"v": "poly_luc_bao", "ten": "Lục bảo Poly", "mo_ta": "Tối ngả xanh lục bảo, sáng hơi vàng: rất nhẹ, hợp màu kênh"},
+  {"v": "poly_trong_treo", "ten": "Trong trẻo", "mo_ta": "Đen sâu hơn chút, sáng trong hơn: nhìn rõ, sạch, không đổi màu máy"},
+  {"v": "poly_tuoi_nhe", "ten": "Tươi nhẹ", "mo_ta": "Màu tươi hơn chút (màu nhạt tăng nhiều, màu đậm gần như giữ): mở hộp, phụ kiện"},
+  {"v": "poly_dien_anh", "ten": "Điện ảnh nhẹ", "mo_ta": "Tối hơi xanh, sáng hơi ấm, đen hơi mờ: kể chuyện, giới thiệu tiệm"},
+  {"v": "poly_sang_trong", "ten": "Sang trọng", "mo_ta": "Đen sâu, màu dịu, sáng hơi ánh vàng: máy cao cấp, hộp máy, viền kim loại"},
+  {"v": "poly_ca_phe", "ten": "Ấm cà phê", "mo_ta": "Ấm nâu nhẹ, đen hơi mờ: góc tiệm, bàn gỗ, cảnh tư vấn"},
+  {"v": "poly_lanh_cong_nghe", "ten": "Lạnh công nghệ", "mo_ta": "Hơi xanh lạnh, tương phản rõ: máy bạc / đen, laptop"},
+  {"v": "poly_den_trang", "ten": "Đen trắng sang", "mo_ta": "Đen trắng tương phản đẹp: so sánh trước / sau (không dùng khi khoe màu máy)"}
+ ],
+ "_ghi_chu_r20": "4/11 tối (r20, anh: thư viện còn ít): thêm 7 LUT tự tạo bằng poly-team/dev/tao_lut.py (haldclutsrc 16 bit + chuỗi filter ffmpeg ghi ở đầu file), CC0 1.0. Đo lệch màu máy (xám, bạc, vàng, xanh, tím, hồng…) bằng tao_lut.xem_lech: ngang hoặc nhẹ hơn 4 LUT cũ (trừ Đen trắng, cố ý bỏ màu)."
+}

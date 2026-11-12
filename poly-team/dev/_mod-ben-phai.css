@@ -1,0 +1,152 @@
+/* ---- BẢNG PHẢI GỌN (4/11 tối, anh: "khung này chưa tối ưu, nghiên cứu lại ui ux") ---- dev/_mod-ben-phai.js
+   Tab Cảnh xếp như cột thuộc tính CapCut: không hộp lồng hộp (nhóm phẳng, kẻ mảnh giữa các nhóm), tiêu đề nhóm chữ thường có dấu,
+   mỗi thuộc tính 1 hàng: nhãn · thanh · ô số · nút về mặc định. Chữ: 14 (tên cảnh) / 13 (tiêu đề nhóm) / 12.5 (nhãn) / 12 (phụ).
+   File này chèn TRƯỚC dev/_lam-dep.css -> mọi luật viết kèm #pane để thắng luật cũ cùng chỗ. Màu: lục bảo #074D3A / --brand, vàng #FFD600. */
+
+/* ===== 0. chữ có dấu không bị cắt (cả trang Sửa tay) =====
+   Nguyên nhân "ÂM LƯỢNG TIENG CLIP": overflow:hidden (để cắt "…") cắt luôn chiều dọc; dòng thấp (line-height 1.1–1.2) + IN HOA
+   -> dấu chồng trên chữ hoa (Ế Ấ Ầ Ồ Ổ…) cao hơn hộp 1–3px nên mất. Sửa: chỉ cắt chiều ngang (overflow-x:clip, "…" vẫn có),
+   khối nhiều dòng (line-clamp, buộc phải hidden) thì chừa đệm trên. Bài dev/thu-sua-tay/thu_ben_phai.py dò mọi chữ bị cắt dấu.
+   Cách 1 (hàng đơn trong flex / lưới, có min-width:0): overflow-x:clip.  Cách 2 (ô mẫu chữ Thư viện: co theo lưới nhờ hidden): giữ hidden,
+   chừa đệm trên / dưới bằng padding + margin âm (khung không xê dịch). */
+#pane .tt-box > .row .sec,#pane .tt-tabs button span{overflow:visible;overflow-x:clip;min-width:0}
+.mv-in b,.mv-in small:not(.m-gia small),.kc-in .kc-o b,.kc-in .kc-o small{padding-block:.3em;margin-block:-.3em}
+.kc-in .kc-o small{margin-top:calc(1px - .3em)}
+
+/* ===== 1. khung tab Cảnh: khoảng cách do từng phần tự lo (không gap lưới 14px) ===== */
+#pane:has(> .tt-dau){gap:0;padding:10px 14px 18px;align-content:start}
+
+/* đầu cảnh: ảnh nhỏ · "Cảnh 2 / 7  2,3s" · việc cảnh / tên clip 1 dòng · ‹ › (ẩn khi chỉ 1 cảnh) */
+#pane .tt-dau{grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;padding:0 0 10px}
+#pane .tt-dau .th{width:30px;height:53px;border-radius:5px}
+#pane .tt-ten{min-width:0}
+#pane .tt-ten b{display:flex;align-items:center;gap:6px;font:700 14px/1.45 var(--f);white-space:nowrap}
+#pane .tt-ten b .count{font:500 12.5px/1 var(--f);color:var(--dim)}
+#pane .tt-dai{padding:0 7px;border-radius:999px;background:#232323;color:var(--ink);font:600 11.5px/19px var(--f);font-variant-numeric:tabular-nums}
+#pane .tt-ten small{font-size:12px;line-height:1.45;color:var(--muted);white-space:nowrap;overflow:visible;overflow-x:clip;text-overflow:ellipsis;cursor:default}
+#pane .tt-nav{gap:4px}
+#pane .tt-nav .btn.small.icon{width:28px;height:28px}
+
+/* thẻ con Hình | Âm thanh | Màu | Chuyển cảnh: 1 dải, thẻ đang chọn nền lục bảo */
+#pane .tt-tabs{margin:0 0 2px;padding:3px;gap:2px;border:0;border-radius:9px;background:#191919}
+#pane .tt-tabs button{padding:6px 6px;border-radius:7px;font:600 12.5px/1.45 var(--f);gap:6px}
+#pane .tt-tabs button:hover{background:#222}
+#pane .tt-tabs button.on{background:#074D3A;color:#fff;box-shadow:inset 0 0 0 1px #0f7a5a}
+#pane .tt-tabs button.on .ic{color:#FFD600}
+
+/* ===== 2. nhóm phẳng (trước: hộp viền trong bảng) ===== */
+#pane .tt-box{border:0;border-top:1px solid #262626;border-radius:0;background:none;padding:12px 0 14px;gap:10px}
+#pane .tt-tabs + .tt-box,#pane .tt-tabs + .dy-goi + .tt-box{border-top:0;padding-top:10px}
+#pane .tt-box > .row:first-child{min-height:28px;gap:6px;flex-wrap:nowrap}
+#pane .tt-box > .row:first-child > h2.sec,#pane .tt-box > h2.sec{font:650 13px/1.45 var(--f);letter-spacing:0;text-transform:none;color:var(--ink);white-space:nowrap;text-overflow:ellipsis}
+#pane .tt-box > .row:first-child > .note{display:none}   /* "theo kiểu chung: …", "không có": ô chip / ô ảnh đang chọn đã cho thấy */
+#pane .row.co-i > h2.sec.grow{flex:0 1 auto}
+#pane .row.co-i > .tt-i{margin-right:auto}
+#pane .tt-box > .row .btn.small{height:28px;padding-top:0;padding-bottom:0}
+#pane .tt-box > p.note.giu{font-size:12px;line-height:1.5;color:var(--muted);margin-top:-2px}
+#pane .tt-box > p.note.giu b{color:var(--ink);font-weight:600}
+
+/* dấu (i): ghi chú dài vào ô gợi ý */
+#pane .tt-i{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;padding:0;margin-left:-2px;border:0;border-radius:50%;background:none;color:var(--dim);cursor:help}
+#pane .tt-i:hover,#pane .tt-i:focus-visible{color:var(--ink);background:#262626}
+#pane .tt-i .ic{width:15px;height:15px}
+
+/* (i) ở các tab khác: trong tiêu đề nhóm IN HOA, đầu hàng nút Phụ đề; ghi chú đứng riêng (Kiểu) còn 1 dòng */
+#pane h2.sec > .tt-i{width:20px;height:20px;margin:-4px 0 -4px 4px;vertical-align:middle;text-transform:none;letter-spacing:0}
+#pane > .row > .tt-i:first-child{margin-left:-4px}
+#pane > p.note[data-bp="1dong"]{display:flex;align-items:center;gap:6px;min-width:0;cursor:help;color:var(--dim);font-size:12px}
+#pane > p.note[data-bp="1dong"] .ic{flex:none;width:14px;height:14px}
+#pane > p.note[data-bp="1dong"] span{min-width:0;white-space:nowrap;overflow:visible;overflow-x:clip;text-overflow:ellipsis;line-height:1.5}
+#pane > p.note[data-bp="1dong"]:focus-visible{outline:2px solid var(--brand-hover);outline-offset:2px;border-radius:4px}
+#pane p.note[data-bp="trong"] .tt-i{width:20px;height:20px;vertical-align:middle;margin:-3px 0 -3px 2px}
+
+/* ===== 3. hàng thuộc tính: nhãn · thanh · ô số · ↺ ===== */
+#pane .tt-h{grid-template-columns:84px minmax(0,1fr) 64px 24px;gap:8px;min-height:30px}
+#pane .tt-h label{font:500 12.5px/1.45 var(--f);color:var(--ink);white-space:nowrap;overflow:visible;overflow-x:clip;text-overflow:ellipsis}
+#pane .tt-h.tat label{color:var(--dim)}
+#pane .tt-so{box-sizing:border-box;width:100%;min-width:0;height:26px;margin:0;padding:0 4px;border:1px solid #333;border-radius:6px;background:#141414;
+  color:var(--ink);font:600 12px/1 var(--f);font-variant-numeric:tabular-nums;text-align:center;cursor:text;transition:border-color .12s}
+#pane .tt-so:hover{border-color:#4a4a4a}
+#pane .tt-so:focus{outline:none;border-color:var(--brand-hover);box-shadow:0 0 0 2px rgba(15,122,90,.35);background:#101010}
+#pane .tt-so:disabled{color:var(--dim);background:transparent;border-color:#262626;cursor:not-allowed}
+#pane .tt-h.qua .tt-so{color:#FFD600;border-color:#6b5a12}
+#pane .tt-h .btn.small.icon.tt-lai{width:24px;height:24px}
+#pane .tt-h .tt-lai[disabled]{opacity:.22}
+/* nút Tắt tiếng giữ chữ cả khi bảng hẹp (đầu nhóm chỉ có 1 nút, đủ chỗ) */
+#pane .tt-box.tt-am > .row .btn.small[data-tt-a="tat-tieng"]{width:auto;min-width:0;padding:0 10px;font-size:12px;gap:6px}
+
+/* chip (chuyển động, hiệu ứng hình, chuyển cảnh): sát hơn */
+#pane .tt-box .tv-chips{gap:6px}
+#pane .tt-box > .row:not(:first-child){gap:8px}
+
+/* gợi ý "Hình tự zoom / lia?" (dev/_mod-dung-yen.js): 1 dòng, câu đầy đủ khi rê chuột */
+#pane .dy-goi.canh{margin:8px 0 2px;padding:5px 5px 5px 10px;flex-wrap:nowrap;gap:8px}
+#pane .dy-goi.canh .dy-t{flex:1 1 auto;min-width:0;align-items:center;cursor:help}
+#pane .dy-goi.canh .dy-t .ic{margin-top:0}
+#pane .dy-goi.canh .dy-t > span{min-width:0;white-space:nowrap;overflow:visible;overflow-x:clip;text-overflow:ellipsis;line-height:1.5}
+#pane .dy-goi.canh .btn{height:28px;padding-top:0;padding-bottom:0}
+
+/* Chuyển cảnh ở cảnh 1: 1 dòng + nút sang cảnh 2 (trước: hộp viền đứt 3 dòng) */
+#pane .tt-trong{display:flex;align-items:center;gap:10px;padding:12px 0 14px;color:var(--muted);font-size:12.5px;line-height:1.45}
+#pane .tt-trong > .ic{flex:none;width:18px;height:18px;color:var(--dim)}
+#pane .tt-trong b{color:var(--ink);font-weight:600}
+#pane .tt-trong .btn{flex:none;margin-left:auto;gap:4px}
+
+/* video dựng bằng Premiere: 1 dòng mờ, câu đầy đủ khi rê chuột */
+#pane .tt-pr{display:flex;align-items:center;gap:6px;margin:0;padding:10px 0;border-top:1px solid #262626;font-size:12px;line-height:1.45;color:var(--dim);cursor:help}
+#pane .tt-pr .ic{flex:none;width:14px;height:14px}
+#pane .tt-pr span{min-width:0;white-space:nowrap;overflow:visible;overflow-x:clip;text-overflow:ellipsis}
+#pane .tt-pr:focus-visible{outline:2px solid var(--brand-hover);outline-offset:2px;border-radius:4px}
+
+/* ===== 4. danh sách cảnh: dòng gọn, không thẻ trong hộp ===== */
+#pane .ds-canh{border:0;border-top:1px solid #262626;border-radius:0;background:none}
+#pane .ds-canh > summary{padding:8px 0;font:650 13px/1.45 var(--f);letter-spacing:0;text-transform:none;color:var(--ink);gap:8px}
+#pane .ds-canh > summary::before{color:var(--muted);margin:0 2px 0 3px}
+#pane .ds-canh > summary .ds-t{flex:1;min-width:0;display:flex;align-items:center;gap:8px;white-space:nowrap}
+#pane .ds-canh > summary .count{font:500 12px/1 var(--f);color:var(--dim)}
+#pane .ds-canh > summary:hover .ds-t{color:#fff}
+#pane .ds-them{height:28px;padding:0 10px;gap:5px;color:var(--ink)}
+#pane .ds-them .ic{width:14px;height:14px}
+#pane .ds-1{display:flex;align-items:center;padding-top:10px;border-top:1px solid #262626}
+#pane .ds-1 .ds-them{margin-left:-6px}
+#pane .ds-canh .ds-in{gap:2px;padding:0 0 6px}
+#pane .ds-canh .sc{grid-template-columns:24px minmax(0,1fr) auto auto;gap:10px;padding:4px 4px 4px 6px;border:0;border-radius:7px;background:none;box-shadow:none}
+#pane .ds-canh .sc:hover{background:#1b1b1b}
+#pane .ds-canh .sc.sel{background:rgba(7,77,58,.5);box-shadow:inset 3px 0 0 #0f7a5a}
+#pane .ds-canh .sc .th{width:24px;height:42px;border-radius:4px}
+#pane .sc-t{display:flex;align-items:baseline;gap:8px;min-width:0}
+#pane .sc-t b{font:650 13px/1.45 var(--f);white-space:nowrap}
+#pane .sc-t small{display:block;min-width:0;font-size:12px;line-height:1.45;color:var(--muted);white-space:nowrap;overflow:visible;overflow-x:clip;text-overflow:ellipsis}
+#pane .sc-dai{font:500 12px/1 var(--f);color:var(--muted);font-variant-numeric:tabular-nums}
+#pane .ds-canh .acts{display:flex;gap:0}
+#pane .ds-canh .acts .btn.small.icon{width:26px;height:26px;color:var(--muted)}
+#pane .ds-canh .acts .btn.small.icon:not([disabled]):hover{color:#fff}
+#pane .ds-canh .acts .btn[disabled]{opacity:.2}
+#pane .ds-canh .acts .ic{width:14px;height:14px}
+
+/* ===== 5. bảng hẹp (khung phải co theo bề ngang thật, mốc giống dev/_lam-dep.css) ===== */
+@container ben (max-width:470px){
+  #pane .tt-tabs button{padding:6px 4px}
+}
+@container ben (max-width:410px){
+  #pane:has(> .tt-dau){padding-left:12px;padding-right:12px}
+  #pane .tt-h{grid-template-columns:80px minmax(0,1fr) 56px 22px;gap:6px}
+  #pane .tt-h .btn.small.icon.tt-lai{width:22px;height:22px}
+  #pane .tt-box > .row .btn.small:not(.primary){width:28px;min-width:28px;height:28px}
+  #pane .tt-dau{grid-template-columns:28px minmax(0,1fr) auto}
+  #pane .tt-dau .th{width:28px;height:50px}
+}
+@container ben (max-width:385px){
+  #pane .tt-so{font-size:11.5px;padding:0 2px}
+  #pane .ds-them span{display:none}
+  #pane .ds-them{width:28px;padding:0;justify-content:center}
+  #pane .ds-1 .ds-them span{display:inline}
+  #pane .ds-1 .ds-them{width:auto;padding:0 10px}
+}
+@container ben (max-width:350px){
+  #pane:has(> .tt-dau){padding-left:10px;padding-right:10px}
+  #pane .tt-h{grid-template-columns:74px minmax(0,1fr) 52px 22px;gap:5px}
+  #pane .tt-h label{font-size:12px}
+  #pane .tt-tabs button{font-size:12px;padding:6px 2px}
+  #pane .tt-box{padding-left:0;padding-right:0}
+}

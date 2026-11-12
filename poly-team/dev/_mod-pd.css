@@ -1,0 +1,13 @@
+/* ô "+ Phụ đề tự động" trên làn Phụ đề trống (4/11) */
+.bar.pd.trong{width:150px;display:flex;align-items:center;gap:5px;padding:0 6px;background:transparent;border:1px dashed #3a3a3a;color:var(--dim);cursor:pointer}
+.bar.pd.trong .ic{width:12px;height:12px;flex:none}
+.bar.pd.trong:hover{color:var(--ink);border-color:#2f7d63}
+.bar.pd.trong.dang{border-style:solid;border-color:#2f7d63;color:var(--brand-text);cursor:progress}
+/* Claude soát phụ đề (4/11) */
+.row.soat-pd{gap:10px;align-items:center;margin-top:6px}
+.row.soat-pd .btn .ic{width:14px;height:14px}
+.sptt{display:flex;gap:10px;align-items:center;padding:9px 12px;border-radius:10px;background:var(--brand-soft);border:1px solid #24574a;font-size:13px;font-weight:600;color:var(--brand-text);margin-top:6px}
+.sptt .dot{width:8px;height:8px;border-radius:50%;background:var(--brand-text);animation:nhap 1.2s ease-in-out infinite}
+.sptt .sp{flex:1}
+.sptt .tg{font:500 12px var(--mono)}
+.why.soat{color:var(--brand-text)}

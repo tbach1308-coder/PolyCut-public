@@ -1,0 +1,85 @@
+/* ---- SỬA LỖI r29 (10/11, theo báo cáo soi sb33): dev/_mod-sua-r29.js ---- */
+
+/* (L1) TIMELINE CUỘN DỌC: cuộn dọc chuyển từ .tlbody vào #tls (cả 2 chiều) -> thước thời gian ghim trên (sticky) không trôi mất,
+   thanh cuộn dọc mỏng thấy được; tên làn (.tnames) đi theo bằng translateY (JS). */
+.tlbody{overflow:hidden;position:relative}
+.tlbody::before{content:"";position:absolute;left:0;top:0;width:58px;height:22px;background:#141414;z-index:3;pointer-events:none}   /* che tên làn trôi lên hàng thước */
+#tl.tl-gon .tlbody::before{height:18px}
+#tls{min-height:0;align-self:stretch;padding-bottom:24px;overflow:auto;scrollbar-width:thin;scrollbar-color:#4a4a4a #141414;overscroll-behavior:contain}
+#tls::-webkit-scrollbar{width:8px;height:8px}
+#tls::-webkit-scrollbar-thumb{background:#4a4a4a;border-radius:4px}
+#tls::-webkit-scrollbar-track{background:#141414}
+#tlin .ruler{position:sticky;top:0;left:auto;right:auto;z-index:5;background:#141414;box-shadow:0 1px 0 #262626}
+.tnames{will-change:transform}
+/* chỗ trống quét chọn dưới làn cuối (anh: "dưới này cho quét chọn", r24): giữ 24px (trước 30px). Màn 1366 + đủ 7 làn thì dải trống này nằm
+   dưới mép, cuộn 24px mới thấy (thước ghim trên nên không mất gì); nút "↓ còn N làn" chỉ hiện khi có LÀN khuất, không hiện vì dải trống */
+/* dấu còn làn khuất: nút nhỏ góc phải dưới / trên của timeline, bấm = cuộn tới */
+.r29-lan{position:absolute;right:22px;z-index:12;display:inline-flex;align-items:center;gap:5px;padding:2px 9px 2px 7px;border-radius:999px;border:1px solid #3d8f74;
+  background:#074D3A;color:#fff;font:600 11px/16px var(--f);cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.5);white-space:nowrap;max-width:60%;overflow:hidden;text-overflow:ellipsis}
+.r29-lan[hidden]{display:none}
+.r29-lan.duoi{bottom:16px}
+.r29-lan.tren{top:66px}
+.r29-lan:hover{background:#0a5a44;border-color:#FFD600}
+.r29-lan b{color:#FFD600;font-weight:700}
+
+/* (L5) THÔNG BÁO NỔI: nằm đáy khung xem (trên thanh ▶), không đè hàng "Xem trước / Khung / cảnh báo / ✕ mẫu". JS đặt left / top theo #stage. */
+.toast.r29-stage{top:auto;bottom:auto;left:0;transform:none;max-width:none;box-shadow:0 8px 24px rgba(0,0,0,.55);font-size:12.5px;line-height:1.4;padding:8px 14px;
+  white-space:normal;text-align:center;width:max-content}
+
+/* (L4) băng rôn bên bị đè (cửa sổ khác đã giữ bản của họ) */
+.banner.r29-bide{background:#3a2d0b;border-color:#8a6d1c;color:#ffe9a6}
+.banner.r29-bide .btn{margin-left:4px}
+
+/* (N1) mất dấu: chữ hoa có dấu chồng (Â Ấ Ế) cao hơn hộp -> chỉ cắt chiều ngang (như dev/_mod-ben-phai.css) */
+.lib-tabs .tvt span{overflow:visible;overflow-x:clip;line-height:1.3;padding-top:1px}
+.kc-o b,.kc-o small{overflow:visible;overflow-x:clip;line-height:1.15;padding-top:1px}
+.kc-o{line-height:1.15}
+
+/* (N2) thanh tab Thư viện 8 tab ở bề ngang 260–340px (chỉ tab đang chọn hiện tên, dev/_mod-nhac.css): tên tab đang chọn co lại có "…"
+   thay vì đẩy cả hàng tràn 7px; số đếm trên tab đang chọn ẩn khi hẹp hơn 340px */
+@container thuvien (max-width:339px){
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt.on{flex:0 1 auto;min-width:0}
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt.on span{min-width:0;max-width:100%;overflow:visible;overflow-x:clip;text-overflow:ellipsis;padding-top:1px}
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt.on .tv-dem{display:none}
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt:not(.on){flex:0 0 auto}
+}
+@container thuvien (max-width:299px){   /* hẹp nhất (260–270px): nút tab vẫn ≥ 22px (tên tab đang chọn co lại thay vì nút nhỏ đi) */
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt:not(.on):not(.tv-mo){min-width:22px}
+}
+
+/* (N3) bảng phím tắt vừa màn 1366×768: hàng sát hơn, 3 cột khi màn thấp; hộp Xuất video bớt lề để thêm dòng Soát nhanh (N9) vẫn vừa 768 */
+@media (max-height:820px){
+  .mbox{padding:12px 18px 12px;gap:9px}
+  .mbox h3{font-size:16px}
+  .mbox.r25-pt{width:min(1080px,100%);padding-top:12px;padding-bottom:10px;gap:6px}
+  .pt-ds{columns:3 300px;column-gap:22px}
+  .pt-h{min-height:21px;padding:0;font-size:12px}
+  .pt-nhom{margin:0 0 6px}
+  .pt-nhom h4{padding-bottom:2px;margin-bottom:0}
+  .pt-cuoi{font-size:11.5px;line-height:1.35}
+}
+
+/* (N4) tương phản: chữ phụ xám trên chip cảnh đang chọn (nền lục bảo 50%) 3,5:1 -> ≥ 4,5:1; chữ phụ 11,5px trên nút đang chọn (khuyên dùng, menu video) sáng hơn */
+#pane .ds-canh .sc.sel small,#pane .ds-canh .sc.sel .sc-dai{color:#c4c4c4}
+.seg3 button.on small,#vdMenu .vd-it.on small{color:#b8b8b8}
+
+/* (N5) hàng gợi ý "Hình tự zoom / lia?" + dòng đầu tab Kiểu: cho xuống dòng thay vì cắt "…" */
+#pane .dy-goi.canh .dy-t > span,#pane .dy-goi .dy-t > span{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.4}
+#pane > p.note[data-bp="1dong"] span{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.45}
+
+/* (N7) phụ đề / chữ trên timeline khi thanh quá hẹp: không "t…", cắt thẳng; có chỗ trống bên phải thì chữ tràn ra cho đọc được */
+#tls .trk > .bar.r29-ngan{padding:0 2px;text-overflow:clip}
+#tls .trk > .bar.r29-tran{overflow:visible;overflow-y:clip;text-overflow:clip;padding-right:0}
+#tls .trk > .bar.r29-tran:not(:hover):not(.sel){text-shadow:0 0 3px #000,0 0 3px #000}
+
+/* (N10) khối Tiếng tách ở Làn gọn: 13 -> 18px cho dễ bấm, nút mờ vào / ra to hơn */
+#tl.tl-gon .bar.tach .ta-nhan{height:16px;line-height:16px;font-size:10px}
+#tl.tl-gon .bar.tach .ta-fh{width:9px;height:9px;top:1px}
+#tl.tl-gon .bar.tach .h{width:7px}
+
+/* (L6) hộp "Đã chọn N mục": khối tĩnh đầu bảng, đẩy nội dung xuống, không phủ */
+#qBen{position:static;box-shadow:none;margin-bottom:10px}
+
+/* (quét) khung quét vẽ rõ hơn + nhãn tách loại */
+.q-khung{border:2px solid rgba(255,214,0,.85);background:rgba(255,214,0,.10);box-shadow:0 0 0 1px rgba(0,0,0,.5),inset 0 0 0 1px rgba(0,0,0,.25)}
+.q-khung span{background:#074D3A;border:1px solid #FFD600;color:#fff;font-size:11px;line-height:17px;padding:0 7px;border-radius:5px}

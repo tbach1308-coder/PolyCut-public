@@ -1,0 +1,30 @@
+/* ---- Kiểu chữ có sẵn + font riêng từng chữ (4/11, dev/_mod-kieu-chu.js). @font-face 'PK-<id>' do JS chèn (#kcFonts) từ bảng của bộ dựng ---- */
+.kc-luoi{--o:104px}
+.kc-luoi.nho{--o:92px;gap:8px 7px}
+.kc-m .xv.kc-xv{aspect-ratio:16/10;background:#1a1f1d center/cover no-repeat}
+.kc-m .xv.kc-xv::before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.48)}
+.kc-m .xv.kc-xv{container-type:inline-size}
+.kc-in{position:absolute;inset:0;display:grid;place-items:center;padding:4px 3px;z-index:1;overflow:hidden;font-size:clamp(9px,13.5cqi,17px)}
+.kc-o{display:inline-flex;flex-direction:column;align-items:center;max-width:100%;line-height:1.05;white-space:nowrap;text-align:center}
+.kc-o b,.kc-o small{display:block;max-width:100%;overflow:hidden;text-overflow:clip;letter-spacing:0;font-style:normal}
+.kc-o small{margin-top:1px}
+.kc-o.kc-mem{filter:drop-shadow(1px 2px 2px rgba(0,0,0,.5))}
+.kc-o.kc-noi{filter:drop-shadow(0 3px 4px rgba(3,35,26,.8))}
+.kc-m .tv-tag{left:4px;top:4px;padding:0 4px;font-size:9.5px;line-height:14px;background:rgba(7,77,58,.92);color:#d9f2e8}
+.kc-fonts,.kc-dich-ds{display:flex;flex-wrap:wrap;gap:6px}
+.kc-fonts .tvchip.kc-f{font-size:13.5px;line-height:1.2;color:var(--ink)}
+.kc-fonts .tvchip.kc-f.on{color:var(--brand-text)}
+.kc-fonts .tvchip.thieu{opacity:.45}
+.kc-dich-ds .tvchip,.kc-fonts .tvchip{max-width:100%;white-space:normal;overflow-wrap:anywhere;min-width:0}
+.kc-dich-ds .tvchip.co::after{content:"";width:6px;height:6px;border-radius:50%;background:#FFD600;flex:none;margin-left:2px}
+#kcTv{display:grid;gap:10px}
+.kc-ben{display:grid;gap:9px}
+.kc-ben .row{gap:8px}
+.kc-ben .lbl{margin:2px 0 -3px}
+.kc-hang{display:flex;align-items:center;flex-wrap:wrap}
+.kc-hang .sp{flex:1}
+.kc-co{min-width:42px;text-align:center;font:700 12.5px var(--mono);color:var(--ink)}
+.kc-ben .sec{white-space:nowrap}
+.kc-hang .note{min-width:0}
+@container ben (max-width:410px){.kc-luoi.nho{--o:84px}.kc-ben{padding-left:12px;padding-right:12px}}
+@container ben (max-width:350px){.kc-luoi.nho{--o:78px;gap:7px 6px}.kc-fonts .tvchip.kc-f{font-size:12.5px;padding:4px 8px}}

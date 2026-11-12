@@ -1,0 +1,22 @@
+/* ---- VIDEO TRỐNG (0 cảnh, 4/11 18:14, anh: "có thể xóa hết video không cần chừa lại") ---- dev/_mod-trong.js */
+/* làn Cảnh trống: ô gợi ý kéo / bấm clip (rộng bằng phần timeline đang thấy) */
+.tr-goi{position:absolute;z-index:4;left:0;top:30px;height:66px;display:flex;align-items:center;justify-content:center;gap:10px;padding:0 14px;
+  border:1.5px dashed #3d3d3d;border-radius:9px;background:rgba(255,255,255,.02);color:var(--muted);font:600 13px var(--f);cursor:pointer;white-space:nowrap;overflow:hidden}
+.tr-goi .ic{width:18px;height:18px;flex:none}
+.tr-goi b{color:var(--ink);font-weight:700}
+.tr-goi span{overflow:hidden;text-overflow:ellipsis}
+.tr-goi:hover,.tr-goi:focus-visible{border-color:#2f7d63;color:var(--ink);background:rgba(20,144,107,.08)}
+body.tv-dang-keo .tr-goi{border-color:var(--gold);background:rgba(255,185,0,.08)}
+/* khung xem trống */
+.tr-xem{position:absolute;inset:0;z-index:6;display:grid;place-content:center;justify-items:center;gap:8px;padding:24px;text-align:center;
+  background:#0c0c0c;color:var(--muted);font-size:12.5px;line-height:1.45}
+.tr-xem .ic{width:34px;height:34px;color:#4d4d4d;margin-bottom:4px}
+.tr-xem b{color:var(--ink);font-size:15px}
+.tr-xem span{max-width:240px}
+/* nút xuất khi video trống: mờ (bấm vẫn báo vì sao) */
+.btn.tr-mo{opacity:.45}
+.btn.tr-mo:hover{opacity:.6}
+/* tab Cảnh: "Chưa có cảnh" */
+.tr-ben{display:grid;gap:8px;justify-items:start}
+.tr-ben span{color:var(--muted);font-size:12.5px;line-height:1.45}
+.tr-ben .btn .ic{width:14px;height:14px}

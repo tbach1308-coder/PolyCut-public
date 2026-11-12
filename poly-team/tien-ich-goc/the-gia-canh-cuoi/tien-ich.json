@@ -1,0 +1,23 @@
+{
+ "loai": "script",
+ "phien_ban": "1.1",
+ "thang": "2026-11",
+ "tac_gia": "Claude",
+ "nguon": "goc",
+ "ten": "Thẻ giá ở cảnh cuối",
+ "mo_ta": "Đặt thẻ giá 0,5 giây sau khi vào cảnh cuối mà thẻ kết chưa che (cảnh cuối nằm dưới thẻ kết thì đặt ở cảnh trước), hiện tối đa 3 giây. Đã có thẻ giá thì thay.",
+ "hoi": [
+  {
+   "ten": "gia",
+   "nhan": "Giá (vd 13tr9)",
+   "mac_dinh": "",
+   "kieu": "chu"
+  },
+  {
+   "ten": "phu",
+   "nhan": "Dòng phụ (vd Pin 98% · BH 6 tháng)",
+   "mac_dinh": "",
+   "kieu": "chu"
+  }
+ ]
+}

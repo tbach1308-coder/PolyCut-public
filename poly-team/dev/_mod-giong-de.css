@@ -1,0 +1,60 @@
+/* ---- giọng AI đọc lại khối tách (r32, dev/_mod-giong-de.js): thanh câu ở làn Giọng, dấu mic trên khối tách, hộp chọn giọng + danh sách câu,
+   nhóm "Giọng AI đọc lại" ở bảng phải. Màu: lục bảo #074D3A + vàng #FFD600 qua biến (đổi theme 1 chỗ), không neon. ---- */
+:root{--gde-luc:#074D3A;--gde-luc-nen:#062b22;--gde-luc-vien:#0f5a44;--gde-vang:#FFD600;--gde-chu:#e3f4ec;--gde-do:#ff8a7a}
+/* làn Giọng: mỗi câu 1 thanh */
+.bar.giong.gde{background:var(--gde-luc);border-color:var(--gde-luc-vien);color:var(--gde-chu);z-index:2;padding:0 6px;cursor:pointer;font-size:10.5px}
+.bar.giong.gde:hover{border-color:var(--gde-vang)}
+.bar.giong.gde,.bar.giong.gde span{overflow:visible;overflow-x:clip}   /* không cắt dấu tiếng Việt theo chiều dọc */
+.bar.giong.gde span{font-weight:600}
+.bar.giong.gde.tran{box-shadow:inset 0 -2px 0 var(--gde-do),inset -3px 0 0 var(--gde-do)}
+.bar.giong.gde.tren{opacity:.95}
+/* khối tách đã được đọc lại: dấu mic vàng góc phải, sóng tiếng gốc mờ (tiếng gốc tắt / còn nền) */
+.bar.tach.gde-co .ta-song{opacity:.38}
+.bar.tach .gde-dau{position:absolute;right:9px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:16px;height:14px;border-radius:4px;background:var(--gde-luc);color:var(--gde-vang);box-shadow:0 0 0 1px rgba(255,214,0,.45);pointer-events:none;z-index:3}
+.bar.tach .gde-dau .ic{width:10px;height:10px}
+#tl.tl-gon .bar.tach .gde-dau{width:13px;height:11px}
+/* hộp Đọc lại bằng giọng AI */
+.mbox.gde-hop{width:min(640px,100%)}
+#gdHop{display:grid;gap:12px;min-width:0}
+#gdHop h3{margin:0}
+#gdHop .gde-tom{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+#gdHop .gde-canh{padding:6px 9px;border-radius:7px;background:#2a2410;border:1px solid #5a4a12;color:#f3e3a6;display:flex;gap:6px;align-items:center}
+#gdHop .gde-cai{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center}
+#gdHop .gde-g{display:flex;gap:8px;min-width:0}
+#gdHop .gde-g select{flex:1;min-width:0}
+#gdHop .gde-g .btn{flex:none;gap:5px}
+#gdHop .gde-g .btn .ic{width:12px;height:12px}
+#gdHop .gde-toc{justify-self:start}
+#gdHop .gde-chk{display:flex;align-items:center;gap:6px 14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink)}
+#gdHop .gde-chk label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+#gdHop .gde-chk label + .tv-i{margin-left:-8px}
+#gdHop .gde-ds{display:grid;gap:4px;max-height:min(42vh,330px);overflow:auto;padding:6px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2)}
+#gdHop .gde-c{display:grid;grid-template-columns:18px 56px minmax(0,1fr) 28px 82px;gap:6px;align-items:center;padding:2px 4px;border-radius:7px}
+#gdHop .gde-c:hover{background:var(--hover)}
+#gdHop .gde-c.tran{background:rgba(255,138,122,.07)}
+#gdHop .gde-so{font:700 11px/1 var(--mono);color:var(--dim);text-align:right}
+#gdHop .gde-gio{border:0;background:none;padding:2px 0;font:600 11.5px/1 var(--mono);color:var(--muted);cursor:pointer;text-align:left}
+#gdHop .gde-gio:hover{color:var(--gde-vang)}
+#gdHop .gde-chu{height:30px;padding:4px 8px;font:500 13px/1.4 var(--f)}
+#gdHop .gde-c .btn.icon{width:28px;height:28px;padding:0}
+#gdHop .gde-c .btn.icon .ic{width:12px;height:12px}
+#gdHop .gde-tt{justify-self:start;max-width:100%;padding:2px 7px;border-radius:999px;font:700 10.5px/1.5 var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#gdHop .gde-tt.vua{background:var(--gde-luc);color:var(--gde-chu)}
+#gdHop .gde-tt.nhanh{background:#2a2410;color:var(--gde-vang);box-shadow:inset 0 0 0 1px #5a4a12}
+#gdHop .gde-tt.tran{background:#3a1a16;color:var(--gde-do);box-shadow:inset 0 0 0 1px #6a2c24}
+#gdHop .gde-tt.dim{color:var(--dim)}
+#gdHop .gde-cho{display:flex;align-items:center;gap:8px}
+#gdHop .gde-quay{width:12px;height:12px;border-radius:50%;border:2px solid var(--gde-luc-vien);border-top-color:var(--gde-vang);animation:gdeQuay .9s linear infinite;flex:none}
+@keyframes gdeQuay{to{transform:rotate(360deg)}}
+#gdHop .gde-kq b{color:var(--ink)}
+#gdHop .gde-kq.warnt b{color:var(--gde-do)}
+#gdHop .acts .btn .ic{width:12px;height:12px}
+/* bảng phải: nhóm Giọng AI đọc lại */
+#pane .gde-box .gde-dang{display:flex;gap:8px;align-items:flex-start;padding:7px 10px;border-radius:8px;background:var(--gde-luc-nen);border:1px solid var(--gde-luc-vien);color:var(--gde-chu);font-size:12.5px;line-height:1.45}
+#pane .gde-box .gde-dang > .ic{flex:none;width:15px;height:15px;margin-top:2px;color:var(--gde-vang)}
+#pane .gde-box .gde-dang b{color:#fff;font-weight:650}
+#pane .gde-box .gde-dang b.gde-do{color:var(--gde-do)}
+#pane .gde-box .row.gde-nut{display:flex;gap:6px;flex-wrap:wrap}
+#pane .gde-box .row.gde-nut .btn.small{height:28px;padding:0 10px;gap:5px;font-size:12px}
+#pane .gde-box .row.gde-nut .btn.primary{background:var(--gde-luc);border-color:var(--gde-luc-vien)}
+#pane .gde-box .row.gde-nut .btn.primary:hover{border-color:var(--gde-vang)}

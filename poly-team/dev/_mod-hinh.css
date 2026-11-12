@@ -1,0 +1,52 @@
+/* ---- HÌNH (4/11): tự chia cảnh (vạch đề xuất + thanh nổi + cảnh im lặng), tự chỉnh màu, bộ lọc màu ---- dev/_mod-hinh.js */
+/* vạch đề xuất chia trên làn cảnh */
+.hinh-lop{position:absolute;left:0;right:0;top:26px;height:74px;pointer-events:none;z-index:5}
+.hinh-vach{position:absolute;top:-5px;bottom:-5px;width:14px;margin-left:-7px;padding:0;border:0;background:none;cursor:pointer;pointer-events:auto;display:block}
+.hinh-vach i{position:absolute;left:6px;top:0;bottom:0;width:2px;background:var(--gold);border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.55)}
+.hinh-vach::before{content:"";position:absolute;left:2px;top:-1px;width:10px;height:10px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 2px #141414}
+.hinh-vach.l-goc::before{border-radius:2px;transform:rotate(45deg) scale(.9)}
+.hinh-vach.l-im i{background:repeating-linear-gradient(var(--gold) 0 5px,transparent 5px 8px);box-shadow:none}
+.hinh-vach:hover i,.hinh-vach:focus-visible i{width:3px;left:5.5px}
+.hinh-vach:focus-visible{outline:none}
+.hinh-vach:focus-visible::before{box-shadow:0 0 0 2px #141414,0 0 0 4px var(--gold)}
+.hinh-vach.bo i{background:#777;opacity:.55;box-shadow:none}
+.hinh-vach.bo::before{background:#141414;box-shadow:0 0 0 2px #777}
+.hinh-imv{position:absolute;top:0;bottom:0;border-radius:6px;pointer-events:none;
+  background:repeating-linear-gradient(135deg,rgba(150,150,150,.32) 0 6px,rgba(20,20,20,.18) 6px 12px);box-shadow:inset 0 0 0 1px rgba(200,200,200,.35)}
+.hinh-imv span{position:absolute;left:6px;top:5px;padding:0 5px;border-radius:4px;background:rgba(0,0,0,.72);color:#ddd;font:700 10px/16px var(--f);white-space:nowrap}
+.hinh-imv.bo{opacity:.25}
+/* khối cảnh đã đánh dấu im lặng */
+.blk.hinh-im::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(135deg,rgba(160,160,160,.38) 0 6px,rgba(10,10,10,.30) 6px 12px)}
+.blk .hinh-im-n{position:absolute;left:4px;top:5px;z-index:2;max-width:calc(100% - 8px);padding:0 5px;border-radius:4px;background:rgba(0,0,0,.75);color:#e2e2e2;font:700 10px/16px var(--f);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+/* thanh nổi trên timeline: đang tìm / đề xuất / đoạn im lặng */
+
+.hinh-bar{position:absolute;z-index:12;right:14px;bottom:10px;max-width:min(760px,calc(100% - 28px));display:flex;align-items:center;gap:10px;
+  padding:8px 10px 8px 14px;border-radius:12px;background:#202020;border:1px solid #3a3a3a;box-shadow:0 10px 28px rgba(0,0,0,.5);font-size:12.5px;color:var(--ink)}
+.hinh-bar[hidden]{display:none}
+.hinh-bar.dx{border-color:#6b5520;background:#231e13}
+.hinh-bar .hb-t{display:grid;gap:1px;min-width:0;line-height:1.35}
+.hinh-bar .hb-t small{color:var(--muted);font-size:11px}
+.hinh-bar .hb-t b{color:var(--gold-text)}
+.hinh-bar.dang .hb-t b,.hinh-bar.im .hb-t b{color:var(--ink)}
+.hinh-bar .hb-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hinh-bar .tg{font:600 11px var(--mono);color:var(--dim)}
+.hinh-bar .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);flex:none;animation:hinhNhay 1s ease-in-out infinite}
+.hinh-bar .hb-bao{flex:none;padding:2px 8px;border-radius:999px;background:var(--warn-soft);color:var(--warn);font:600 11px/18px var(--f);cursor:help}
+.hinh-bar .btn{flex:none}
+@keyframes hinhNhay{50%{opacity:.35}}
+@media (max-width:1400px){.hinh-bar .hb-t small{display:none}}
+/* tab Cảnh › Màu */
+.hinh-tu h2 .ic,.hinh-loc-box h2 .ic{width:15px;height:15px;vertical-align:-2px;margin-right:6px;color:var(--gold)}
+.hinh-nut{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.hinh-nut .btn{flex:0 1 auto;min-width:0;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hinh-tu [data-hinh-a="so-goc"].dang{background:var(--brand-soft);border-color:#2f7d63;color:var(--brand-text)}
+.hinh-tu .ngtt{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;background:#1a1a1a;border:1px solid var(--line);font-size:12px}
+.hinh-tu .ngtt .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:hinhNhay 1s ease-in-out infinite}
+.hinh-tu .ngtt-t{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hinh-tu .ngtt .btn{flex:none}
+.hinh-lo-grid{--o:54px;gap:8px 6px;margin:2px 0 4px;min-width:0}
+.hinh-lo .tvx-ten{overflow-wrap:anywhere}
+.hinh-lo .xv{aspect-ratio:3/4}
+.hinh-lo .tvx-ten{font-size:11px}
+.hinh-loc-box .tt-h output{min-width:42px}
+#lib .hinh-lo .xv{aspect-ratio:4/5}

@@ -1,0 +1,27 @@
+{
+ "id": "lia_doc",
+ "loai": "poly-chuyen-1",
+ "ten": "Lia nhanh dọc",
+ "nhom": "lia",
+ "mo_ta": "Quét dọc lên như lướt TikTok, mờ theo hướng lướt — đổi ý, máy tiếp theo",
+ "giay": 0.32,
+ "giay_min": 0.22,
+ "giay_max": 0.51,
+ "tron": "phu",
+ "mo_chuyen_dong": 0.85,
+ "A": {
+  "vien": "guong",
+  "y": [[0, 0], [1, -1, "io5"]]
+ },
+ "B": {
+  "vien": "trong",
+  "y": [[0, 1], [1, 0, "io5"]]
+ },
+ "xfade_du_phong": "slideup",
+ "premiere_match": "AE.Impact_Whip",
+ "premiere_gan_nhat": "Impact Whip (AE.Impact_Whip), hướng dọc",
+ "xem_truoc": "css: translateY + feGaussianBlur chỉ dọc (stdDeviation '0 y')",
+ "y_tuong": "Vertical whip / swipe up",
+ "giay_phep": "CC0 — Poly tự viết (chuyen_moi.py), không dùng mã / tài nguyên ngoài",
+ "thay": ["truot_doc", "truot_doc_muot", "lau_len"]
+}

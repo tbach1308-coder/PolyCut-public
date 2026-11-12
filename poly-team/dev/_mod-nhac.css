@@ -1,0 +1,94 @@
+/* ---- nhạc nền (4/11, dev/_mod-nhac.js): Thư viện › Nhạc, làn Nhạc trên timeline, hộp "bắt đầu từ giây" ---- */
+#tvNhac{min-width:0}
+.nh{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.nh>*{min-width:0}
+.nh-dang{display:grid;gap:8px;padding:9px 10px;border-radius:9px;background:#13283a;border:1px solid #23435c;color:#cfe6ff;font-size:12.5px;line-height:1.45}
+.nh-dang>span:first-child{display:flex;gap:7px;align-items:flex-start;min-width:0}
+.nh-dang>span:first-child .ic{flex:none;width:15px;height:15px;margin-top:2px;color:#8cc8ff}
+.nh-dang b{color:#fff}
+.nh-dang-n{display:flex;gap:6px;flex-wrap:wrap}
+.nh-ha{display:flex;align-items:center;gap:7px;font-size:12px;color:#b9d6f2;cursor:pointer}
+.nh-ha input{accent-color:var(--brand-hover);width:15px;height:15px;margin:0}
+.nh-can{display:grid;gap:2px;padding:7px 8px 6px 10px;border:1px solid #262626;border-radius:9px;background:#161616;transition:box-shadow .2s}
+.nh-can-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:2px}
+.nh-can-h b{font:700 11.5px/1.2 var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.nh-can-h .note{font-size:11.5px;color:var(--dim);border-bottom:1px dotted #444;cursor:help}
+.nh-can .tt-h{grid-template-columns:64px minmax(0,1fr) 40px 24px;gap:6px}
+.nh-can .tt-h label{font-size:12px}
+.nh-can .tt-h output{font-size:11px}
+.nh-can .tt-h .tt-lai{width:24px;height:24px}
+.nh-can.nhay{box-shadow:0 0 0 2px var(--brand-hover)}
+.nh-tim{padding:6px 10px;font-size:12.5px}
+.nh-ds{display:grid;gap:4px}
+.nh-bai{display:flex;align-items:center;gap:9px;padding:6px 8px 6px 6px;border-radius:9px;border:1px solid #262626;background:#171717;cursor:pointer;min-width:0;touch-action:none}
+.nh-bai:hover{border-color:#3d3d3d;background:#1c1c1c}
+.nh-bai:focus-visible{outline:2px solid var(--brand-hover);outline-offset:1px}
+.nh-bai.dang{border-color:#2f7d63;background:#14271e}
+.nh-nghe{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;border:1px solid #333;background:#222;color:var(--ink);cursor:pointer;padding:0}
+.nh-nghe:hover{border-color:var(--brand-hover);color:var(--brand-text)}
+.nh-nghe.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.nh-nghe .ic{width:13px;height:13px}
+.nh-t{flex:1;min-width:0;display:grid;line-height:1.3}
+.nh-t b{font-size:12.5px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nh-t small{font-size:11px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nh-them{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:7px;color:var(--muted);border:1px dashed #3a3a3a}
+.nh-bai:hover .nh-them{color:var(--brand-text);border-color:#2f7d63;border-style:solid}
+.nh-them .ic{width:13px;height:13px}
+.nh-dung{flex:none;display:inline-flex;align-items:center;gap:4px;font:700 11px/1 var(--f);color:var(--brand-text)}
+.nh-dung .ic{width:12px;height:12px;stroke-width:2.6}
+/* làn Nhạc */
+.trk.nhac{border-top:1px solid #1e1e1e}
+.trk.nhac.tha{background:rgba(35,161,89,.10);box-shadow:inset 0 0 0 1px #2f7d63}
+.bar.nhac{height:21px;padding:0;display:block;background:#10283a;color:#cfe6ff;border-color:#23435c;overflow:hidden}
+.bar.nhac.sel{border-color:#8cc8ff}
+.bar.nhac .nh-song{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.bar.nhac .nh-song path{fill:#3d7fb3;opacity:.75}
+.bar.nhac .nh-mo{position:absolute;top:0;bottom:0;pointer-events:none}
+.bar.nhac .nh-mo.dau{left:0;background:linear-gradient(90deg,rgba(9,20,30,.85),transparent)}
+.bar.nhac .nh-mo.cuoi{right:0;background:linear-gradient(270deg,rgba(9,20,30,.85),transparent)}
+.bar.nhac .nh-lap{position:absolute;top:0;bottom:0;border-left:1px dashed rgba(207,230,255,.55);pointer-events:none}
+.bar.nhac .nh-nhan{position:sticky;left:0;display:inline-flex;align-items:center;gap:5px;max-width:100%;height:19px;padding:0 7px;font:600 10.5px/19px var(--f);text-shadow:0 1px 2px rgba(0,0,0,.8)}
+.bar.nhac .nh-nhan>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar.nhac .nh-nhan .ic{width:12px;height:12px;flex:none}
+.bar.nhac.trong{width:150px;display:flex;align-items:center;gap:5px;padding:0 6px;background:transparent;border:1px dashed #3a3a3a;color:var(--dim)}
+.bar.nhac.trong .ic{width:12px;height:12px;flex:none}
+.bar.nhac.trong:hover{color:var(--ink);border-color:#3d7fb3}
+/* hộp chọn thư mục nhạc (bảng CTM): nút riêng, ẩn nút "dùng thư mục clip" */
+.nh-ctm-bg .ctm-f .ctm-dung:not(.nh-ctm-dung),.nh-ctm-bg .ctm-nay{display:none}
+.nh-ctm-bg .ctm-f{justify-content:flex-end}
+/* hộp "bắt đầu từ giây" */
+.mbox.nh-tu-hop{width:min(560px,100%)}
+.nh-tu-song{position:relative;height:84px;border-radius:9px;background:#10283a;border:1px solid #23435c;overflow:hidden;cursor:pointer;display:grid;place-items:center}
+.nh-tu-song svg{position:absolute;inset:0;width:100%;height:100%}
+.nh-tu-song path{fill:#3d7fb3}
+.nh-tu-bo{position:absolute;left:0;top:0;bottom:0;background:rgba(0,0,0,.55);pointer-events:none}
+.nh-tu-vach{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:#ff4d4d;pointer-events:none}
+.nh-tu-hang{display:flex;align-items:center;gap:10px}
+.nh-tu-hang .tt-r{flex:1}
+.nh-tu-hang .inp{width:84px;flex:none}
+.nh-tu-hop .acts{display:flex;gap:8px;align-items:center}
+.nh-tu-hop .acts .grow{flex:1}
+.nh-tu-hop .btn .ic{width:14px;height:14px}
+/* timeline có thêm làn Nhạc (27px): màn cao (≥ 1000px) nới trần chiều cao mặc định 250 -> 280px để thấy đủ làn; màn thấp giữ như cũ
+   (khung xem không nhỏ đi) và cuộn dọc được: trước đây .tls bị kéo bằng khung (220px) rồi cắt mất làn dưới (Giọng, Nhạc) dù tên làn vẫn cuộn */
+.tlbody{max-height:var(--tlb-h,clamp(140px,25vh,280px))}
+.tlbody>.tls{align-self:flex-start}
+/* thêm tab Nhạc = 7 tab trên hàng Thư viện (gộp r15, anh chê "nút giao diện còn thô"): KHÔNG gãy chữ 2 dòng nữa.
+   Thư viện rộng (≥ 380px, màn 1920): biểu tượng + tên 1 dòng như cũ. Hẹp (máy 1366, kéo thu 270–379px): 1 hàng biểu tượng,
+   chỉ tab đang chọn hiện tên cạnh biểu tượng; tên các tab khác vẫn có trong nút (ẩn khỏi mắt, trình đọc màn hình đọc được)
+   và trong data-tip (_thu-vien.js veTvTabs) khi rê chuột. */
+#edit .lib{container:thuvien / inline-size}
+#edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt{position:relative}
+@container thuvien (max-width:379px){
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs{gap:1px;padding:0 4px}
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt{flex:1 1 0;min-width:24px;grid-auto-flow:column;justify-content:center;align-content:center;
+    align-items:center;gap:0;padding:0 2px;white-space:nowrap}
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt .ic{width:18px;height:18px}
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt span{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt.on{flex:0 0 auto;gap:5px;padding:0 7px}
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt.on span{position:static;width:auto;height:auto;margin:0;overflow:visible;clip-path:none;font-size:11.5px;line-height:1}
+}
+@container thuvien (max-width:289px){   /* kéo thu hết cỡ (270px): tab "Chuyển cảnh" đang chọn vẫn vừa 1 hàng */
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt{min-width:22px;padding:0 1px}
+  #edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs .tvt.on{padding:0 5px}
+}

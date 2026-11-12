@@ -1,0 +1,209 @@
+/* ===== Làm đẹp giao diện (3/11 tối): lớp đè cuối cùng cho cả trang chính và Sửa tay. Agent làm đẹp giữ file này. =====
+   Anh: "làm lại các phần còn thô của giao diện". Chỉ đổi trình bày (không giấu nút, không đổi id / class).
+   File này chèn vào CẢ 2 trang: trang chính (index: body.chi-sua / body.tay / body.gop) và Sửa tay (body.nhung / body.ed, #edit...).
+   Lớp dùng chung tên ở 2 trang (.top, .btn, .chip, .mbox, .toast, .tabs) phải viết kèm chỗ phân biệt. */
+
+/* ---------- 0. thanh cuộn tối, mảnh (cả 2 trang): thay thanh cuộn xám to của Windows ---------- */
+html{scrollbar-color:#3a3a3a transparent}
+*{scrollbar-width:thin}
+*:hover{scrollbar-color:#4a4a4a transparent}
+
+/* ---------- 1. gộp 2 thanh đầu (trang chính, đang mở 1 video): thanh POLY Cut nổi ở góc trái thanh đầu trình sửa ----------
+   index tự bật body.gop + html.gop trong khung, đo --gop-h (cao thanh đầu trình sửa) và --gop-w (chỗ chừa bên trái). */
+body.gop .wrap{padding:0}
+body.gop header.top{position:fixed;z-index:6;top:0;left:0;height:var(--gop-h,48px);padding:0 14px 0 16px;margin:0;gap:12px;
+  flex-wrap:nowrap;justify-content:flex-start;align-items:center;background:transparent}
+body.gop header.top::after{content:"";position:absolute;right:0;top:50%;height:22px;margin-top:-11px;width:1px;background:#2c2c2c}
+body.gop .brand{gap:10px}
+body.gop .top h1{font-size:16px;white-space:nowrap}
+body.gop .top h1 .ver{font-size:11px;padding:1px 6px}
+body.gop #hc{padding:5px 11px;font-size:12.5px;gap:7px}
+/* chật (đang xuất, sửa dở, cửa sổ hẹp): index thu dần - bỏ chữ POLY Cut (gop-1), chip Claude chỉ còn chấm màu, rê chuột xem (gop-2) */
+body.gop.gop-1 .top h1{display:none}
+body.gop.gop-2 #hc{width:30px;height:30px;padding:0;justify-content:center;gap:0}
+body.gop.gop-2 #hc > span:not(.dot){display:none}
+html.gop body.nhung .top{padding-left:var(--gop-w,16px)}
+html.gop body.nhung .top .ten{max-width:min(300px,20vw)}
+
+/* ---------- 2. thanh đầu trình sửa: các nút thẳng hàng, cùng cao 34px, chia 3 nhóm ---------- */
+body.ed .top{min-height:52px;padding-top:6px;padding-bottom:6px;gap:10px}
+body.nhung.ed .top{min-height:48px;padding-top:6px;padding-bottom:6px}
+#edBtns{display:inline-flex;align-items:center;gap:6px;flex-wrap:nowrap}
+#edBtns .btn{height:34px;padding-top:0;padding-bottom:0}
+#edBtns .btn.icon{width:34px;min-width:34px;padding:0}
+#edBtns .btn .ic{width:16px;height:16px}
+#edBtns #bUndo,#edBtns #bNhap{margin-left:6px}
+#edBtns .xsplit #bXuatDd{width:30px;padding:0}
+#bVe.btn{height:32px}
+
+/* ---------- 3. đầu 3 khu thẳng 1 hàng (Thư viện | Xem trước | bảng phải): cùng cao 38px, đường kẻ dưới trùng nhau ---------- */
+#edit:not(.tv-thu):not(.tv-tu-thu) .lib-tabs{height:38px;padding:0 6px;align-items:stretch}
+#edit:not(.tv-thu):not(.tv-tu-thu) .tvt{gap:2px;padding:3px 2px 2px;border-radius:7px 7px 0 0}
+#edit:not(.tv-thu):not(.tv-tu-thu) .tvt .ic{width:16px;height:16px}
+#edit:not(.tv-thu):not(.tv-tu-thu) .tvt span{font-size:10.5px;line-height:1.15}
+#edit .pbar{height:38px}
+#edit #tabs{height:38px;padding:0 6px;align-items:stretch;gap:0}
+#edit #tabs button{display:inline-flex;align-items:center;gap:1px;padding:0 9px}
+@media (max-width:1300px){#edit #tabs button{padding:0 6px}#edit #tabs .n{margin-left:3px;padding:0 4px}}
+#edit #tabs button:not(.on):hover{color:var(--ink)}
+#edit #tabs button.ai:not(.on):hover{color:#e3d9ff}
+#edit #tabs .n{margin-left:4px;padding:0 5px;border-radius:999px;background:#202020;line-height:16px;font-size:11px}
+#edit #tabs button.on .n{background:var(--brand-soft);color:var(--brand-text)}
+
+/* ---------- 4. ô chọn (select) cùng kiểu: mũi tên mảnh, viền như ô gõ ---------- */
+body.ed select.inp,body.ed .khsel select,.mbox select.inp{-webkit-appearance:none;appearance:none;padding-right:26px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%239a9a9a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 9px center;background-size:10px 6px;cursor:pointer}
+body.ed select.inp:hover,body.ed .khsel select:hover{border-color:#4a4a4a}
+body.ed .khsel select:focus{outline:none;border-color:var(--brand-hover);box-shadow:0 0 0 3px rgba(20,144,107,.22)}
+
+/* ---------- 5. ô tick / chọn 1: màu xanh POLY thay xám trắng mặc định ---------- */
+input[type=checkbox],input[type=radio]{accent-color:var(--brand)}
+body.ed input[type=checkbox]{width:16px;height:16px;margin:0;cursor:pointer;flex:none}
+
+/* ---------- 6. Thư viện ---------- */
+/* chuyển cảnh, cảnh 1: dấu ◆ nằm trong câu (trước bị lưới tách thành dòng riêng) */
+.tv-bao{display:block}
+.tv-bao > b{display:block;margin-bottom:4px}
+.tv-bao > .btn{display:flex;width:max-content;margin-top:10px}
+.tv-bao .tv-noi-mau{margin:0 4px;vertical-align:1px}
+/* tiện ích: nút Chạy / Chạy… cùng bề ngang, thẳng cột */
+.tvti .btn{min-width:74px;justify-content:center}
+.tvti:hover{border-color:#333;background:#191919}
+
+/* ---------- 7. bảng phải ---------- */
+/* Phụ đề: lời giải thích 1 dòng riêng, nút xuống hàng dưới (trước bị ép thành cột hẹp 6 dòng) */
+#pane .row > p.note.grow:first-child{flex:1 1 100%;margin-bottom:2px}
+/* Bản xuất: Xem / Thư mục không dính nhau */
+.ver .acts{display:inline-flex;gap:6px;align-items:center}
+.ver{grid-template-columns:44px minmax(0,1fr) auto}
+.ver .th{width:44px;height:78px}
+#pane .row > .note.grow + .btn + .btn{margin-left:0}
+/* Claude: lời mời gõ khi chưa có gì đặt giữa khung, có biểu tượng; hàng gợi ý mờ dần ở mép phải (biết còn kéo được) */
+.aic-rong{margin:auto 0;align-self:center;display:grid;justify-items:center;gap:8px;max-width:280px;text-align:center;line-height:1.5;color:var(--muted)}
+.aic-rong::before{content:"✦";display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#1d1830;border:1px solid #3a3160;color:#c9b8ff;font-size:20px}
+.aic-goi{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);padding-right:30px}
+
+/* ---------- 8. hộp nổi (Xuất video, Thay clip, Tiện ích, Chỉnh giờ…): đầu / chân hộp rõ, ô clip có hover ---------- */
+body.ed .mbg,body.nhung .mbg{background:rgba(0,0,0,.66);backdrop-filter:blur(2px)}
+body.ed .mbox{background:#1b1b1b;border-color:#333;box-shadow:0 30px 70px -20px rgba(0,0,0,.85);padding:18px 20px;gap:14px}
+body.ed .mbox h3{font-size:17px;font-weight:800;line-height:1.3}
+body.ed .mbox > .mx{background:transparent;border-color:transparent}
+body.ed .mbox > .mx:hover{background:#2a2a2a;color:#fff}
+body.ed .mbox .acts{padding-top:12px;margin-top:2px;border-top:1px solid #262626}
+body.ed .mbox .cgrid{gap:10px}
+body.ed .mbox .cl:hover{border-color:var(--brand-hover)}
+body.ed .mbox .cl:focus-visible{outline:2px solid var(--brand-hover);outline-offset:2px}
+/* hộp Xuất video: nhãn trái thẳng hàng với dòng đầu của nút, ô tick đều */
+.xthem .chk{gap:10px;padding:2px 0}
+.xban{background:#161616;border-style:solid;border-color:#2a2a2a}
+.seg3 button:not(.on):hover{border-color:#4a4a4a;background:#1f1f1f}
+/* menu Tiện ích: kẻ mảnh giữa các mục, mục Quản lý tách riêng */
+.timenu{padding:5px;gap:0;background:#171717;border-color:#333}
+.timenu .ti-it{padding:9px 11px}
+.timenu .ti-it + .ti-it:not(.ti-ql){box-shadow:0 -1px 0 #232323}
+.timenu .ti-it:hover + .ti-it,.timenu .ti-it:focus-visible + .ti-it{box-shadow:none}
+.timenu .ti-ql{position:sticky;bottom:-5px;margin:4px -5px -5px;padding:10px 16px 11px;border-radius:0;background:#141414;border-top:1px solid #2a2a2a}
+.timenu .ti-ql b{color:var(--brand-text)}
+/* menu chuột phải: mục không icon vẫn thẳng cột chữ */
+.cmenu{padding:6px;border-color:#333;background:#161616}
+.cmenu button{min-height:30px}
+.cmenu .cm-h{padding:6px 9px 4px;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+.cmenu .cm-h:first-child{text-transform:none;letter-spacing:0;font-size:12px;color:var(--ink);padding-bottom:6px}
+/* hộp nhỏ (Chỉnh giờ chính xác…) không bày trong hộp to 720px */
+body.ed .mbox:has(#gcTu){width:min(440px,100%)}
+/* cảnh báo chữ đè / bị cắt: từng dòng là 1 mục bấm được (bỏ gạch chân chấm), có nền khi rê chuột */
+.pbar .cb details > div{padding:6px;display:grid;gap:2px}
+.cb .cbi,.cb details p{margin:0;padding:7px 9px;border-radius:7px;text-decoration:none;line-height:1.45}
+.cb .cbi:hover,.cb .cbi:focus-visible{background:#2b2412;color:#fff;outline:none}
+.cb .cbi + .cbi{box-shadow:0 -1px 0 #33290f}
+.cb .cbi:hover + .cbi{box-shadow:none}
+/* thông báo nhỏ: nổi hẳn lên */
+body.ed .toast{box-shadow:0 12px 32px rgba(0,0,0,.6);border-color:#3a3a3a;background:#202020}
+/* trang chính: trình sửa mở hộp nổi -> logo + chip Claude mờ theo nền hộp (không còn sáng trơ trên lớp tối) */
+body.gop header.top{transition:opacity .15s,filter .15s}
+body.gop.gop-toi header.top{opacity:.34;filter:blur(1.5px);pointer-events:none}
+/* hộp Video mới từ clip: 3 bước không đè nút ✕; clip đã chọn giữ viền vàng cả khi rê chuột */
+.mbox.tao-hop .phead{padding-right:40px}
+body.ed .mbox .cl.on,body.ed .mbox .cl.on:hover{border-color:var(--gold)}
+.mbox.tao-hop .cgrid{gap:10px}
+.tmbar{background:#161616;border-color:#2a2a2a}
+/* trang chính chế độ sửa (khi chưa gộp, vd đang có băng báo lỗi): thanh đầu trải hết bề ngang, mép trái / phải trùng trình sửa bên dưới */
+body.chi-sua.tay .wrap{max-width:none}
+/* hộp Kiểm máy của trang chính: nền tối như hộp trong trình sửa */
+body.chi-sua .modal{background:rgba(0,0,0,.66);backdrop-filter:blur(2px)}
+
+/* ===== 4/11 anh: "nút giao diện còn thô" (ảnh bảng phải tab Cảnh, bảng hẹp ~390px) =====
+   bảng phải co theo bề ngang thật (container query): không tràn ngang / thanh cuộn ngang, tiêu đề không gãy 2 dòng,
+   nút gọn lại khi chật, số đọc bằng chữ thường (không phông máy) */
+#edit .side{container:ben / inline-size}
+#edit #pane{overflow-x:hidden}
+#edit #tabs{overflow-x:auto;scrollbar-width:none}
+#edit #tabs::-webkit-scrollbar{display:none}
+#edit #tabs button{flex:0 0 auto}
+.tt-tabs button{min-width:0}
+.tt-tabs button span{overflow:hidden;text-overflow:ellipsis}
+.tt-box > .row{flex-wrap:nowrap;gap:6px}
+.tt-box > .row .sec{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-box > .row .btn{flex:none}
+.tt-box > .row > .note{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:48%}
+.tt-h{grid-template-columns:minmax(58px,92px) minmax(0,1fr) minmax(38px,auto) 28px;gap:8px}
+.tt-h label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-r{min-width:0}
+.tt-h output{font:650 12.5px var(--f);font-variant-numeric:tabular-nums;letter-spacing:0}
+.tt-h .tt-lai .ic{width:13px;height:13px}
+.tt-h .tt-lai:not([disabled]){color:var(--brand-text)}
+.tt-dau{gap:9px}
+.tt-ten small{line-height:1.35}
+@container ben (max-width:470px){
+  #edit #tabs button{padding:0 7px}
+  #edit #tabs .n{margin-left:3px;padding:0 4px}
+  .tt-tabs button{gap:5px;padding:7px 4px;font-size:12px}
+}
+@container ben (max-width:410px){
+  #edit #tabs button{padding:0 5px;font-size:12.5px}
+  #edit #tabs .n{font-size:10px;line-height:15px}
+  .tt-tabs button .ic{display:none}
+  /* nút trên đầu hộp chỉ còn biểu tượng (rê chuột có chữ) */
+  .tt-box > .row .btn.small:not(.primary){width:30px;min-width:30px;height:30px;padding:0;font-size:0;gap:0;justify-content:center}
+  .tt-box > .row .btn.small:not(.primary) .ic{width:15px;height:15px}
+  .tt-h{grid-template-columns:minmax(66px,84px) minmax(0,1fr) minmax(36px,auto) 26px;gap:7px}
+  .tt-dau{grid-template-columns:34px minmax(0,1fr) auto}
+  .tt-dau .th{width:34px;height:60px}
+}
+@container ben (max-width:385px){
+  #edit #tabs .n{display:none}
+  #edit #tabs button{padding:0 5px}
+}
+@container ben (max-width:350px){
+  .tt-tabs button{font-size:11.5px;padding:7px 2px}
+  .tt-h{grid-template-columns:76px minmax(0,1fr) minmax(40px,auto) 22px;gap:5px}
+  .tt-h label{font-size:12px}
+  .tt-h output{font-size:12px}
+  .tt-h .tt-lai{width:22px;height:22px}
+  .tt-box{padding-left:12px;padding-right:12px}
+}
+
+/* ===== 4/11 anh: "mấy thanh menu trên này nhỏ gọn thôi" (thanh đầu: chip Claude, tên video ▾, Tiện ích, Nhờ Claude, ↶ ↷, Xuất) =====
+   thanh đầu 40px (trước 48), nút 28px (trước 34), chữ 12.5px; logo + chip Claude của trang chính tự theo (--gop-h đo từ thanh này) */
+body.ed .top{min-height:40px;padding-top:3px;padding-bottom:3px;gap:8px}
+body.nhung.ed .top{min-height:40px;padding-top:3px;padding-bottom:3px}
+#edBtns{gap:4px}
+#edBtns .btn{height:28px;padding:0 10px;font-size:12.5px;border-radius:7px;gap:5px}
+#edBtns .btn.icon{width:28px;min-width:28px;padding:0}
+#edBtns .btn .ic{width:14px;height:14px}
+#edBtns #bUndo,#edBtns #bNhap{margin-left:4px}
+#edBtns .xsplit #bXuatDd{width:24px;min-width:24px;padding:0}
+.top .vd-chon{height:28px;padding:0 8px 0 10px;font-size:13px}
+.top .vd-chon .ten{font-size:13px}
+#sdc .chip{font-size:11.5px;padding:2px 8px;line-height:1.5}
+body.gop .top h1{font-size:15px}
+body.gop .top h1 .ver{font-size:10.5px;padding:0 5px}
+body.gop #hc{padding:3px 9px;font-size:12px;gap:6px}
+body.gop.gop-2 #hc{width:26px;height:26px}
+body.gop .brand .logo,body.gop .brand .mark{transform:scale(.9)}
+
+/* 4/11 anh: "cho nút play màu xanh giống style 2 nút qua lại 2 bên đi" -> nút phát cùng kiểu ⏮ ⏭ (tròn trong suốt, biểu tượng trắng) */
+.ctl #bPlay{width:36px;height:36px;border-radius:50%;background:transparent;border-color:transparent;color:#e6e6e6;box-shadow:none}
+.ctl #bPlay:hover{background:#262626;border-color:#333;color:#fff}
+.ctl #bPlay .ic{width:20px;height:20px}

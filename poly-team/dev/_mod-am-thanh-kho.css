@@ -1,0 +1,21 @@
+/* ============ Kho effect + âm thanh nhiều hơn (r37) — nối trước _mod-thu-vien-them.css: dùng #libPane để thắng lớp cũ ============ */
+#libPane .ak-dau{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:2px 0 8px}
+#libPane .ak-dau .btn .ic{width:14px;height:14px}
+#libPane .ak-kho{display:inline-flex;align-items:center;gap:6px;min-width:0;max-width:100%;font-size:11.5px;color:var(--muted);padding:2px 0}
+#libPane .ak-kho span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#libPane .ak-kho.loi{color:var(--warn)}
+#libPane .ak-kho .ic{width:14px;height:14px;flex:none}
+#libPane .tv-h + .ak-kho{margin:-2px 0 6px}
+#libPane .ak-may{flex:none;display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:17px;padding:0 5px;margin-left:6px;border-radius:9px;
+  font-size:11px;font-weight:700;line-height:1;color:var(--gold-text);background:var(--gold-soft);border:1px solid rgba(255,185,0,.28);vertical-align:1px}
+#libPane .ak-kho .ak-may{margin-left:0}
+#libPane .ak-may.dang{color:var(--ink);background:var(--brand-soft);border-color:var(--brand)}
+#libPane .ak-hay .tvl-h{color:var(--gold-text)}
+.tv-ins.ak-hit{width:4px;background:var(--gold);box-shadow:0 0 0 3px rgba(255,185,0,.3),0 0 16px rgba(255,185,0,.75)}
+#tNhac .ak-drop{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--gold);opacity:.9;pointer-events:none;z-index:3}
+#tNhac .ak-drop::before{content:"";position:absolute;top:-1px;left:-3px;border:4px solid transparent;border-top-color:var(--gold)}
+#libPane .am-bai,#libPane .nh-bai{-webkit-user-select:none;user-select:none}   /* kéo xuống timeline không bôi đen chữ cả trang */
+#libPane .tvl[data-tvl="am"] .tvl-m{padding:3px 7px;gap:4px}   /* 8 chip nhóm âm thanh: 2 hàng ở thư viện hẹp */
+#libPane .tvl[data-tvl="am"] .tvl-m b{display:none}   /* số đếm đã có ở tiêu đề từng nhóm */
+#libPane .ak-dong{display:flex;align-items:center;min-width:0}   /* tên + ☁ cùng hàng, tên dài thì "…" */
+#libPane .ak-dong > b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

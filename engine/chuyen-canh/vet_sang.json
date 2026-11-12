@@ -1,0 +1,37 @@
+{
+ "id": "vet_sang",
+ "loai": "poly-chuyen-1",
+ "ten": "Vệt sáng",
+ "nhom": "co_ban",
+ "mo_ta": "Vệt sáng ấm (vàng Poly nhạt) lướt chéo qua khung, hoà sang cảnh sau — đầu / cuối video, sang",
+ "giay": 0.6,
+ "giay_min": 0.42,
+ "giay_max": 0.96,
+ "tron": "phu",
+ "mo_chuyen_dong": 0,
+ "A": {
+  "vien": "guong",
+  "zoom": [[0, 1], [1, 1.04, "lin"]]
+ },
+ "B": {
+  "zoom": [[0, 1.04], [1, 1, "out2"]],
+  "trong": [[0.32, 0], [0.68, 1, "io2"]]
+ },
+ "lop": [
+  {
+   "kieu": "vet_sang",
+   "goc": 35,
+   "mau": ["#FFD86B", "#FFE9B8", "#FFB84D"],
+   "manh": [[0, 0], [0.5, 0.75, "io2"], [1, 0, "io2"]],
+   "dai": 0.6,
+   "rong": 0.16
+  }
+ ],
+ "xfade_du_phong": "fadewhite",
+ "premiere_match": "AE.AE_Impact_Light_Leaks",
+ "premiere_gan_nhat": "Impact Light Leaks (AE.AE_Impact_Light_Leaks)",
+ "xem_truoc": "css: lớp F radial-gradient màu ấm, mix-blend-mode:screen, dời background-position theo p",
+ "y_tuong": "Light leak (Film Impact 'Light Leaks') — tự vẽ bằng đốm Gauss, không dùng file ngoài",
+ "giay_phep": "CC0 — Poly tự viết (chuyen_moi.py), không dùng mã / tài nguyên ngoài",
+ "thay": ["hoa_tan_dai"]
+}

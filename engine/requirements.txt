@@ -1,0 +1,8 @@
+# Thư viện engine poly-dung-video (cai_dat.py cài vào engine\.venv, Python 3.12). Đã kiểm đủ bánh xe win_amd64 cp312.
+# numpy: mọi script · Pillow: vẽ chữ (ve_chu, hoat_hinh) · opencv: phan_tich (độ nét, rung tay) · sherpa-onnx: máy nghe
+# tiếng Việt (canh_tu, nghe, sau_xuat) · edge-tts: giọng đọc AI Microsoft (giong.py, cần mạng khi tạo giọng). Không cần: fontTools, scipy, playwright (chỉ sticker_poly.py — không cài).
+numpy==2.5.3
+Pillow==12.3.0
+opencv-python-headless==5.0.0.93
+sherpa-onnx==2.0.1
+edge-tts==7.3.1

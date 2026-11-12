@@ -1,0 +1,72 @@
+# TỪ ĐIỂN CỦA TIỆM cho "Phụ đề tự động" của POLY Cut
+# Anh tự thêm được: mở file này bằng Notepad, mỗi dòng 1 mục, lưu lại là xong (lần bấm Phụ đề tự động sau dùng ngay).
+# Dòng bắt đầu bằng # là ghi chú, máy bỏ qua. Hoa / thường không quan trọng: phụ đề luôn IN HOA khi dựng.
+#
+# Số / giá / đơn vị máy TỰ đổi, không cần ghi:  "mười ba triệu chín" -> 13TR9 · "mười hai chấm chín in" -> 12.9 inch
+#   "hai không hai mươi" -> 2020 · "sáu tư gb" -> 64GB · "một trăm hai mươi héc" -> 120Hz · "chín mươi tám phần trăm" -> 98%
+#   "m một" -> M1 · "iphone mười ba" -> iPhone 13. Chữ số lẻ ("một chiếc", "bốn loa") giữ nguyên chữ.
+
+# Mức ưu tiên từ hay nói khi nghe (0 = tắt, 1 = vừa, 2 = mạnh; mạnh quá dễ nghe nhầm thành tên máy)
+@uu_tien 1.0
+
+# ===== 1) TỪ HAY NÓI: ghi đúng chữ muốn hiện. Máy nghe ưu tiên các từ này và tự viết đúng (ipad pro -> iPad Pro)
+iPad
+iPad Pro
+iPad Air
+iPad Mini
+iPad Gen
+iPhone
+Pro Max
+MacBook
+MacBook Air
+MacBook Pro
+Apple
+Apple Pencil
+Magic Keyboard
+Face ID
+Touch ID
+Pro
+Air
+Max
+Mini
+Plus
+Pin
+GB
+Poly
+POLY Store
+Liên Quân
+Tốc Chiến
+PUBG
+Free Fire
+Laptop
+Retina
+Chip
+
+# ===== 2) SỬA CHỮ MÁY HAY NGHE SAI:   chữ máy nghe ra  =>  chữ đúng
+# (thấy phụ đề sai cùng 1 kiểu nhiều lần thì thêm 1 dòng ở đây; mấy dòng dưới lấy từ clip thật của tiệm 4/11)
+ai pát => iPad
+ai pắt => iPad
+ai pad => iPad
+ai bát => iPad
+ipat => iPad
+ibad => iPad
+ibe => iPad
+ibas => iPad
+abardro => iPad Pro
+abark pro => iPad Pro
+combaldro => combo iPad Pro
+combobas => combo iPad Pro
+ai phôn => iPhone
+ai phone => iPhone
+mác búc => MacBook
+mắc búc => MacBook
+mac búc => MacBook
+mark kibo => Magic Keyboard
+maryt kibo => Magic Keyboard
+mát kibo => Magic Keyboard
+ma gic ki bo => Magic Keyboard
+tóc chiến => Tốc Chiến
+pắp gi => PUBG
+pớp gi => PUBG
+púp gi => PUBG
+pô li => Poly

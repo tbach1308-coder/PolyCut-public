@@ -1,0 +1,33 @@
+/* ---- giọng AI trend (r39, dev/_mod-giong-trend.js): danh sách giọng chia nhóm Trend · Phổ biến · Tất cả, mỗi mục nút ▶ nghe mẫu.
+   Màu lục bảo #074D3A + vàng #FFD600 qua biến (đổi theme 1 chỗ), không neon. Chữ dùng overflow-x:clip để không cắt dấu tiếng Việt. ---- */
+:root{--gt-luc:#074D3A;--gt-luc-nen:#0b2e24;--gt-luc-vien:#0f5a44;--gt-vang:#FFD600;--gt-chu:#e3f4ec;--gt-chip:#173b30;--gt-chip-chu:#a9dcc6}
+.gt{display:grid;gap:6px;min-width:0}
+.gt-dau{display:flex;align-items:center;gap:8px;min-width:0}
+.gt-dau .lbl{min-width:56px;flex:none}
+.gt-dang{flex:1;min-width:0;font:650 12.5px/1.5 var(--f);color:var(--gt-vang);white-space:nowrap;overflow-x:clip;text-overflow:ellipsis}
+.gt-dau .btn.gt-thu{flex:none;gap:5px}
+.gt-dau .btn.gt-thu .ic{width:12px;height:12px}
+.gt-ds{display:grid;gap:2px;align-content:start;max-height:min(40vh,268px);overflow:auto;padding:0 4px 4px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);overscroll-behavior:contain}
+.gt-nhom{position:sticky;top:0;z-index:1;display:flex;align-items:center;gap:6px;margin:0 -4px;padding:7px 10px 5px;background:var(--surface-2);font:700 10.5px/1.4 var(--f);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line-2)}
+.gt-nhom .tv-i{text-transform:none}
+.gt-r{display:grid;grid-template-columns:28px minmax(0,1fr);gap:6px;align-items:center;padding:2px 4px 2px 2px;border-radius:8px;box-shadow:inset 3px 0 0 transparent}
+.gt-r:hover{background:var(--hover)}
+.gt-r.on{background:var(--gt-luc-nen);box-shadow:inset 3px 0 0 var(--gt-vang)}
+.gt-nghe{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;padding:0}
+.gt-nghe .ic{width:12px;height:12px}
+.gt-nghe:hover{border-color:var(--gt-vang);color:var(--gt-vang)}
+.gt-nghe.dang{background:var(--gt-luc);border-color:var(--gt-vang);color:var(--gt-vang)}
+.gt-nghe.cho{animation:gtNhay 1s ease-in-out infinite}
+@keyframes gtNhay{50%{opacity:.45}}
+.gt-chon{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px;min-width:0;padding:5px 4px;border:0;background:none;color:var(--ink);text-align:left;cursor:pointer;font:inherit;border-radius:6px}
+.gt-chon:focus-visible{outline:2px solid var(--focus,#14906b);outline-offset:1px}
+.gt-ten{font:650 13px/1.45 var(--f);white-space:nowrap;overflow-x:clip;text-overflow:ellipsis;max-width:100%}
+.gt-r.on .gt-ten{color:#fff}
+.gt-phu{font:500 11.5px/1.45 var(--f);color:var(--dim);white-space:nowrap}
+.gt-chip{display:inline-block;padding:0 6px;border-radius:999px;background:var(--gt-chip);color:var(--gt-chip-chu);font:600 10.5px/1.6 var(--f);white-space:nowrap}
+.gt-r.on .gt-chip{background:var(--gt-luc);color:var(--gt-chu)}
+.gt-them{justify-self:start;margin:4px 2px 2px;padding:4px 10px;border-radius:999px;border:1px dashed var(--gt-luc-vien);background:none;color:var(--gt-chip-chu);font:600 12px/1.4 var(--f);cursor:pointer}
+.gt-them:hover{border-color:var(--gt-vang);color:var(--gt-vang)}
+/* hộp Đọc lại: hàng chọn giọng chiếm cả 2 cột lưới */
+#gdHop .gde-cai > .gt{grid-column:1 / -1}
+#gdHop .gt .gt-ds{max-height:min(30vh,236px)}

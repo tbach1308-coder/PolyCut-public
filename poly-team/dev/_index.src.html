@@ -1,0 +1,1794 @@
+<!doctype html>
+<html lang="vi" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google" content="notranslate">
+<title>POLY Cut</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='1' y='1' width='30' height='30' rx='8' fill='%231D4FC4' stroke='%23FFD600' stroke-width='2'/%3E%3Cpath d='M10 24V8h6.5a5 5 0 010 10H14v6z' fill='%23fff'/%3E%3Ccircle cx='24' cy='24' r='5' fill='%23FFD600'/%3E%3C/svg%3E">
+<!-- POLY Cut (trước tên POLY Team, Poly Dựng Video 2.0): nguồn giao diện kiểu Bảng dựng video. Sửa file này rồi chạy python dev/build_ui.py (KHÔNG sửa tay ui/index.html). -->
+<style>
+/*FONTS*/
+/* Bàn dựng: cột cài đặt | khung 9:16 xem phác | hàng dựng. Màu lấy từ bảng màu Poly (xanh lục bảo sâu + vàng). */
+:root{
+  /* màu theo Poly Dựng Bài (theme Polysto): xám trung tính tối + xanh lá */
+  --bg:#121212; --surface:#1c1c1c; --surface-2:#161616; --ink:#ededed; --muted:#9a9a9a; --dim:#808080; --line:#2e2e2e; --line-2:#262626; --edge:#3a3a3a; --hover:#262626;
+  --brand:#1f8f4e; --brand-hover:#23a159; --brand-ink:#FFFFFF; --brand-soft:#1d3f2b; --brand-text:#7bf1a8;
+  --gold:#ffb900; --gold-ink:#241a00; --gold-soft:#322819; --gold-text:#ffd27a;
+  --ok:#7bf1a8; --ok-soft:#1c2821; --warn:#ffd27a; --warn-soft:#322819; --err:#ffb4a8; --err-soft:#2b1714; --err-line:#4d2420;
+  --focus:#23a159;
+  /* màu trong khung video: cố định như video thật */
+  --v-xanh:#074D3A; --v-xanh-sang:#3A7564; --v-xanh-toi:#032319; --v-vang:#FFD600; --v-trang:#FFFFFF; --v-den:#000000; --v-canh-1:#26332E; --v-canh-2:#4A5A53;
+  --f-display:"Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r:10px; --r-s:8px;
+  --shadow:none;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{color:var(--ink);font:15px/1.5 var(--f-body);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-size:.86em}
+.wrap{max-width:1500px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 56px}
+
+/* đầu trang */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px 20px;flex-wrap:wrap;padding-bottom:18px}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.mark{width:44px;height:44px;border-radius:12px;background:linear-gradient(180deg,#2A6A57 0%,var(--v-xanh) 55%,#05331F 100%);display:grid;place-items:center;color:var(--v-trang);font:900 22px/1 var(--f-display);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 0 0 2px var(--surface),0 0 0 3px var(--v-vang);flex:none}
+.top h1{margin:0;font:800 clamp(20px,2.2vw,26px)/1.15 var(--f-display);letter-spacing:-.01em;text-wrap:balance}
+.top .sub{margin:2px 0 0;color:var(--muted);font-size:13.5px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:13px;font-weight:600;white-space:nowrap}
+.chip .dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.chip.ok .dot{background:var(--ok);box-shadow:0 0 0 3px var(--ok-soft)}
+.chip.warn{border-color:transparent;background:var(--warn-soft);color:var(--warn)}
+.chip.warn .dot{background:var(--warn)}
+
+/* lưới chính */
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 300px minmax(360px,450px);gap:20px;align-items:start}
+@media (max-width:1320px){.grid{grid-template-columns:minmax(0,1fr) 280px}.queue{grid-column:1/-1}}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}.prev{position:static!important}}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);min-width:0}
+.sec{padding:18px 20px;border-top:1px solid var(--line-2);display:grid;gap:12px}
+.sec:first-child{border-top:0}
+.sec > h2{margin:0;font:700 12px/1.2 var(--f-body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:560px){.row{grid-template-columns:minmax(0,1fr)}}
+.field{display:grid;gap:6px;min-width:0}
+.field > label,.field > .lbl{font-weight:600;font-size:13.5px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.field .hint{font-size:12.5px;color:var(--muted);font-weight:500}
+.count{font:500 12px var(--f-mono);color:var(--muted)}
+.count.over{color:var(--err)}
+.inp{width:100%;min-width:0;padding:10px 12px;border-radius:var(--r-s);border:1px solid var(--line);background-color:var(--surface-2);transition:border-color .15s,background .15s}
+.inp:hover{border-color:color-mix(in srgb,var(--line) 60%,var(--ink) 40%)}
+.inp:focus{outline:none;border-color:var(--focus);background-color:var(--surface);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 18%,transparent)}
+.inp.mono{font-size:13.5px}
+textarea.inp{min-height:76px;resize:vertical;line-height:1.45}
+.inp.bad{border-color:var(--err);box-shadow:0 0 0 3px color-mix(in srgb,var(--err) 15%,transparent)}
+.err-txt{color:var(--err);font-size:12.5px;font-weight:600}
+.note{margin:0;font-size:13px;color:var(--muted)}
+.note b{color:var(--ink);font-weight:600}
+.path{font:500 12.5px var(--f-mono);color:var(--brand-text);word-break:break-all}
+
+/* nút chọn dạng chip (radio) */
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg label{position:relative;cursor:pointer}
+.seg input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.seg span{display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2);font-size:13.5px;font-weight:600;transition:background .15s,border-color .15s,color .15s;user-select:none}
+.seg label:hover span{border-color:color-mix(in srgb,var(--line) 50%,var(--brand-text) 50%)}
+.seg input:checked + span{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.seg input:focus-visible + span{outline:2px solid var(--focus);outline-offset:2px}
+.seg small{font-weight:500;opacity:.8}
+.seg.big span{padding:10px 14px;border-radius:10px;flex-direction:column;align-items:flex-start;gap:1px;min-width:150px}
+.seg.big span small{font-size:12px}
+
+.mode-note{margin:0;font-size:13px;color:var(--muted);padding:10px 12px;border-radius:var(--r-s);background:var(--surface-2);border:1px dashed var(--line)}
+.kgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px 12px}
+.kgrid .field > label{font-size:12.5px;color:var(--muted);font-weight:600}
+select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 16px) 52%,calc(100% - 11px) 52%;background-size:5px 5px;background-repeat:no-repeat;padding-right:30px}
+select.inp.pinned{border-color:var(--brand-text);color:var(--brand-text);font-weight:600}
+
+/* công tắc */
+.switch{display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+.switch input{position:absolute;opacity:0;width:1px;height:1px}
+.switch .track{flex:none;width:40px;height:24px;border-radius:999px;background:var(--line);position:relative;transition:background .15s;margin-top:1px}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .18s}
+.switch input:checked + .track{background:var(--brand)}
+.switch input:checked + .track::after{transform:translateX(16px)}
+.switch input:focus-visible + .track{outline:2px solid var(--focus);outline-offset:2px}
+.switch b{display:block;font-weight:600;font-size:14px}
+.switch small{display:block;color:var(--muted);font-size:12.5px}
+
+/* thanh chạy */
+.runbar{position:sticky;bottom:0;z-index:2;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(8px);border-radius:0 0 var(--r) var(--r)}
+.runbar .consent{flex:1 1 260px;margin:0;font-size:12.5px;color:var(--muted);min-width:0}
+.runbar .consent .path{font-size:12px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;border:1px solid var(--line);background:var(--surface);padding:9px 14px;font-weight:700;font-size:13.5px;cursor:pointer;transition:background .15s,border-color .15s,transform .05s;white-space:nowrap}
+.btn:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.btn.primary:hover{background:var(--brand-hover)}
+.btn.run{padding:12px 26px;font-size:16px;font-weight:800;border-radius:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 0 0 0 var(--v-vang)}
+.btn.run .key{display:inline-block;width:9px;height:11px;background:var(--v-vang);clip-path:polygon(0 0,100% 50%,0 100%)}
+.btn.danger{color:var(--err)}
+.btn.danger.armed{background:var(--err);border-color:var(--err);color:var(--surface)}
+.btn.small{padding:6px 10px;font-size:12.5px;border-radius:8px}
+.runmsg{flex-basis:100%;margin:0;font-size:13px;font-weight:600}
+.runmsg.ok{color:var(--ok)} .runmsg.err{color:var(--err)} .runmsg.warn{color:var(--warn)}
+.runmsg:empty{display:none}
+
+/* cột xem phác 9:16 */
+.prev{position:sticky;top:max(16px,env(safe-area-inset-top,0px));display:grid;gap:12px;padding:14px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;padding:3px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line-2)}
+.tabs button{border:0;background:transparent;padding:7px 8px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.phone{container-type:inline-size;position:relative;aspect-ratio:9/16;width:100%;max-width:100%;border-radius:22px;overflow:hidden;width:calc(100% - 14px)!important;background:radial-gradient(120% 70% at 50% 45%,var(--v-canh-2) 0%,var(--v-canh-1) 70%);box-shadow:0 0 0 6px #0B1310,0 0 0 7px var(--line),0 18px 40px -20px rgba(0,0,0,.6);margin:7px}
+.phone .dev{position:absolute;left:20%;right:20%;top:33%;height:37%;border-radius:4.5cqw;background:linear-gradient(160deg,#2F3E39 0%,#121B18 60%);border:1.6cqw solid #090E0C;box-shadow:0 3cqw 6cqw rgba(0,0,0,.45)}
+.phone .dev::after{content:"";position:absolute;inset:8%;border-radius:2cqw;background:linear-gradient(200deg,rgba(255,255,255,.10),rgba(255,255,255,0) 45%)}
+.phone .scene-tag{position:absolute;left:3cqw;bottom:3cqw;font:600 3.2cqw/1 var(--f-mono);color:rgba(255,255,255,.55);letter-spacing:.02em}
+.phone .rail{position:absolute;right:3cqw;top:46%;display:grid;gap:4.5cqw}
+.phone .rail i{width:7.5cqw;height:7.5cqw;border-radius:50%;background:rgba(255,255,255,.22)}
+.phone .safe{position:absolute;left:8.333%;right:16.667%;top:11.458%;bottom:28.125%;border:1.5px dashed rgba(255,214,0,.55);border-radius:2px;pointer-events:none}
+.phone .safe span{position:absolute;top:-1px;left:-1px;transform:translateY(-100%);font:600 2.6cqw/1.4 var(--f-mono);color:rgba(255,214,0,.85);background:rgba(0,0,0,.35);padding:0 1.4cqw}
+.phone .safe[hidden]{display:none}
+.phone .tagc{position:absolute;top:2.6cqw;left:50%;transform:translateX(-50%);font:700 2.9cqw/1 var(--f-body);color:var(--v-den);background:var(--v-vang);padding:1.3cqw 2.4cqw;border-radius:99px;white-space:nowrap}
+
+/* chữ hook theo kiểu */
+.hook{position:absolute;left:8.333%;right:16.667%;top:15.6%;display:flex;flex-direction:column;align-items:center;gap:1.6cqw;text-align:center;font-family:var(--f-display)}
+.hook .l1,.hook .l2{display:block;max-width:100%;overflow-wrap:anywhere}
+.hook.ph .l1,.hook.ph .l2{opacity:.6}
+.stroke{paint-order:stroke fill;-webkit-text-stroke:1.1cqw var(--v-den)}
+.khoi{background:linear-gradient(180deg,var(--v-xanh-sang) 0%,var(--v-xanh) 45%,var(--v-xanh-toi) 100%);box-shadow:inset 0 .8cqw 0 rgba(255,255,255,.27)}
+.k-bong_bong{background:none}
+.k-bong_bong .bub{position:relative;padding:3cqw 4.5cqw 3.4cqw;border-radius:5cqw;border:.9cqw solid var(--v-trang);display:flex;flex-direction:column;gap:.8cqw;align-items:center}
+.k-bong_bong .bub::after{content:"";position:absolute;left:18%;bottom:-3.6cqw;width:5cqw;height:5cqw;background:var(--v-xanh-toi);border-right:.9cqw solid var(--v-trang);border-bottom:.9cqw solid var(--v-trang);transform:skewX(-20deg) rotate(45deg)}
+.k-bong_bong .l1{font:800 6.6cqw/1.12 var(--f-display);color:var(--v-trang)}
+.k-bong_bong .l2{font:900 7.6cqw/1.1 var(--f-display);color:var(--v-vang)}
+.k-vien_den .l1{font:900 8.4cqw/1.08 var(--f-display);color:var(--v-trang)}
+.k-vien_den .l2{font:900 9cqw/1.08 var(--f-display);color:var(--v-vang)}
+.k-dai_trang .l1{font:800 6.8cqw/1.1 var(--f-display);color:var(--v-xanh);background:var(--v-trang);padding:1.2cqw 3cqw;border-radius:2.4cqw}
+.k-dai_trang .l2{font:900 7.4cqw/1.1 var(--f-display);color:var(--v-den);background:var(--v-vang);padding:1.2cqw 3cqw;border-radius:2.4cqw}
+.k-nen_xanh .box{padding:3cqw 4cqw;border-radius:3.4cqw;display:flex;flex-direction:column;gap:.6cqw}
+.k-nen_xanh .l1{font:800 6.8cqw/1.1 var(--f-display);color:var(--v-trang)}
+.k-nen_xanh .l2{font:900 7.4cqw/1.1 var(--f-display);color:var(--v-vang)}
+.k-vang_tieu_de .l1{font:900 10cqw/1.02 var(--f-display);color:var(--v-vang);text-shadow:0 .9cqw 0 rgba(0,0,0,.55),0 0 3cqw rgba(0,0,0,.4)}
+.k-vang_tieu_de .l2{font:700 5.4cqw/1.2 var(--f-display);color:var(--v-trang);text-shadow:0 .6cqw 1.6cqw rgba(0,0,0,.6)}
+.k-toi_gian .l1{font:700 7cqw/1.15 var(--f-display);color:var(--v-trang);text-shadow:0 .5cqw 2.2cqw rgba(0,0,0,.65)}
+.k-toi_gian .l2{font:800 7.4cqw/1.15 var(--f-display);color:var(--v-vang);text-shadow:0 .5cqw 2.2cqw rgba(0,0,0,.65)}
+.k-nhan_lon .l1{font:700 4.6cqw/1.1 var(--f-display);color:var(--v-xanh);background:var(--v-trang);padding:1.2cqw 3.2cqw;border-radius:99px}
+.k-nhan_lon .l2{font:900 10.4cqw/1.02 var(--f-display);color:var(--v-vang);text-transform:uppercase;paint-order:stroke fill;-webkit-text-stroke:1.4cqw var(--v-xanh-toi)}
+.k-nhan_lon .spark{position:absolute;color:var(--v-vang);font-size:5cqw;line-height:1}
+.k-hop_doi{gap:0}
+.k-hop_doi .l1{font:800 6.2cqw/1.1 var(--f-display);color:var(--v-xanh);background:var(--v-vang);padding:1.4cqw 3.4cqw;border-radius:1.6cqw;position:relative;z-index:1;transform:translateY(1cqw) rotate(-2deg)}
+.k-hop_doi .l2{font:900 7.6cqw/1.1 var(--f-display);color:var(--v-trang);padding:2cqw 4cqw;border-radius:2cqw;border:.8cqw solid var(--v-trang)}
+.k-vang_pill .l1{font:900 10cqw/1.02 var(--f-display);color:var(--v-vang);text-transform:uppercase;paint-order:stroke fill;-webkit-text-stroke:1.5cqw var(--v-den)}
+.k-vang_pill .l2{font:800 5.6cqw/1.1 var(--f-display);color:var(--v-xanh);background:var(--v-vang);padding:1.4cqw 4cqw;border-radius:99px}
+.k-the_bia{gap:1cqw}
+.k-the_bia .tag{font:800 4.4cqw/1 var(--f-display);color:var(--v-xanh);background:var(--v-vang);padding:1.5cqw 3cqw;transform:skewX(-12deg) rotate(-3deg);align-self:flex-start;margin-left:6%}
+.k-the_bia .l1{font:900 9.6cqw/1.02 var(--f-display);color:var(--v-trang);text-transform:uppercase;padding:2.6cqw 4cqw;border-radius:2cqw;border:.9cqw solid var(--v-trang)}
+.k-the_bia .bar{font:800 3.8cqw/1 var(--f-display);color:var(--v-xanh);background:var(--v-trang);padding:1.6cqw 3cqw;border-radius:1.2cqw;letter-spacing:.02em}
+.choose-tag{position:absolute;left:50%;top:4.5%;transform:translateX(-50%);font:600 2.8cqw/1 var(--f-mono);color:rgba(255,255,255,.8);background:rgba(0,0,0,.45);padding:1cqw 2cqw;border-radius:99px;white-space:nowrap}
+
+/* phụ đề mẫu */
+.sub-mau{position:absolute;left:8.333%;right:16.667%;top:62%;text-align:center;font-family:var(--f-display);text-transform:uppercase}
+.sub-mau.cum span{font:900 9.4cqw/1 var(--f-display);color:var(--v-trang);paint-order:stroke fill;-webkit-text-stroke:1.3cqw var(--v-den)}
+.sub-mau.cum span.y{color:var(--v-vang)}
+.sub-mau.cau{font:800 5.6cqw/1.25 var(--f-display);color:var(--v-trang);paint-order:stroke fill;-webkit-text-stroke:1cqw var(--v-den)}
+.sub-mau.cau .y{color:var(--v-vang)}
+
+/* thẻ kết */
+.ket{position:absolute;left:8.333%;right:16.667%;top:56%;display:flex;flex-direction:column;align-items:center;gap:2cqw;text-align:center;padding:4cqw 4cqw 4.4cqw;border-radius:4cqw}
+.ket.k-the_comment,.ket.k-the_xanh{border:.9cqw solid var(--v-trang)}
+.ket.k-the_den,.ket.k-vong_lap{background:color-mix(in srgb,var(--v-xanh-toi) 82%,transparent);border:.7cqw solid var(--v-xanh-sang);box-shadow:none}
+.ket .t1{font:800 5.4cqw/1.2 var(--f-display);color:var(--v-trang)}
+.ket .t2{font:600 4cqw/1.3 var(--f-display);color:var(--v-trang);opacity:.92}
+.ket .nut{font:800 4.6cqw/1 var(--f-display);color:var(--v-xanh);background:var(--v-trang);padding:2cqw 4.4cqw;border-radius:99px}
+.ket-none{position:absolute;left:10%;right:18%;top:60%;text-align:center;font:600 3.6cqw/1.4 var(--f-mono);color:rgba(255,255,255,.7)}
+.loop{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:58%;aspect-ratio:1;border-radius:50%;border:.8cqw dashed rgba(255,255,255,.5)}
+.dim .dev{transform:scale(.86);transition:transform .3s}
+
+.prev-ctl{display:grid;gap:10px}
+.prev-ctl .field > label{font-size:12.5px;color:var(--muted)}
+.mini-toggle{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);cursor:pointer;user-select:none}
+.mini-toggle input{accent-color:var(--brand)}
+.prev .cap{margin:0;font-size:12px;color:var(--muted)}
+
+/* hàng dựng */
+.queue{display:grid;gap:12px;min-width:0}
+.qhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:2px 4px}
+.qhead h2{margin:0;font:800 18px/1.2 var(--f-display)}
+.qhead .count{font-size:12.5px}
+.empty{padding:28px 22px;text-align:left;display:grid;gap:10px}
+.empty h3{margin:0;font:700 16px/1.3 var(--f-display)}
+.empty p{margin:0;color:var(--muted);font-size:14px}
+.empty ol{margin:4px 0 0;padding-left:20px;color:var(--muted);font-size:13.5px;display:grid;gap:4px}
+
+.don{padding:16px 18px;display:grid;gap:12px}
+.don-top{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
+.don-top > div{min-width:0}
+.don h3{margin:0;font:800 15.5px/1.3 var(--f-display);overflow-wrap:anywhere}
+.don .meta{font-size:12.5px;color:var(--muted);margin-top:2px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap;flex:none;background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+.pill.run{background:var(--brand-soft);color:var(--brand-text);border-color:transparent}
+.pill.run .dot{animation:nhap 1.4s ease-in-out infinite}
+.pill.gold{background:var(--gold-soft);color:var(--gold-text);border-color:transparent}
+.pill.ok{background:var(--ok-soft);color:var(--ok);border-color:transparent}
+.pill.err{background:var(--err-soft);color:var(--err);border-color:transparent}
+@keyframes nhap{0%,100%{opacity:1}50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.pill.run .dot{animation:none}}
+.steps{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.steps i{height:5px;border-radius:3px;background:var(--line-2)}
+.steps i.on{background:var(--brand-text)}
+.steps i.cur{background:linear-gradient(90deg,var(--brand-text) 0 50%,var(--line-2) 50%)}
+.steps.err i.on{background:var(--err)}
+.steps-lbl{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted);margin-top:-4px}
+.steps-lbl b{color:var(--ink);font-weight:600}
+.callout{padding:10px 12px;border-radius:var(--r-s);font-size:13px;display:grid;gap:8px}
+.callout.warn{background:var(--warn-soft);color:var(--warn)}
+.callout.err{background:var(--err-soft);color:var(--err)}
+.callout.info{background:var(--surface-2);color:var(--muted);border:1px solid var(--line-2)}
+.callout p{margin:0}
+.plan{display:grid;gap:10px;padding:12px;border-radius:var(--r-s);border:1px solid var(--line);background:var(--surface-2)}
+.plan h4{margin:0;font:700 12px/1.2 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.scenes{margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:13px;counter-reset:c}
+.scenes li{display:grid;grid-template-columns:22px minmax(0,auto) 1fr;gap:8px;align-items:baseline;counter-increment:c}
+.scenes li::before{content:counter(c);font:600 11px/1 var(--f-mono);color:var(--muted);text-align:right}
+.scenes .t{font:500 12px var(--f-mono);color:var(--brand-text);white-space:nowrap}
+.scenes .d{min-width:0;overflow-wrap:anywhere}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;font-size:13px;margin:0}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.res{display:grid;gap:8px;padding:12px;border-radius:var(--r-s);background:var(--ok-soft)}
+.res .path{color:var(--ink)}
+.copyrow{display:flex;gap:8px;align-items:flex-start;justify-content:space-between}
+.copyrow > *:first-child{min-width:0}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+details.cai-dat summary{cursor:pointer;font-size:12.5px;color:var(--muted);font-weight:600;list-style:none;display:inline-flex;align-items:center;gap:6px}
+details.cai-dat summary::-webkit-details-marker{display:none}
+details.cai-dat summary::before{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);transition:transform .15s}
+details.cai-dat[open] summary::before{transform:rotate(45deg)}
+details.cai-dat .kv{margin-top:8px}
+.ro-banner{margin:0 0 14px;padding:10px 14px;border-radius:var(--r-s);background:var(--warn-soft);color:var(--warn);font-size:13.5px;font-weight:600}
+.ro-banner:empty{display:none}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.field > label.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+fieldset[disabled] .seg span,fieldset[disabled] .inp{opacity:.6}
+
+/* ================= Poly Dựng Video (app trên máy) — thêm vào kiểu Bảng dựng video ================= */
+[hidden]{display:none!important}
+html,body{margin:0}
+body{min-height:100vh}
+a{color:var(--brand-text)}
+::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--line) 80%,var(--muted) 20%);border-radius:10px;border:2px solid var(--bg)}
+.top .right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+button.chip{cursor:pointer}
+button.chip:hover{border-color:var(--brand-text)}
+.chip .tk{color:var(--muted);font-weight:500;max-width:200px;overflow:hidden;text-overflow:ellipsis}
+.chip.err{border-color:transparent;background:var(--err-soft);color:var(--err)}
+.chip.err .dot{background:var(--err)}
+.chip.run .dot{background:var(--brand-text);animation:nhap 1.4s ease-in-out infinite}
+.chip .btn.small{margin:-4px -6px -4px 2px;padding:3px 10px}
+.banner{margin:0 0 14px;padding:12px 14px;border-radius:var(--r-s);display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-size:13.5px}
+.banner p{margin:0;flex:1 1 360px}
+.banner.warn{background:var(--warn-soft);color:var(--warn)}
+.banner.err{background:var(--err-soft);color:var(--err)}
+.banner b{font-weight:700}
+.btn.ghost{background:transparent;border-color:transparent}
+.btn.ghost:hover{background:var(--surface-2)}
+.grid{grid-template-columns:minmax(380px,500px) 272px minmax(380px,1fr)}
+.grid > .prev{position:sticky;top:12px}
+.queue{grid-column:auto;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto;overscroll-behavior:contain;padding:0 4px 12px 2px;scrollbar-width:thin}
+@media (max-width:1180px){.grid{grid-template-columns:minmax(0,1fr) 262px}.queue{grid-column:1/-1;position:static;max-height:none;overflow:visible}}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}.grid > .prev{position:static}}
+
+/* thư mục + lưới clip */
+.pathrow{display:flex;gap:8px}
+.pathrow .inp{flex:1}
+.crumbs{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.crumbs:empty{display:none}
+.crumbs .lab{color:var(--muted);font-size:12.5px;margin-right:2px}
+.crumbs button{border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:4px 11px;font-size:12.5px;font-weight:600;cursor:pointer}
+.crumbs button:hover{border-color:var(--brand-text);color:var(--brand-text)}
+.crumbs button.up{color:var(--muted)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;max-height:430px;overflow:auto;padding:2px;scrollbar-width:thin}
+.ct{position:relative;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;background:#0d1512;aspect-ratio:3/4;padding:0;text-align:left;color:#fff;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.ct:hover{border-color:var(--brand-text)}
+.ct img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ct .ph0{position:absolute;inset:0;display:grid;place-items:center;color:rgba(255,255,255,.45);font:600 11px var(--f-mono)}
+.ct .nm{position:absolute;left:0;right:0;bottom:0;padding:18px 6px 5px;background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.85));font-size:11px;line-height:1.3}
+.ct .nm b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ct .nm span{color:#d6dfda;font-variant-numeric:tabular-nums}
+.ct .ck2{position:absolute;top:5px;left:5px;width:21px;height:21px;border-radius:50%;border:2px solid rgba(255,255,255,.9);background:rgba(0,0,0,.3);display:grid;place-items:center;font:800 11px/1 var(--f-body);color:#fff}
+.ct.on{border-color:var(--v-vang);box-shadow:0 0 0 2px var(--v-vang)}
+.ct.on .ck2{background:var(--v-vang);border-color:var(--v-vang);color:var(--v-xanh-toi)}
+.ct .pl{position:absolute;top:5px;right:5px;width:24px;height:24px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:9px;opacity:0;transition:opacity .15s;display:grid;place-items:center;padding:0;cursor:pointer}
+.ct:hover .pl,.ct .pl:focus-visible{opacity:1}
+.ct .pl:hover{background:var(--v-xanh)}
+.cbar{display:flex;align-items:center;gap:8px 10px;color:var(--muted);font-size:13px;flex-wrap:wrap}
+.cbar:empty{display:none}
+.cbar b{color:var(--ink);font-weight:600}
+.cbar .sp{flex:1}
+.cbar .warnt{color:var(--warn)}
+.cempty{color:var(--muted);font-size:13px;padding:18px;border:1px dashed var(--line);border-radius:var(--r-s);background:var(--surface-2)}
+.cempty b{color:var(--err)}
+.phone .bgi{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.phone .brandc{position:absolute;top:3.4cqw;left:4cqw;font:800 3cqw/1 var(--f-display);color:#fff;letter-spacing:.06em;text-shadow:0 .3cqw 1cqw rgba(0,0,0,.6)}
+.phone .pbar0{position:absolute;top:0;left:0;height:1.1cqw;width:38%;background:var(--v-vang)}
+.runbar .consent code{font:500 12px var(--f-mono);color:var(--brand-text);word-break:break-all}
+.runbar .why{flex-basis:100%;margin:0;font-size:12.5px;color:var(--warn)}
+.runbar .why:empty{display:none}
+
+/* thẻ video trong hàng dựng */
+.don{position:relative}
+.don .moi{font:800 10px/1 var(--f-body);color:var(--gold-ink);background:var(--gold);border-radius:6px;padding:3px 6px;margin-left:6px;vertical-align:2px}
+.steps{display:flex;gap:4px}
+.steps i{flex:1}
+.steps i.cur{background:var(--brand-text);animation:nhap 1.4s ease-in-out infinite}
+.steps i.stop{background:var(--warn)}
+.steps-lbl .tm{font-variant-numeric:tabular-nums}
+.callout.gold{background:var(--gold-soft);color:var(--gold-text)}
+.callout .lastx{color:var(--ink);font-size:13px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.callout .acts{margin-top:2px}
+.hq{display:grid;gap:6px}
+.hq p{margin:0;font-weight:600;color:var(--ink)}
+.ho{display:flex;flex-wrap:wrap;gap:6px}
+.ho button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--ink)}
+.ho button i{font-style:normal;color:var(--muted);font-weight:500;font-size:11.5px}
+.ho button.on{background:var(--brand);border-color:var(--brand);color:var(--brand-ink)}
+.ho button.on i{color:inherit;opacity:.8}
+.scenes.th li{grid-template-columns:22px 30px minmax(0,auto) 1fr;align-items:center}
+.scenes.th img,.scenes.th .noi{width:30px;height:40px;border-radius:4px;object-fit:cover;background:#0d1512;display:block}
+.kchip{display:flex;flex-wrap:wrap;gap:5px}
+.kchip span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:2px 9px;font-size:12px;color:var(--muted)}
+.kchip span b{color:var(--ink);font-weight:600}
+.res .vrow{display:grid;grid-template-columns:86px minmax(0,1fr);gap:12px;align-items:start}
+.vthumb{position:relative;width:86px;aspect-ratio:9/16;border-radius:8px;overflow:hidden;background:#0d1512 center/cover no-repeat;border:1px solid var(--line);padding:0;cursor:pointer}
+.vthumb::after{content:"";position:absolute;left:50%;top:50%;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:rgba(0,0,0,.55) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M4 2.5l5.5 3.5L4 9.5z' fill='%23fff'/%3E%3C/svg%3E") center/14px no-repeat}
+.vthumb:hover{border-color:var(--brand-text)}
+.res .vinfo{display:grid;gap:8px;min-width:0}
+.res .duyet-ok{color:var(--ok);font-weight:700}
+.res .duyet-ns{color:var(--warn);font-weight:600}
+.capbox{white-space:pre-wrap;font-size:13px;overflow-wrap:anywhere}
+.capbox .ht{color:var(--brand-text)}
+.fix{display:grid;gap:8px;padding:12px;border-radius:var(--r-s);border:1px solid var(--line);background:var(--surface-2)}
+.quick{display:flex;flex-wrap:wrap;gap:5px}
+.quick button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600;cursor:pointer;color:var(--ink)}
+.quick button:hover{border-color:var(--brand-text);color:var(--brand-text)}
+.nk{margin-top:8px;display:grid;gap:4px;font-size:12.5px;max-height:300px;overflow:auto;scrollbar-width:thin}
+.nk .ev{display:flex;gap:7px;color:var(--muted)}
+.nk .ev .ic2{flex:0 0 14px;text-align:center}
+.nk .ev.text{color:var(--ink)}
+.nk .ev.error{color:var(--err)} .nk .ev.warn{color:var(--warn)} .nk .ev.done,.nk .ev.agentdone{color:var(--ok)}
+.nk .ev.sub{padding-left:16px;font-size:12px}
+.nk .runsep{font:600 11px var(--f-mono);color:var(--muted);border-top:1px dashed var(--line);padding-top:6px;margin-top:4px}
+.nk .tasks{list-style:none;margin:0 0 6px;padding:0;display:grid;gap:3px}
+.nk .tasks li{display:flex;gap:7px;align-items:center;color:var(--muted)}
+.nk .tasks li.completed{color:var(--ink)}
+.nk .tasks li.in_progress{color:var(--brand-text);font-weight:600}
+.nk .tasks .ck{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--line);flex:none}
+.nk .tasks li.completed .ck{background:var(--ok);border-color:var(--ok)}
+.nk .tasks li.in_progress .ck{border-color:var(--brand-text);border-top-color:transparent;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.don .more{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.qhead .count{font:500 12.5px var(--f-mono)}
+.qmore{justify-self:center}
+
+/* hộp thoại, xem video, thông báo */
+.modal{position:fixed;inset:0;background:rgba(5,12,9,.55);display:flex;align-items:center;justify-content:center;z-index:80;padding:16px}
+.mbox{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 22px;width:min(560px,100%);box-shadow:0 24px 60px -20px rgba(0,0,0,.5);max-height:calc(100vh - 32px);overflow:auto}
+.mbox.wide{width:min(780px,100%)}
+.mbox.vid{width:fit-content;min-width:min(440px,100%);max-width:min(780px,100%)}
+.mbox.vid .vtall{background:transparent}
+.mbox.vid .vtall video{border-radius:10px;background:#000}
+.mbox h3{margin:0 0 10px;font:800 17px/1.3 var(--f-display)}
+.mbox .pnote{margin:0 0 10px;color:var(--muted);font-size:13px;line-height:1.5}
+.mbox ol{padding-left:20px;margin:0;display:grid;gap:6px;font-size:13.5px}
+.mbox code{font:500 12px var(--f-mono);background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:0 5px}
+.mbox .acts{justify-content:flex-end;margin-top:14px}
+.mbox video{width:100%;max-height:72vh;background:#000;border-radius:10px;display:block}
+.mbox .vtall{display:grid;place-items:center;background:#000;border-radius:10px}
+.mbox .vtall video{width:auto;max-width:100%;height:72vh}
+.mbox img.big{width:100%;border-radius:8px;display:block}
+.mbox .th4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.mbox .th4 div{position:relative;border-radius:8px;overflow:hidden;background:#000;aspect-ratio:3/4}
+.mbox .th4 img{width:100%;height:100%;object-fit:cover}
+.mbox .th4 b{position:absolute;left:5px;bottom:5px;background:rgba(0,0,0,.7);color:#fff;border-radius:5px;padding:0 6px;font:600 11px var(--f-mono)}
+.kmrow{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--line-2)}
+.kmrow:first-of-type{border-top:0}
+.kmrow .dot{width:9px;height:9px;border-radius:50%;margin-top:6px;flex:none;background:var(--muted)}
+.kmrow .dot.ok{background:var(--ok)} .kmrow .dot.warn{background:var(--warn)} .kmrow .dot.err{background:var(--err)}
+.kmrow b{font-weight:600;font-size:13.5px}
+.kmrow small{display:block;color:var(--muted);font-size:12.5px;margin-top:1px}
+.okc{color:var(--ok);font-size:13px;margin:6px 0 0}
+.okc:empty{display:none}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:10px 18px;border-radius:12px;z-index:90;display:none;max-width:min(560px,92vw);font-size:13.5px;font-weight:600;box-shadow:0 12px 32px -12px rgba(0,0,0,.5)}
+.toast.on{display:block}
+.toast.bad{background:var(--err);color:#fff}
+
+
+/* ================= Gọn lại 29/10 tối: màu Dựng Bài, 1 quyết định 1 dòng, thẻ video thu gọn, khung TikTok chuẩn ================= */
+.wrap{max-width:1600px;padding-block:14px 40px}
+.top{padding-bottom:12px}
+.top h1{font-size:20px;margin:0}
+.mark{width:34px;height:34px;border-radius:9px;font-size:17px;background:var(--brand);box-shadow:none}
+.chip{background:var(--surface);border-color:var(--line)}
+.panel{background:var(--surface);border-color:var(--line);box-shadow:none}
+.grid{gap:16px}
+.inp{background-color:var(--surface-2);border-color:var(--line)}
+.inp:hover{border-color:var(--edge)}
+.inp:focus{background-color:var(--surface-2)}
+.btn{background:#212121;border-color:var(--line)}
+.btn:hover{background:var(--hover);border-color:var(--edge)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.primary:hover{background:var(--brand-hover);border-color:var(--brand-hover)}
+.btn.run{padding:11px 30px;font-size:15px;border-radius:10px;box-shadow:none}
+.btn.run .key{background:#fff}
+.btn[disabled].primary{background:#212121;border-color:var(--line);color:var(--dim);opacity:1}
+.lnk{border:0;background:none;padding:2px 0;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--edge)}
+.lnk:hover{color:var(--ink)}
+.hint{font:500 12.5px/1.3 var(--f-body);color:var(--dim);letter-spacing:0;text-transform:none}
+
+/* đơn dựng */
+.fhead{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 2px}
+.fhead h2{margin:0;font:800 20px/1.2 var(--f-display)}
+.sec{padding:12px 20px;gap:9px;border-top:0}
+.sec > h3{margin:0;font:700 12px/1.3 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.sec > h3 label{cursor:pointer}
+.seg{gap:6px}
+.seg span{padding:7px 12px;font-size:13px;background:#212121;border-color:var(--line)}
+.seg label:hover span{border-color:var(--edge)}
+.seg input:checked + span{background:var(--brand-soft);border-color:var(--brand);color:#fff}
+.row.r21{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}
+.inl{display:flex;align-items:center;gap:10px;min-width:0}
+.inl > .lbl{flex:0 0 52px;white-space:nowrap;font-size:12.5px;font-weight:600;color:var(--muted)}
+.inl > .inp{flex:1;min-width:0}
+.cnt{position:relative;min-width:0}
+.cnt .inp{padding-right:52px}
+.cnt .count{position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none}
+.count{font:500 12px var(--f-body);font-variant-numeric:tabular-nums;color:var(--dim)}
+#mode_note{margin:0;font-size:12.5px;color:var(--dim)}
+.kgrid{margin-top:2px}
+.pathrow .inp{font-size:13.5px}
+.crumbs button{padding:3px 10px;font-size:12px;background:#212121;border-color:var(--line)}
+.crumbs .lab{font-size:12px;color:var(--dim)}
+.cgrid{grid-template-columns:repeat(auto-fill,minmax(84px,1fr));max-height:380px}
+.cbar{font-size:12.5px;gap:6px 10px}
+.cbar .warnt{color:var(--warn)}
+.cbar .dimt{color:var(--dim)}
+.cempty{background:var(--surface-2);border-color:var(--line)}
+details.them{border-top:1px solid var(--line-2);padding-top:10px;margin-top:2px}
+details.them summary{cursor:pointer;list-style:none;font-size:13px;font-weight:600;color:var(--muted);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+details.them summary::-webkit-details-marker{display:none}
+details.them summary::before{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);transition:transform .15s;margin:0 2px}
+details.them[open] summary::before{transform:rotate(45deg)}
+details.them summary:hover{color:var(--ink)}
+.them-in{display:grid;gap:10px;margin-top:10px}
+.runbar{gap:8px 16px;padding:12px 20px;justify-content:space-between;background:color-mix(in srgb,var(--surface) 94%,transparent);border-top-color:var(--line)}
+.runbar .switch{align-items:center;gap:10px;font-size:13.5px;font-weight:600}
+.runbar .switch .track{background:var(--edge)}
+.runbar .why,.runbar .runmsg{flex-basis:100%;margin:0;font-size:12.5px}
+.runbar .why{color:var(--dim)}
+.runbar .why:empty,.runbar .runmsg:empty{display:none}
+.runmsg.ok{color:var(--ok)} .runmsg.err{color:var(--err)} .runmsg.warn{color:var(--warn)}
+
+/* khung TikTok */
+.prev{gap:10px;padding:12px}
+.tabs{background:var(--surface-2);border-color:var(--line-2)}
+.tabs button[aria-selected="true"]{background:#262626;color:var(--ink);box-shadow:none}
+.phone{box-shadow:0 0 0 6px #000,0 0 0 7px var(--line)}
+.phone .tt{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.prev-ctl{gap:8px}
+.prev-ctl .pc{display:grid;grid-template-columns:60px minmax(0,1fr);align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--muted)}
+.prev-ctl .inp{padding:7px 10px;font-size:13px}
+.hook{left:11.11%;right:11.11%;top:15.6%}
+.sub-mau{left:11.11%;right:16.67%;top:52%}
+.ket{left:11.11%;right:16.67%;top:36%}
+.ket-none{left:11.11%;right:16.67%;top:40%}
+.loop{top:30%}
+
+/* hàng dựng */
+.queue{gap:10px}
+.qhead{padding:2px 2px 0}
+.qhead h2{font-size:17px}
+.qcount{font-size:12.5px;color:var(--dim)}
+.ds{display:grid;gap:8px}
+.empty{padding:22px 20px}
+.empty h3{font-size:15px}
+.empty p{font-size:13.5px}
+.don{padding:0;gap:0;display:block}
+.don .dh{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 14px;cursor:pointer;border-radius:var(--r);outline-offset:-2px}
+.don .dh:hover{background:#202020}
+.don.mo .dh{border-radius:var(--r) var(--r) 0 0}
+.don .mini{width:30px;height:53px;border-radius:5px;background:#0d0d0d center/cover no-repeat;border:1px solid var(--line-2)}
+.don .mini.trong{background:var(--surface-2);border-style:dashed}
+.don .dt{min-width:0}
+.don h3{font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.don .meta{font-size:12.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.don .moi{background:var(--gold);color:var(--gold-ink)}
+.dh-r{display:flex;align-items:center;gap:8px}
+.chev{display:inline-block;width:7px;height:7px;border-right:1.5px solid var(--dim);border-bottom:1.5px solid var(--dim);transform:rotate(45deg);margin:0 3px 3px;transition:transform .15s;flex:none}
+.don[data-mo="1"] .dh .chev{transform:rotate(-135deg);margin:3px 3px 0}
+.don .db{display:grid;gap:10px;padding:2px 14px 14px}
+.steps{display:flex}
+.steps i{height:4px}
+.callout{font-size:13px}
+.callout.info{background:var(--surface-2);border-color:var(--line-2);color:var(--muted)}
+.callout.gold .hint{color:var(--gold-text);opacity:.8}
+.plan{background:var(--surface-2);border-color:var(--line-2)}
+.plan h4{font:700 12px/1.2 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.scenes.th li{grid-template-columns:22px 30px minmax(0,1fr)}
+.scenes .d small{display:block;color:var(--dim);font-size:11.5px}
+.kq{display:grid;grid-template-columns:84px minmax(0,1fr);gap:14px;align-items:start}
+.kq .vthumb{width:84px}
+.kq .vthumb.trong{display:block;aspect-ratio:9/16;border-radius:8px;border:1px dashed var(--line)}
+.kq .info{display:grid;gap:8px;min-width:0}
+.facts{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:12.5px;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700}
+.badge.ok{background:var(--ok-soft);color:var(--ok)}
+.badge.warn{background:var(--warn-soft);color:var(--warn)}
+.capbox{margin:0;padding:9px 11px;border-radius:var(--r-s);background:var(--surface-2);border:1px solid var(--line-2);font-size:13px;line-height:1.5;white-space:normal}
+.capbox .ht{color:var(--brand-text)}
+.don .note{font-size:12.5px;color:var(--muted)}
+.note.warnt{color:var(--warn)}
+.acts{align-items:center;gap:6px}
+.acts .sp{flex:1}
+details.menu{position:relative}
+details.menu > summary{list-style:none;cursor:pointer;gap:6px}
+details.menu > summary::-webkit-details-marker{display:none}
+details.menu > summary .chev{margin:0 0 3px 2px}
+details.menu[open] > summary .chev{transform:rotate(-135deg);margin:3px 0 0 2px}
+.mlist{position:absolute;right:0;bottom:calc(100% + 6px);z-index:30;min-width:220px;display:grid;padding:5px;background:#202020;border:1px solid var(--edge);border-radius:10px;box-shadow:0 18px 40px -14px rgba(0,0,0,.8)}
+.mlist button{border:0;background:none;text-align:left;padding:8px 10px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink)}
+.mlist button:hover{background:var(--hover)}
+.mlist button.danger{color:var(--err)}
+.mlist hr{border:0;border-top:1px solid var(--line);margin:4px 2px}
+.fix{background:var(--surface-2);border-color:var(--line-2)}
+.quick button{background:#212121;border-color:var(--line)}
+.panel2{border-top:1px solid var(--line-2);padding-top:10px;display:grid;gap:8px}
+.panel2 h4{margin:0;font:700 12px/1.2 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:10px}
+.panel2 h4 span{display:flex;gap:12px;align-items:center;text-transform:none;letter-spacing:0;font-weight:600}
+.panel2 h4 a{font-size:12.5px}
+.mbox{background:#1c1c1c;border-color:var(--edge)}
+.toast{background:#262626;color:var(--ink);border:1px solid var(--edge)}
+
+/* ================= Bản 2.0 (30/10): logo xanh dương, thẻ "Video sắp dựng" khi hàng còn trống ================= */
+.mark{position:relative;background:linear-gradient(180deg,#346EE8 0%,#0A2C80 100%);box-shadow:0 0 0 2px #FFD600;color:#fff;font-weight:900}
+.mark span{position:absolute;right:-5px;bottom:-5px;width:15px;height:15px;border-radius:50%;background:#FFD600;color:#0C2C78;font:900 10px/15px var(--f-body);text-align:center;box-shadow:0 0 0 2px var(--bg)}
+.ver{display:inline-block;vertical-align:3px;margin-left:4px;padding:2px 7px;border-radius:6px;background:#16294f;border:1px solid #2c4f96;color:#9cc0ff;font:700 12px/1.2 var(--f-body);letter-spacing:.02em}
+.sap{padding:18px 20px 16px;display:grid;gap:16px}
+.sap-h{display:grid;gap:3px}
+.sap-h h3{margin:0;font:800 16px/1.25 var(--f-display)}
+.sap-h p{margin:0;font-size:12.5px;color:var(--dim)}
+.sap-in{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px 26px;align-items:start}
+.sap-th{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.sap-th span{width:46px;aspect-ratio:3/4;border-radius:7px;background:#0d1512 center/cover no-repeat;border:1px solid var(--line)}
+.sap-th .more{display:grid;place-items:center;font:600 12px var(--f-body);color:var(--muted);background:var(--surface-2)}
+.sap .kv{font-size:13px;gap:8px 14px;grid-template-columns:72px minmax(0,1fr)}
+.sap .kv dt{color:var(--dim);font-weight:600}
+.sap .kv dd .dim{color:var(--dim)}
+.sap .kv dd.pin{color:var(--brand-text)}
+.sap h4{margin:0 0 10px;font:700 12px/1.3 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sap-steps{list-style:none;margin:0;padding:0;display:grid;counter-reset:b}
+.sap-steps li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:2px 11px;position:relative;padding-bottom:13px;counter-increment:b}
+.sap-steps li::before{content:counter(b);grid-row:span 2;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font:700 11.5px var(--f-body);background:var(--surface-2);border:1px solid var(--edge);color:var(--muted)}
+.sap-steps li::after{content:"";position:absolute;left:11.5px;top:27px;bottom:3px;width:1px;background:var(--line)}
+.sap-steps li:last-child{padding-bottom:0}
+.sap-steps li:last-child::after{display:none}
+.sap-steps li.wait::before{border-color:#6b5a2b;color:var(--gold-text,#ffd27a)}
+.sap-steps b{font-size:13.5px;font-weight:700;line-height:24px}
+.sap-steps span{font-size:12.5px;color:var(--dim);line-height:1.4}
+.sap-ft{margin:0;font-size:12.5px;color:var(--dim);border-top:1px solid var(--line-2);padding-top:12px}
+/* chế độ Sửa tay trong cùng cửa sổ (2/11): nút chuyển chế độ trên đầu trang + khung Sửa tay phủ phần dưới đầu trang */
+a.btn{text-decoration:none;color:var(--ink)}
+.modes{display:inline-flex;gap:2px;padding:3px;margin-left:8px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+.modes button{display:inline-flex;align-items:center;gap:7px;border:0;background:transparent;color:var(--muted);font:700 13px/1 var(--f-body);padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.modes button:hover{color:var(--ink)}
+.modes button[aria-selected="true"]{background:var(--brand-soft);color:var(--brand-text)}
+.modes button:focus-visible{outline:2px solid var(--brand-text);outline-offset:1px}
+.modes .mx{display:inline-flex;align-items:center;gap:5px;font-weight:600;font-size:11.5px;color:#9cc0ff}
+.modes .mx:empty{display:none}
+.modes .mx::before{content:"";width:7px;height:7px;border-radius:50%;background:#9cc0ff;animation:nhap 1.2s ease-in-out infinite}
+body.tay{overflow:hidden}
+body.tay main.grid{display:none}
+.stview{position:fixed;left:0;right:0;bottom:0;top:var(--st-top,64px);z-index:5;background:var(--bg);border-top:1px solid var(--line)}
+.stview[hidden]{display:none}
+.stview iframe{display:block;width:100%;height:100%;border:0;background:var(--bg)}
+.runbtns{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-left:auto}
+.btn.tay{padding:11px 16px;font-size:14px;font-weight:700;border-radius:10px}
+@media (max-width:620px){.modes{margin-left:0}.modes button{padding:7px 10px}}
+body.chi-sua .modes,body.chi-sua #pc{display:none}   /* chỉ giữ trình sửa (3/11): bỏ nút chế độ + chip Premiere (chỉ dùng cho Dựng bằng Claude) */
+/* cột Video mới gọn (3/11): nhãn trái từng dòng, ô / nút thấp hơn, clip nhỏ hơn */
+.fhead{padding:12px 18px 0}
+.fhead h2{font-size:18px}
+.sec{padding:10px 18px}
+.sec.gon{gap:9px;padding-top:4px;padding-bottom:12px}
+.sec.sclip{gap:8px}
+.ln{display:grid;grid-template-columns:42px minmax(0,1fr);gap:8px;align-items:center;min-width:0}
+.ln > .lb{font-size:12.5px;font-weight:600;color:var(--muted);white-space:nowrap}
+.ln > label.lb{cursor:pointer}
+.lnote{margin-left:50px}
+.lnote:empty{display:none}
+#f .inp{padding:7px 10px;font-size:13.5px}
+#f textarea.inp{min-height:34px;line-height:1.4;resize:vertical;field-sizing:content;max-height:120px}
+#f .seg span{padding:6px 9px;font-size:12.5px}
+#kgrid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px 12px;margin:0}
+#kgrid .field{grid-template-columns:88px minmax(0,1fr);align-items:center;gap:6px}
+#kgrid .field > label{font-size:12px;line-height:1.2}
+#kgrid .inp{padding:5px 8px;font-size:12.5px}
+#f .row{gap:8px}
+#f .note{font-size:12px;color:var(--dim)}
+.inl2{display:flex;gap:8px;align-items:center;min-width:0}
+.inl2 .inp{flex:1;min-width:0}
+.cnt .count{font-size:10.5px;right:8px}
+.cnt .inp{padding-right:42px}
+.cgrid{grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:6px;max-height:212px}
+.ct{border-radius:8px}
+.ct .nm{padding:14px 5px 4px;font-size:10.5px;line-height:1.25}
+.ct .ck2{width:19px;height:19px;top:4px;left:4px;font-size:10px}
+.ct .pl{width:22px;height:22px;top:4px;right:4px}
+.crumbs button{padding:2px 9px}
+details.them{padding-top:8px;margin-top:0}
+.them-in{gap:8px;margin-top:8px}
+.runbar{padding:10px 18px;gap:6px 12px}
+.runbar .switch{font-size:13px}
+.btn.run{padding:10px 24px}
+.btn.tay{padding:10px 14px;font-size:13.5px}
+@media (max-width:560px){#f .row{grid-template-columns:minmax(0,1fr)}}
+/*CHON_THU_MUC_CSS*/
+
+/* ===== 3/11 chiều: sửa theo soi giao diện (màu lục bảo, nút đang chọn, menu Thêm, thanh Chạy, chế độ Sửa tay gọn) ===== */
+:root{--brand:#0f7a5a;--brand-hover:#128462;--brand-soft:#123a30;--brand-text:#86dcbd;--ok:#86dcbd;--ok-soft:#14261f;--focus:#14906b;--dim:#8f8f8f}
+.inp{border-color:#3d3d3d}
+.tabs button[aria-selected="true"]{background:var(--brand-soft);color:var(--brand-text);box-shadow:inset 0 0 0 1px #3d8f74}
+details.menu.xuong .mlist{bottom:auto;top:calc(100% + 6px)}
+.runbar{background:var(--surface);backdrop-filter:none;box-shadow:0 -10px 18px -10px rgba(0,0,0,.7)}
+body.tay .top{padding-bottom:6px}
+body.tay .wrap{padding-block:8px 0}
+body.tay .mark{width:28px;height:28px;font-size:15px}
+body.tay .top h1{font-size:17px}
+/* 3/11 chiều (soi giao diện còn lại): thẻ mất mp4 không hiện nút ▶ giả · cột xem phác giãn theo màn lớn · bớt xanh dương */
+.kq .vthumb.trong{display:grid;place-items:center;background:repeating-linear-gradient(135deg,#171717 0 8px,#1b1b1b 8px 16px);cursor:default}
+.kq .vthumb.trong::after{content:"mp4 đã mất";position:static;width:auto;height:auto;margin:0;border-radius:0;background:none;font:600 11px/1.3 var(--f-body);color:var(--err);text-align:center;padding:0 6px}
+.grid{grid-template-columns:minmax(380px,500px) clamp(262px,19vw,340px) minmax(380px,1fr)}
+.modes .mx,.xchip .dot{background:var(--gold)!important}
+</style>
+</head>
+<body class="notranslate" translate="no">
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="mark" aria-hidden="true">P<span>2</span></div>
+      <h1>POLY Cut <span class="ver">2.0</span></h1>
+      <nav class="modes" role="tablist" aria-label="Chế độ">
+        <button type="button" role="tab" data-mode="claude" aria-selected="true" title="Đặt đơn, Claude tự dựng trong Premiere">Dựng bằng Claude</button>
+        <button type="button" role="tab" data-mode="tay" aria-selected="false" title="Tự kéo cắt cảnh, sửa chữ, phụ đề rồi xuất bằng ffmpeg (không tốn lượt Claude, không cần Premiere)">✂ Sửa tay<span class="mx" id="mx"></span></button>
+      </nav>
+    </div>
+    <div class="right">
+      <button type="button" id="pc" class="chip" title="Premiere + bảng Poly Bridge"><span class="dot"></span><span>Đang xem Premiere…</span></button>
+      <button type="button" id="hc" class="chip" title="Kiểm máy"><span class="dot"></span><span>Đang kiểm Claude…</span></button>
+    </div>
+  </header>
+  <div id="banner"></div>
+
+  <main class="grid">
+    <!-- CỘT 1: ĐƠN DỰNG -->
+    <form id="f" class="panel" novalidate autocomplete="off">
+      <div class="fhead"><h2>Video mới</h2><button type="button" id="xoa" class="lnk">Đặt lại</button></div>
+
+      <!-- 3/11 anh: "bảng này làm gọn lại" -> nhãn nằm trái từng dòng, bỏ dòng tiêu đề + gợi ý (gợi ý vào ô / title), clip nhỏ hơn -->
+      <section class="sec sclip">
+        <div class="pathrow"><input id="thu_muc" class="inp" type="text" placeholder="Thư mục clip, vd E:\Video\..." spellcheck="false" aria-label="Thư mục clip"><button type="button" id="bPick" class="btn">Chọn thư mục</button></div>
+        <div class="crumbs" id="crumbs"></div>
+        <div id="clips"></div>
+        <div class="cbar" id="cbar"></div>
+      </section>
+
+      <section class="sec gon">
+        <div class="ln"><span class="lb">Video</span>
+          <div class="seg" role="radiogroup" aria-label="Loại video">
+            <label><input type="radio" name="loai" value="ban_ipad"><span>Bán iPad</span></label>
+            <label><input type="radio" name="loai" value="ban_laptop"><span>Bán laptop</span></label>
+            <label><input type="radio" name="loai" value="meo"><span>Mẹo / review</span></label>
+            <label><input type="radio" name="loai" value="vui"><span>Vui trong tiệm</span></label>
+          </div>
+        </div>
+        <div class="ln" id="may_box"><span class="lb">Máy</span>
+          <div class="row r21">
+            <input id="may" class="inp" type="text" placeholder="vd iPad Pro 12.9 M1 256GB" aria-label="Máy trong video">
+            <input id="gia" class="inp" type="text" placeholder="Giá, vd 13tr9" aria-label="Giá" title="Để trống thì video không có thẻ giá">
+          </div>
+        </div>
+        <div class="ln"><span class="lb">Dài</span>
+          <div class="seg" role="radiogroup" aria-label="Độ dài">
+            <label><input type="radio" name="do_dai" value="30-45"><span>30–45 giây</span></label>
+            <label><input type="radio" name="do_dai" value="45-60"><span>45–60 giây</span></label>
+            <label><input type="radio" name="do_dai" value="75-95"><span>75–95 giây</span></label>
+          </div>
+        </div>
+        <div class="ln"><span class="lb" title="Để trống thì Claude tự viết">Hook</span>
+          <div class="row">
+            <div class="cnt"><input id="hook1" class="inp" type="text" placeholder="Trống = Claude viết" aria-label="Hook dòng 1" title="Hook dòng 1 · để trống thì Claude tự viết"><span id="c1" class="count">0/20</span></div>
+            <div class="cnt"><input id="hook2" class="inp" type="text" placeholder="Dòng 2, in vàng" aria-label="Hook dòng 2"><span id="c2" class="count">0/22</span></div>
+          </div>
+        </div>
+        <div class="ln"><span class="lb">Giọng</span>
+          <div class="seg" role="radiogroup" aria-label="Giọng">
+            <label><input type="radio" name="giong_chon" value="loi_that"><span>Lời nói trong clip</span></label>
+            <label><input type="radio" name="giong_chon" value="ai"><span>Giọng đọc AI</span></label>
+          </div>
+        </div>
+        <div class="ln" id="ai_chon" hidden><span class="lb"></span>
+          <div class="inl2">
+            <select id="p_giong" class="inp" aria-label="Chọn giọng AI"></select>
+            <button type="button" id="bNghe" class="btn small">▶ Nghe thử</button>
+          </div>
+        </div>
+        <div class="ln" id="ai_box" hidden><span class="lb">Tốc độ</span>
+          <div class="seg" role="radiogroup" aria-label="Tốc độ đọc">
+            <label><input type="radio" name="giong_ai_toc" value="-5%"><span>Chậm</span></label>
+            <label><input type="radio" name="giong_ai_toc" value="+10%"><span>Vừa</span></label>
+            <label><input type="radio" name="giong_ai_toc" value="+20%"><span>Nhanh</span></label>
+          </div>
+        </div>
+        <p id="ai_note" class="note lnote" hidden>Claude viết lời đọc theo clip rồi tạo giọng. Muốn tự viết lời thì dán vào ô Dặn. Khi đăng nhớ bật nhãn nội dung AI.</p>
+        <div class="ln"><span class="lb">Kiểu</span>
+          <div class="seg" role="radiogroup" aria-label="Kiểu dựng">
+            <label><input type="radio" name="kieu_che_do" value="xoay_vong"><span>Claude xoay vòng</span></label>
+            <label><input type="radio" name="kieu_che_do" value="dung_gu"><span>Đúng gu kênh</span></label>
+            <label><input type="radio" name="kieu_che_do" value="tu_chon"><span>Tự chọn</span></label>
+          </div>
+        </div>
+        <p id="mode_note" class="note lnote"></p>
+        <div id="kgrid" class="kgrid lnote"></div>
+        <div class="ln"><label class="lb" for="ghi_chu">Dặn</label>
+          <textarea id="ghi_chu" class="inp" rows="1" placeholder="Dặn Claude (tuỳ chọn), vd: lấy cảnh test pin"></textarea>
+        </div>
+        <details class="them" id="them">
+          <summary>Tên video, nơi dựng <span id="them_tom" class="hint"></span></summary>
+          <div class="them-in">
+            <div class="ln"><span class="lb">Tên</span><input id="ten" class="inp" type="text" aria-label="Tên video"></div>
+            <div class="ln"><span class="lb">Dựng</span>
+              <div class="seg" role="radiogroup" aria-label="Dựng ở đâu">
+                <label><input type="radio" name="duong" value="premiere"><span>Trong Premiere</span></label>
+                <label><input type="radio" name="duong" value="may_chu"><span>ffmpeg, chỉ ra mp4</span></label>
+              </div>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <div class="runbar">
+        <label class="switch">
+          <input id="duyet_truoc" type="checkbox">
+          <span class="track" aria-hidden="true"></span>
+          <span title="Claude làm xong kế hoạch (cảnh, hook) thì dừng chờ anh duyệt rồi mới dựng">Duyệt kế hoạch trước</span>
+        </label>
+        <div class="runbtns">
+          <button type="button" id="tuDung" class="btn tay" title="Mở trình Sửa tay với các clip đang chọn (không chọn = cả thư mục). Hook, giá, máy, kiểu đã điền mang theo. Không cần Claude, không cần Premiere.">✂ Tự dựng tay</button>
+          <button type="submit" id="chay" class="btn primary run"><span class="key" aria-hidden="true"></span>Chạy</button>
+        </div>
+        <p id="why" class="why"></p>
+        <p id="runmsg" class="runmsg" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+
+    <!-- CỘT 2: XEM PHÁC -->
+    <aside class="panel prev" aria-label="Xem phác khung video">
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" id="tab_dau" aria-selected="true">Khung đầu</button>
+        <button type="button" role="tab" id="tab_cuoi" aria-selected="false">Khung cuối</button>
+      </div>
+      <div id="phone" class="phone" aria-hidden="true"></div>
+      <div class="prev-ctl">
+        <label class="pc"><span>Kiểu chữ</span><select id="p_chu" class="inp" data-axis="chu"></select></label>
+        <label class="pc"><span>Phụ đề</span><select id="p_phu_de" class="inp" data-axis="phu_de"></select></label>
+        <label class="pc"><span>Thẻ kết</span><select id="p_ket" class="inp" data-axis="ket"></select></label>
+        <label class="mini-toggle" title="Khung vàng là chỗ giao diện TikTok không che (theo kích thước 1080×1920)"><input id="p_safe" type="checkbox" checked> Hiện giao diện TikTok</label>
+      </div>
+    </aside>
+
+    <!-- CỘT 3: HÀNG DỰNG -->
+    <section class="queue" aria-label="Hàng dựng">
+      <div class="qhead"><h2>Hàng dựng</h2><span id="qcount" class="qcount"></span></div>
+      <div id="ds" class="ds"></div>
+    </section>
+  </main>
+</div>
+<section id="stView" class="stview" hidden aria-label="Sửa tay"><iframe id="stF" title="Sửa tay video"></iframe></section>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/*CHON_THU_MUC_JS*/
+/*KHUNG_TIKTOK_JS*/
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const enc = encodeURIComponent;
+
+/* ===== Bộ kiểu dựng (theo kieu_dung.json của bộ dựng) ===== */
+const KD = {
+  mo_dau:{t:'Mở đầu', v:{chu_zoom:'Zoom chậm, hook hiện ngay', dong_bang:'Đóng băng 0,5s', montage:'Montage 3 cảnh hay', hoi_truoc:'Câu hỏi trên nền mờ', punch_mo:'Bật zoom khung đầu'}, p:['chu_zoom','montage','punch_mo']},
+  chuyen_dong:{t:'Chuyển động', v:{zoom_xen_ke:'Zoom xen kẽ vào/ra', zoom_vao:'Zoom vào chậm', punch_nhip:'Cắt cận theo nhịp', pan_ngang:'Lia ngang nhẹ'}, p:['zoom_xen_ke','zoom_vao','punch_nhip']},
+  nhip:{t:'Nhịp', v:{nhanh:'Nhanh · ≤ 2,5s/cảnh', vua:'Vừa · ≤ 4s/cảnh'}, p:['nhanh','vua']},
+  chuyen_canh:{t:'Chuyển cảnh', v:{tron_poly:'Trộn Film Impact', cat_cung:'Cắt cứng', hoa_tan_nhanh:'Hòa tan nhanh', nhay_trang:'Chớp trắng', truot_ngang:'Trượt ngang', truot_doc:'Trượt dọc kiểu lướt', zoom_xuyen:'Zoom xuyên', lau_mem:'Lau mềm', mo_tron:'Mở tròn', mo_chuyen_dong:'Nhòe lia nhanh', vo_diem:'Vỡ điểm ảnh'}, p:['tron_poly','cat_cung','hoa_tan_nhanh','truot_ngang','zoom_xuyen','mo_tron']},
+  diem_nhan:{t:'Điểm nhấn', v:{khong:'Không', zoom_dap:'Đập zoom', chop_trang:'Chớp trắng', rung_nhip:'Rung nhẹ', glitch_rgb:'Glitch RGB'}, p:['khong','zoom_dap','rung_nhip','chop_trang']},
+  lop_phu:{t:'Lớp phủ', v:{khong:'Không', toi_vien:'Tối viền', loa_sang:'Lóa vàng ấm', hat_film:'Hạt film'}, p:['khong','toi_vien','loa_sang']},
+  am_nhan:{t:'Âm nhấn', v:{co:'Có (vút, bụp, ting)', khong:'Không'}, p:['co','khong'], m:['khong']},
+  thanh_tien_trinh:{t:'Thanh tiến trình', v:{khong:'Không', co:'Có, vàng trên cùng'}, p:['khong','co']},
+  bo_font:{t:'Bộ font', v:{poly_goc:'Be Vietnam Pro (gốc)', tiktok_dam:'Montserrat Black', cao_gon:'Anton + Barlow', cong_nghe:'Kanit công nghệ', vui_tron:'Baloo tròn vui'}, p:['poly_goc','tiktok_dam','cao_gon','cong_nghe','vui_tron']},
+  hoat_hinh:{t:'Chữ động', v:{mov:'Dựng sẵn (MOV)', keyframe:'Keyframe Premiere'}, p:['mov','keyframe'], m:[]},
+  chu:{t:'Kiểu chữ', v:{bong_bong:'Bong bóng xanh', toi_gian:'Tối giản', nhan_lon:'Nhãn lớn', hop_doi:'Hộp đôi', vang_pill:'Vàng + viên thuốc', the_bia:'Thẻ bìa máy', vien_den:'Viền đen', nen_xanh:'Khối xanh', dai_trang:'Dải trắng', vang_tieu_de:'Tiêu đề vàng'}},
+  phu_de:{t:'Phụ đề', v:{cum_ngan:'Cụm 1–3 từ nảy', ca_cau:'Cả câu, tô từ đang đọc'}},
+  ket:{t:'Thẻ kết', v:{the_comment:'Kêu comment', the_xanh:'Địa chỉ · nền xanh', the_den:'Địa chỉ · nền tối', vong_lap:'Vòng lặp', khong:'Không thẻ'}}
+};
+const GRID = ['mo_dau','chuyen_dong','nhip','chuyen_canh','diem_nhan','lop_phu','am_nhan','thanh_tien_trinh','bo_font','hoat_hinh'];
+const AXES = [...GRID, 'chu', 'phu_de', 'ket'];
+const GU = {chu:'bong_bong', phu_de:'cum_ngan', nhip:'nhanh', ket:'the_comment'};
+const LOAI = {ban_ipad:'Bán iPad', ban_laptop:'Bán laptop', meo:'Mẹo / review', vui:'Vui trong tiệm'};
+const DO_DAI = {'30-45':'30–45 giây', '45-60':'45–60 giây', '75-95':'75–95 giây'};
+const DUONG = {premiere:'Premiere', may_chu:'ffmpeg trên máy'};
+const GIONG = {loi_that:'Lời nói trong clip', giong_ai:'Giọng đọc AI'};
+// danh sách giọng AI (bản chép từ engine/giong-ds.json; app lấy bản trên máy qua /api/health khi có)
+let GIONG_DS = {"mac_dinh": "vn-adam", "ds": [{"id": "vn-adam-bua", "ten": "Adam bựa", "gioi": "nam", "mien": "miền Bắc", "cach": "tự nhiên", "noi_bat": 1, "nguon": "vieneu"}, {"id": "vn-truc-ly", "ten": "Trúc Ly", "gioi": "nữ", "mien": "miền Bắc", "cach": "tự nhiên", "noi_bat": 2, "nguon": "vieneu"}, {"id": "vn-thien-minh", "ten": "Thiện Minh", "gioi": "nam", "mien": "miền Bắc", "cach": "kể chuyện", "noi_bat": 3, "nguon": "vieneu"}, {"id": "vn-mai-anh", "ten": "Mai Anh", "gioi": "nữ", "mien": "miền Bắc", "cach": "tin tức", "noi_bat": 4, "nguon": "vieneu"}, {"id": "vn-hai-dang", "ten": "Hải Đăng", "gioi": "nam", "mien": "miền Bắc", "cach": "tự nhiên", "noi_bat": 5, "nguon": "vieneu"}, {"id": "vn-thuy-dung", "ten": "Thùy Dung", "gioi": "nữ", "mien": "miền Nam", "cach": "tin tức", "noi_bat": 6, "nguon": "vieneu"}, {"id": "vn-thien-tam-duc", "ten": "Thiền Tâm Đức", "gioi": "nam", "mien": "miền Bắc", "cach": "kể chuyện", "noi_bat": 7, "nguon": "vieneu"}, {"id": "vn-ngoc-huyen", "ten": "Ngọc Huyền", "gioi": "nữ", "mien": "miền Bắc", "cach": "tự nhiên", "noi_bat": 8, "nguon": "vieneu"}, {"id": "vn-quang-son", "ten": "Quang Sơn", "gioi": "nam", "mien": "miền Trung", "cach": "tự nhiên", "noi_bat": 9, "nguon": "vieneu"}, {"id": "vn-ngoc-tran", "ten": "Ngọc Trân", "gioi": "nữ", "mien": "miền Trung", "cach": "tự nhiên", "noi_bat": 10, "nguon": "vieneu"}, {"id": "vn-minh-duc", "ten": "Minh Đức", "gioi": "nam", "mien": "miền Bắc", "cach": "tin tức", "noi_bat": null, "nguon": "vieneu"}, {"id": "vn-pham-tuyen", "ten": "Phạm Tuyên", "gioi": "nam", "mien": "miền Bắc", "cach": "tự nhiên", "noi_bat": null, "nguon": "vieneu"}, {"id": "vn-thai-son", "ten": "Thái Sơn", "gioi": "nam", "mien": "miền Nam", "cach": "kể chuyện", "noi_bat": null, "nguon": "vieneu"}, {"id": "vn-xuan-vinh", "ten": "Xuân Vĩnh", "gioi": "nam", "mien": "miền Bắc", "cach": "tự nhiên", "noi_bat": null, "nguon": "vieneu"}, {"id": "vn-thanh-binh", "ten": "Thanh Bình", "gioi": "nam", "mien": "miền Bắc", "cach": "kể chuyện", "noi_bat": null, "nguon": "vieneu"}, {"id": "vn-ngoc-linh", "ten": "Ngọc Linh", "gioi": "nữ", "mien": "miền Bắc", "cach": "kể chuyện", "noi_bat": null, "nguon": "vieneu"}, {"id": "vn-doan-trang", "ten": "Đoan Trang", "gioi": "nữ", "mien": "miền Bắc", "cach": "tự nhiên", "noi_bat": null, "nguon": "vieneu"}, {"id": "vn-thuc-doan", "ten": "Thục Đoan", "gioi": "nữ", "mien": "miền Nam", "cach": "kể chuyện", "noi_bat": null, "nguon": "vieneu"}, {"id": "vn-minh-triet", "ten": "Minh Triết", "gioi": "nam", "mien": "miền Nam", "cach": "tin tức", "noi_bat": null, "nguon": "vieneu"}, {"id": "vn-my-duyen", "ten": "Mỹ Duyên", "gioi": "nữ", "mien": "miền Nam", "cach": "đọc truyện", "noi_bat": null, "nguon": "vieneu"}, {"id": "vn-quynh-anh", "ten": "Quỳnh Anh", "gioi": "nữ", "mien": "miền Bắc", "cach": "đọc truyện", "noi_bat": null, "nguon": "vieneu"}, {"id": "vn-duc-tri", "ten": "Đức Trí", "gioi": "nam", "mien": "miền Nam", "cach": "đọc truyện", "noi_bat": null, "nguon": "vieneu"}, {"id": "vn-kim-thanh", "ten": "Kim Thanh", "gioi": "nữ", "mien": "miền Nam", "cach": "đọc truyện", "noi_bat": null, "nguon": "vieneu"}, {"id": "vn-adam", "ten": "Adam", "gioi": "nam", "mien": "miền Nam", "cach": "tự nhiên", "noi_bat": null, "nguon": "vieneu"}, {"id": "vn-quoc-tuan", "ten": "Quốc Tuấn", "gioi": "nam", "mien": "miền Bắc", "cach": "tự nhiên", "noi_bat": null, "nguon": "vieneu"}, {"id": "nu", "ten": "Hoài My", "gioi": "nữ", "mien": "miền Bắc", "cach": "Microsoft, cần mạng", "nguon": "microsoft"}, {"id": "nam", "ten": "Nam Minh", "gioi": "nam", "mien": "miền Bắc", "cach": "Microsoft, cần mạng", "nguon": "microsoft"}]};
+const TOC = {'-5%':'chậm', '+10%':'vừa', '+20%':'nhanh'};
+const tenGiong = id => { const g = GIONG_DS.ds.find(x => x.id === id); return g ? g.ten + ' (' + g.gioi + ', ' + g.mien + ')' : id; };
+function veGiong(){   // ô chọn giọng: nhóm theo miền, giọng nổi bật lên đầu; VieNeu chưa cài thì khoá các giọng đó
+  const s = $('#p_giong'), co = !(S.health && S.health.giong && S.health.giong.vieneu === false);
+  const nhom = [['miền Nam', 'Miền Nam'], ['miền Bắc', 'Miền Bắc'], ['miền Trung', 'Miền Trung']];
+  // 4/11 anh: "giọng đọc ai chỉ lấy giọng phổ biến": chỉ hiện GIONG_PHO_BIEN (+ giọng đơn đang chọn nếu là giọng khác)
+  const PB = ['vn-adam', 'vn-adam-bua', 'vn-hai-dang', 'vn-truc-ly', 'vn-mai-anh', 'vn-thuy-dung', 'nu', 'nam'];
+  const hien = x => PB.includes(x.id) || x.id === F.giong_ai_ten;
+  const hang = x => PB.includes(x.id) ? PB.indexOf(x.id) : 99, vn = GIONG_DS.ds.filter(x => x.nguon === 'vieneu' && hien(x)).sort((a, b) => hang(a) - hang(b));
+  let h = nhom.map(([m, t]) => { const ds = vn.filter(x => x.mien === m); return ds.length ? `<optgroup label="${t}${co ? '' : ' (chưa cài)'}">${ds.map(x => `<option value="${x.id}"${co ? '' : ' disabled'}>${esc(x.ten)} · ${x.gioi} ${esc(x.mien)}, ${esc(x.cach)}</option>`).join('')}</optgroup>` : ''; }).join('');
+  h += `<optgroup label="Microsoft (cần mạng)">${GIONG_DS.ds.filter(x => x.nguon === 'microsoft' && hien(x)).map(x => `<option value="${x.id}">${esc(x.ten)} · ${x.gioi}, ${esc(x.mien)}</option>`).join('')}</optgroup>`;
+  if (s._h !== h) { s._h = h; s.innerHTML = h; }
+  if (!GIONG_DS.ds.some(x => x.id === F.giong_ai_ten) || (!co && F.giong_ai_ten.startsWith('vn-'))) F.giong_ai_ten = co ? GIONG_DS.mac_dinh : 'nu';
+  s.value = F.giong_ai_ten;
+}
+const CHE_DO = {xoay_vong:'Claude xoay vòng', dung_gu:'Đúng gu kênh', tu_chon:'Tự chọn từng mục'};
+const MODE_NOTE = {
+  xoay_vong:'Mỗi video một kiểu, không trùng 5 video gần nhất.',
+  dung_gu:'Bong bóng xanh, phụ đề cụm ngắn, nhịp nhanh, kêu comment, như các video top.',
+  tu_chon:'Mục để “Claude chọn” thì Claude tự bốc.'
+};
+const DIA_CHI = '125/16/26 Bùi Đình Túy, Bình Thạnh';
+const GOI = {max:'Max', pro:'Pro', team:'Team', enterprise:'Enterprise', free:'Free'};
+const PILL = {'dang-chay':['run','Đang dựng'], cho:['','Xếp hàng'], cho_duyet:['gold','Chờ anh duyệt'], xong:['ok','Xong'], loi:['err','Lỗi'], dung:['','Đã dừng'], moi:['','Mới']};
+const QUICK = ['Hook ngắn lại, mạnh hơn', 'Cắt còn khoảng 60 giây', 'Chữ phụ đề to hơn', 'Nhịp nhanh hơn', 'Đổi kiểu chữ hook', 'Bỏ cảnh có mặt khách', 'Thêm thẻ giá', 'Đổi thẻ kết sang mời ghé shop'];
+function choPhep(axis, duong){ const d = KD[axis], all = Object.keys(d.v); if (duong === 'premiere') return d.p || all; if (d.m) return d.m; return all; }
+
+/* ===== Trạng thái ===== */
+const store = {get(k, d){ try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch(e) { return d; } },
+               set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }};
+const MAC_DINH = () => ({thu_muc:'', clip:[], ten:'', loai:'ban_ipad', may:'', gia:'', hook1:'', hook2:'', do_dai:'75-95',
+  kieu_che_do:'xoay_vong', kieu:Object.fromEntries(AXES.map(a => [a, 'tu_dong'])), giong:'loi_that', giong_ai_ten:'vn-adam', giong_ai_toc:'+10%', duong:'premiere', ghi_chu:'', duyet_truoc:false});
+const NHAP = 'poly-video-nhap-v2';
+let F = MAC_DINH();
+(() => { const d = store.get(NHAP, null); if (d && typeof d === 'object') F = {...MAC_DINH(), ...d, kieu:{...MAC_DINH().kieu, ...(d.kieu || {})}, clip:Array.isArray(d.clip) ? d.clip : []}; })();
+const S = {mo:{}, menu:null, jobs:[], det:{}, ev:{}, health:null, prem:null, hangDung:'', list:null, listErr:'', tab:'dau', safe:true, ed:{}, fix:{}, fixOpen:{}, chon:{},
+           nk:{}, cd:{}, armed:null, seen:store.get('poly-video-da-xem', {}), fail:0, offset:0, lim:30, busy:false, ui:0};
+let tLuu = 0;
+function luuNhap(){ clearTimeout(tLuu); tLuu = setTimeout(() => store.set(NHAP, F), 300); }
+
+/* ===== Tiện ích ===== */
+async function api(path, body){
+  const r = await fetch(path, body === undefined ? {} : {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.err || ('Lỗi ' + r.status));
+  return j;
+}
+function setH(el, h){ if (el && el._h !== h) { el._h = h; el.innerHTML = h; return true; } return false; }
+function toast(t, bad){ const el = $('#toast'); el.textContent = t; el.className = 'toast on' + (bad ? ' bad' : ''); clearTimeout(toast.t); toast.t = setTimeout(() => el.className = 'toast', 3800); }
+function bao(t, loai){ const m = $('#runmsg'); m.textContent = t; m.className = 'runmsg' + (loai ? ' ' + loai : ''); clearTimeout(bao.t); if (t && loai === 'ok') bao.t = setTimeout(() => { if (m.textContent === t) bao('', ''); }, 8000); }
+const nowS = () => Date.now()/1000 + S.offset;
+function hm(t){ if (!t) return ''; const d = new Date(t*1000); return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0'); }
+function ngay(t){ if (!t) return ''; const d = new Date(t*1000), n = new Date(); return hm(t) + (d.toDateString() === n.toDateString() ? ' hôm nay' : ' ' + String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0')); }
+function dur(s){ s = Math.max(0, Math.floor(s)); const m = Math.floor(s/60), x = s%60; return m + ':' + String(x).padStart(2,'0'); }
+function giay(s){ if (s == null || isNaN(s)) return ''; s = Math.round(+s); return s < 60 ? s + ' giây' : Math.floor(s/60) + ' phút ' + String(s%60).padStart(2, '0') + ' giây'; }
+const so = x => String(Math.round(x * 10) / 10).replace('.', ',');
+const txt = v => v == null ? '' : Array.isArray(v) ? v.join(' ') : typeof v === 'object' ? Object.values(v).join(' · ') : String(v);
+const fileUrl = (p, v) => '/file?p=' + enc(p) + (v ? '&v=' + enc(v) : '');
+const thumbUrl = (p, t) => '/api/thumb?p=' + enc(p) + '&t=' + (t == null ? 1 : Math.max(0, Math.round(t * 10) / 10));
+const duoiPath = p => { const a = String(p || '').split(/[\\/]/).filter(Boolean); return a.length > 3 ? '…' + sepOf(p) + a.slice(-3).join(sepOf(p)) : String(p || ''); };
+const baseName = p => String(p || '').replace(/[\\/]+$/, '').split(/[\\/]/).pop() || String(p || '');
+const sepOf = p => String(p).includes('\\') || /^[A-Za-z]:/.test(p) ? '\\' : '/';
+function joinP(a, b){ if (!a) return b; if (/^([A-Za-z]:[\\/]|[\\/])/.test(b)) return b; return a.replace(/[\\/]+$/, '') + sepOf(a) + b; }
+function parentP(p){ const s = String(p || '').replace(/[\\/]+$/, ''); const i = Math.max(s.lastIndexOf('\\'), s.lastIndexOf('/')); if (i <= 0) return ''; let q = s.slice(0, i); if (/^[A-Za-z]:$/.test(q)) q += '\\'; return q; }
+const boDau = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D');
+const slug = s => boDau(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 48).replace(/-+$/, '');
+function tenThuMuc(){
+  let s = slug(F.ten.trim() || baseName(F.thu_muc) || LOAI[F.loai]) || 'video';
+  if (!/(20\d\d|\d{4})$/.test(s)) { const d = new Date(); s += '-' + String(d.getDate()).padStart(2, '0') + String(d.getMonth() + 1).padStart(2, '0'); }
+  return s;
+}
+function inline(s){ return esc(s).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/`([^`]+)`/g, '<code>$1</code>'); }
+async function chep(text, b){
+  const cu = b.textContent;
+  try { await navigator.clipboard.writeText(text); b.textContent = 'Đã chép'; }
+  catch(e) { const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); b.textContent = 'Đã chép'; } catch(e2) { b.textContent = 'Không chép được'; } ta.remove(); }
+  setTimeout(() => { b.textContent = cu; }, 1600);
+}
+function modal(html, cls){
+  const m = document.createElement('div'); m.className = 'modal';
+  m.innerHTML = `<div class="mbox ${cls || ''}">${html}</div>`;
+  document.body.appendChild(m);
+  const dong = () => { const v = $('video', m); if (v) try { v.pause(); } catch(e) {} m.remove(); };
+  m.addEventListener('click', e => { if (e.target === m || e.target.closest('[data-dong]')) dong(); });
+  return {m, dong};
+}
+
+/* ===== Claude + Premiere trên máy ===== */
+async function health(force){
+  try {
+    const h = await api('/api/health' + (force ? '?force=1' : ''));
+    S.health = h; if (h.premiere) { S.prem = h.premiere; premChip(); }
+    if (h.giong && Array.isArray(h.giong.ds) && h.giong.ds.length) { GIONG_DS = {mac_dinh: h.giong.mac_dinh || GIONG_DS.mac_dinh, ds: h.giong.ds}; }
+    veGiong();
+    const v = (h.version || '').replace(/\s*\(Claude Code\)/, '');
+    let cls = 'ok', t = 'Claude sẵn sàng', btn = '';
+    const tk = (h.tk && h.tk.email) || '', thieu = (h.san_sang || []).filter(x => x.can && !x.ok);
+    if (h.err || !h.claude) { cls = 'err'; t = 'Không thấy Claude Code'; }
+    else if (thieu.length) { cls = 'err'; t = 'Thiếu ' + thieu.map(x => x.ma === 'engine' ? 'bộ dựng' : x.ma === 'plugin' ? 'plugin poly-video' : x.ten).join(', '); }
+    else if (h.login === false) { cls = 'warn'; t = 'Chưa đăng nhập Claude'; btn = `<span class="btn small primary" data-login>Đăng nhập</span>`; }
+    else if (h.login == null) { cls = 'warn'; t = 'Chưa kiểm được đăng nhập'; }
+    const el = $('#hc'); el.className = 'chip ' + cls; el.title = 'Bấm để kiểm máy' + (v ? ' · Claude Code ' + v : '') + (tk ? ' · ' + tk : '');
+    setH(el, `<span class="dot"></span><span>${esc(t)}</span>${btn}`);
+    if ($('#kmL')) kmVe();
+    renderBanner(); veSap();
+    if (!F.thu_muc && !S.list && !S.listErr && h.thu_muc_clip) loadClips(h.thu_muc_clip, true);
+  } catch(e) { const el = $('#hc'); el.className = 'chip err'; setH(el, `<span class="dot"></span><span>Mất kết nối với app</span>`); }
+}
+function premChip(){
+  const p = S.prem || {}, el = $('#pc'); let cls = '', t = 'Premiere chưa mở', tk = '';
+  if (p.song && p.dang_nghe === false) t = 'Poly Bridge đang tạm dừng';
+  else if (p.song && p.dang_chay) { cls = 'run'; t = 'Premiere đang dựng'; }
+  else if (p.song) { cls = 'ok'; t = 'Premiere sẵn sàng'; }
+  if (p.song && p.project) tk = baseName(p.project);
+  el.className = 'chip ' + cls;
+  if (p.song && p.dang_nghe === false) cls = 'warn';
+  el.title = p.song ? 'Premiere ' + (p.premiere || '') + ' · bảng Poly Bridge ' + (p.plugin || '') + (p.project ? ' · đang mở ' + p.project : '') : 'App tự mở Premiere khi tới bước dựng. Bấm để xem thêm.';
+  if (tk) el.title += ' · đang mở ' + tk;
+  setH(el, `<span class="dot"></span><span>${esc(t)}</span>`);
+}
+function premDialog(){
+  const p = S.prem || {};
+  modal(`<h3>Premiere + bảng Poly Bridge</h3>
+    <p class="pnote">Tới bước dựng mà Premiere chưa mở thì app tự mở Premiere (kèm project gần nhất để bảng Poly Bridge tự lên) rồi dựng tiếp, anh không cần làm gì. Premiere văng giữa chừng cũng tự mở lại. Video “ffmpeg” không cần Premiere.</p>
+    <p class="pnote">Nếu thẻ video báo bảng Poly Bridge chưa chạy:</p>
+    <ol><li>Trong Premiere: menu <b>Window › UXP Plugins › Poly Bridge</b>.</li><li>Bảng ghi “đang nghe lệnh”. Đang tạm dừng thì bấm <b>Nghe lệnh</b>.</li><li>Bấm <b>Chạy tiếp</b> trên thẻ video.</li></ol>
+    <div class="kmrow" style="margin-top:14px"><span class="dot ${p.song && p.dang_nghe !== false ? 'ok' : 'warn'}"></span><div><b>Bây giờ</b><small>${esc(p.song ? 'Premiere đang mở' + (p.project ? ' · ' + p.project : '') + (p.dang_nghe === false ? ' · bảng đang tạm dừng' : ' · đang nghe lệnh') : 'Chưa thấy bảng Poly Bridge chạy')}</small></div></div>
+    <p class="pnote" style="margin-top:12px">Lúc Claude đang dựng: đừng tắt Premiere, đừng đóng bảng Poly Bridge. Anh vẫn làm project khác trong Premiere được, nhớ lưu.</p>
+    <div class="acts"><button class="btn primary" data-dong>Đóng</button></div>`);
+}
+async function login(b){
+  try { if (b) { b.textContent = 'Đang mở…'; }
+    await api('/api/login', {}); toast('Đã mở cửa sổ đăng nhập (cửa sổ đen + trình duyệt). Làm theo hướng dẫn trong đó, xong app tự nhận.');
+    clearInterval(login.t); let n = 0;
+    login.t = setInterval(async () => { n++; await health(true); if ((S.health && S.health.login) || n > 60) { clearInterval(login.t); if (S.health && S.health.login) toast('Đã đăng nhập Claude. Bấm Chạy được rồi.'); } }, 5000);
+  } catch(e) { toast(e.message, true); }
+}
+function kmVe(){
+  const h = S.health || {}, tk = h.tk || {}, L = $('#kmL'); if (!L) return;
+  const goi = tk.goi ? (GOI[String(tk.goi).toLowerCase()] || tk.goi) : '';
+  const row = (ok, ten, ghi) => `<div class="kmrow"><span class="dot ${ok === null ? 'warn' : ok ? 'ok' : 'err'}"></span><div><b>${esc(ten)}</b><small>${esc(ghi || '')}</small></div></div>`;
+  let html = row(!h.err && !!h.claude, 'Claude Code trên máy', h.err || (h.version || '').replace(/\s*\(Claude Code\)/, ''));
+  html += row(h.login === true ? true : h.login === false ? false : null, 'Tài khoản Claude',
+    h.login ? [tk.email || 'đã đăng nhập', goi && 'gói ' + goi, tk.to_chuc && !/'s Organization$/i.test(tk.to_chuc) && tk.to_chuc].filter(Boolean).join(' · ') + (tk.kieu === 'api_key' ? ' · đang dùng API key (tính tiền API, không dùng gói)' : '')
+      : h.login === false ? 'chưa đăng nhập' : 'chưa kiểm được');
+  for (const x of (h.san_sang || [])) html += row(x.ok ? true : x.can ? false : null, x.ten, x.ghi);
+  setH(L, html);
+  const b = $('#kmTk'); if (b && !b.dataset.cho && !b.dataset.chac) b.textContent = h.login ? 'Đổi tài khoản' : 'Đăng nhập';
+}
+function kiemMay(){
+  if ($('#kmL')) return;
+  const {m, dong} = modal(`<h3>Kiểm máy</h3>
+    <p class="pnote">Tài khoản Claude nào có gói Pro / Max đăng nhập vào cũng dựng được: bộ dựng, plugin poly-video và luật chung nằm trên máy này, mỗi lượt app tự nạp. Video dài nên dùng gói Max. Thiếu bộ dựng thì bấm đúp <code>CAI-DAT.bat</code> trong thư mục app (1 lần, cần mạng).</p>
+    <div id="kmL"></div><p class="err-txt" id="kmErr"></p><p class="okc" id="kmOk"></p>
+    <div class="acts"><button class="btn" id="kmKiem">Kiểm lại</button><button class="btn" id="kmTk">Đổi tài khoản</button><button class="btn primary" data-dong>Đóng</button></div>`);
+  $('#kmKiem', m).onclick = async e => { e.target.disabled = true; await health(true); e.target.disabled = false; };
+  $('#kmTk', m).onclick = e => doiTk(e.target, dong);
+  kmVe(); health(true);
+}
+async function doiTk(b, dong){
+  const h = S.health || {};
+  if (!h.login) { dong(); return login(); }
+  if (!b.dataset.chac) { b.dataset.chac = 1; b.textContent = 'Bấm lần nữa để đăng xuất ' + ((h.tk && h.tk.email) || 'tài khoản này'); setTimeout(() => { delete b.dataset.chac; kmVe(); }, 6000); return; }
+  delete b.dataset.chac; $('#kmErr').textContent = '';
+  try {
+    await api('/api/login', {doi: true});
+    b.dataset.cho = 1; b.disabled = true; b.textContent = 'Đang chờ đăng nhập…';
+    $('#kmOk').textContent = 'Đã mở cửa sổ đen: đăng xuất tài khoản cũ, trình duyệt mở ra thì chọn tài khoản mới. Xong app tự nhận.';
+    const cu = (h.tk && h.tk.email) || ''; let n = 0, daRa = false;
+    clearInterval(doiTk.t);
+    doiTk.t = setInterval(async () => { n++; await health(true); const x = S.health || {};
+      if (x.login === false) daRa = true;
+      const moi = x.login && ((x.tk && x.tk.email && x.tk.email !== cu) || daRa);
+      if (moi || n > 60) { clearInterval(doiTk.t); delete b.dataset.cho; b.disabled = false; kmVe();
+        if (moi && $('#kmOk')) $('#kmOk').textContent = 'Đã đổi sang ' + ((x.tk && x.tk.email) || 'tài khoản mới') + '. Bấm Chạy như thường.';
+        if (moi) toast('Đã đổi tài khoản Claude'); } }, 5000);
+  } catch(e) { $('#kmErr').textContent = e.message; kmVe(); }
+}
+function canRun(){ const h = S.health; return !h || (!h.err && h.claude && h.login !== false && !(h.san_sang || []).some(x => x.can && !x.ok)); }
+function renderBanner(){
+  const h = S.health; let html = '';
+  if (S.fail >= 2) html = `<div class="banner err"><p><b>Mất kết nối với app.</b> Bấm lại icon POLY Cut ngoài Desktop. Video đang dựng vẫn chạy ngầm.</p></div>`;
+  else if (h && (h.err || !h.claude)) html = `<div class="banner err"><p><b>Máy chưa có Claude Code.</b> Nhờ người cài giúp rồi bấm Kiểm lại.</p><button class="btn small" data-kiem>Kiểm lại</button></div>`;
+  else if (h && (h.san_sang || []).some(x => x.ma === 'engine' && !x.ok)) html = `<div class="banner err"><p><b>Chưa cài bộ dựng video.</b> Bấm đúp <b>CAI-DAT.bat</b> trong thư mục app (E:\\Tool\\poly-dung-video), chờ cửa sổ đen báo xong (khoảng 5–10 phút, cần mạng). Chỉ làm 1 lần.</p><button class="btn small" data-kiem>Kiểm lại</button></div>`;
+  else if (h && (h.san_sang || []).some(x => x.can && !x.ok)) { const x = h.san_sang.find(x => x.can && !x.ok);
+    html = `<div class="banner err"><p><b>Thiếu ${esc(x.ten)}</b> (${esc(x.ghi)}). Không có thì Claude không biết cách dựng video. Kiểm ổ E rồi bấm Kiểm lại.</p><button class="btn small" data-kiem>Kiểm lại</button></div>`; }
+  else if (h && h.login === false) html = `<div class="banner warn"><p><b>Claude Code trên máy chưa đăng nhập.</b> Bấm Đăng nhập, trình duyệt mở ra thì chọn tài khoản Claude của anh (gói Max). Chỉ làm 1 lần.</p><button class="btn small primary" data-login>Đăng nhập</button><button class="btn small" data-kiem>Kiểm lại</button></div>`;
+  setH($('#banner'), html);
+  updRun();
+}
+document.addEventListener('click', e => {
+  const l = e.target.closest('[data-login]'); if (l) { e.preventDefault(); e.stopPropagation(); login(l); return; }
+  const k = e.target.closest('[data-kiem]'); if (k) { k.textContent = 'Đang kiểm…'; health(true); }
+});
+$('#hc').onclick = e => { if (!e.target.closest('[data-login]')) kiemMay(); };
+$('#pc').onclick = premDialog;
+
+/* ===== Đơn dựng: clip ===== */
+async function pickFolder(){
+  const p = await CTM(F.thu_muc ? parentP(F.thu_muc) : '', F.thu_muc);   // bảng chọn thư mục trong app (3/11)
+  if (p) await loadClips(p);
+}
+async function loadClips(p, giu){
+  p = String(p || '').trim().replace(/^"+|"+$/g, '');
+  if (!p) { $('#thu_muc').classList.add('bad'); $('#thu_muc').focus(); return; }
+  setH($('#clips'), `<div class="cempty">Đang đọc thư mục…</div>`);
+  try {
+    const d = await api('/api/clip?thu_muc=' + enc(p));
+    const doi = d.thu_muc !== F.thu_muc;
+    S.list = d; S.listErr = ''; F.thu_muc = d.thu_muc;
+    const co = new Set(d.clip.map(c => c.ten));
+    F.clip = (doi && !giu) ? [] : F.clip.filter(t => co.has(t));
+    luuNhap();
+  } catch(e) { S.list = null; S.listErr = e.message; F.thu_muc = p; }
+  const tm = $('#thu_muc'); tm.value = F.thu_muc; tm.classList.remove('bad');
+  renderClips(); capNhatPhu();
+}
+function renderClips(){
+  const l = S.list, el = $('#clips');
+  if (!l) {
+    setH($('#crumbs'), '');
+    setH(el, S.listErr ? `<div class="cempty"><b>${esc(S.listErr)}</b><br>Gõ lại đường dẫn rồi Enter, hoặc bấm “Chọn thư mục”.</div>`
+      : `<div class="cempty">Bấm “Chọn thư mục”, hoặc dán đường dẫn rồi Enter.</div>`);
+    veChon(); return;
+  }
+  const up = parentP(l.thu_muc);
+  setH($('#crumbs'), (up ? `<button type="button" class="up" data-p="${esc(up)}" title="${esc(up)}">↑ Lên</button>` : '') + (l.thu_muc_con.length ? `<span class="lab">Thư mục con:</span>` + l.thu_muc_con.map(n => `<button type="button" data-p="${esc(joinP(l.thu_muc, n))}">${esc(n)}</button>`).join('') : ''));
+  if (!l.clip.length) setH(el, `<div class="cempty">Thư mục này chưa có clip video (.mov, .mp4…).${l.thu_muc_con.length ? ' Chọn 1 thư mục con ở trên.' : ''}</div>`);
+  else setH(el, `<div class="cgrid">` + l.clip.map(c => `<button type="button" class="ct" data-t="${esc(c.ten)}" title="${esc(c.ten)} · ${c.mb} MB">
+      <span class="ph0">${esc(c.ten.split('.').pop().toUpperCase())}</span><img loading="lazy" src="${thumbUrl(c.path, 1)}" alt="" onerror="this.remove()">
+      <span class="ck2"></span><span class="pl" data-x="${esc(c.path)}" title="Xem clip">▶</span>
+      <span class="nm"><b>${esc(c.ten.replace(/\.[^.]+$/, ''))}</b><span>${c.giay != null ? so(c.giay) + 's · ' : ''}${c.mb >= 1024 ? so(c.mb / 1024) + ' GB' : Math.round(c.mb) + ' MB'}</span></span></button>`).join('') + `</div>`);
+  veChon();
+}
+$('#crumbs').addEventListener('click', e => { const b = e.target.closest('button[data-p]'); if (b) loadClips(b.dataset.p); });
+$('#clips').addEventListener('click', e => {
+  const pl = e.target.closest('.pl'); if (pl) { e.stopPropagation(); return xemClip(pl.dataset.x); }
+  const b = e.target.closest('.ct'); if (!b) return;
+  const t = b.dataset.t, i = F.clip.indexOf(t);
+  if (i >= 0) F.clip.splice(i, 1); else F.clip.push(t);
+  luuNhap(); veChon();
+});
+$('#cbar').addEventListener('click', e => {
+  if (e.target.id === 'bBo') { F.clip = []; luuNhap(); veChon(); }
+  if (e.target.id === 'bHet' && S.list) { F.clip = S.list.clip.map(c => c.ten); luuNhap(); veChon(); }
+});
+function chonClips(){ const l = S.list; if (!l) return []; return F.clip.map(t => l.clip.find(c => c.ten === t)).filter(Boolean); }
+function clipsDung(){ const l = S.list; if (!l) return []; const c = chonClips(); return c.length ? c : l.clip; }
+function veChon(){
+  const l = S.list;
+  $$('#clips .ct').forEach(b => { const i = F.clip.indexOf(b.dataset.t); b.classList.toggle('on', i >= 0); b.querySelector('.ck2').textContent = i >= 0 ? i + 1 : ''; });
+  if (!l || !l.clip.length) { setH($('#cbar'), ''); vePhac(); updRun(); return; }
+  const ds = clipsDung(), tong = ds.reduce((s, c) => s + (c.giay || 0), 0), n = F.clip.length, lo = +(F.do_dai.split('-')[0]);
+  let h = `<span>${n ? `<b>${n}/${l.clip.length}</b> clip đã chọn` : `Dùng cả <b>${l.clip.length}</b> clip`}${tong ? `, ${giay(tong)} quay` : ''}</span>` + (n || (tong && tong < +(F.do_dai.split('-')[0])) ? '' : `<span class="dimt">· bấm clip để chọn riêng</span>`);
+  if (tong && tong < lo) h += `<span class="warnt">ngắn hơn độ dài đã chọn</span>`;
+  h += `<span class="sp"></span>` + (n ? `<button type="button" class="lnk" id="bBo">Bỏ chọn</button>` : '');
+  setH($('#cbar'), h);
+  vePhac(); updRun();
+}
+function xemClip(p){
+  const c = (S.list && S.list.clip.find(x => x.path === p)) || {ten: baseName(p)};
+  const g = c.giay || 8, moc = [0.1, 0.3, 0.55, 0.8].map(x => Math.max(0.5, g * x));
+  const {m} = modal(`<h3>${esc(c.ten)}${c.giay ? ` <span class="count">· ${so(c.giay)} giây</span>` : ''}</h3>
+    <div class="vtall"><video controls autoplay muted playsinline src="${fileUrl(p)}"></video></div>
+    <p class="pnote" id="vmErr" hidden style="margin-top:10px">Máy này chưa phát được clip này trong app (thường là clip iPhone HEVC). Claude vẫn đọc được bình thường. Ảnh khung trong clip:</p>
+    <div class="th4" id="vmTh" hidden>${moc.map(t => `<div><img src="${thumbUrl(p, t)}" alt=""><b>${so(t)}s</b></div>`).join('')}</div>
+    <div class="acts"><button class="btn primary" data-dong>Đóng</button></div>`, 'wide');
+  const v = $('video', m); v.onerror = () => { v.parentElement.remove(); $('#vmErr', m).hidden = false; $('#vmTh', m).hidden = false; };
+}
+
+/* ===== Đơn dựng: form ===== */
+function napForm(){
+  for (const k of ['ten', 'may', 'gia', 'hook1', 'hook2', 'ghi_chu']) { const el = $('#' + k); if (el.value !== (F[k] || '')) el.value = F[k] || ''; }
+  const tm = $('#thu_muc'); if (document.activeElement !== tm) tm.value = F.thu_muc || '';
+  $('#duyet_truoc').checked = !!F.duyet_truoc;
+  const gc = $(`input[name="giong_chon"][value="${F.giong === 'giong_ai' ? 'ai' : 'loi_that'}"]`); if (gc) gc.checked = true;
+  veGiong();
+  for (const n of ['loai', 'do_dai', 'kieu_che_do', 'giong_ai_toc', 'duong']) { const r = $(`input[name="${n}"][value="${F[n]}"]`); if (r) r.checked = true; }
+  veKieu(); capNhatPhu();
+}
+function veKieu(){
+  let h = '';
+  for (const a of GRID) {
+    const ok = choPhep(a, F.duong);
+    if (F.kieu[a] !== 'tu_dong' && !ok.includes(F.kieu[a])) F.kieu[a] = 'tu_dong';
+    if (ok.length <= 1) continue;
+    h += `<div class="field"><label for="k_${a}">${esc(KD[a].t)}</label><select class="inp${F.kieu[a] !== 'tu_dong' ? ' pinned' : ''}" id="k_${a}" data-axis="${a}"><option value="tu_dong">Claude chọn</option>${ok.map(v => `<option value="${v}"${F.kieu[a] === v ? ' selected' : ''}>${esc(KD[a].v[v])}</option>`).join('')}</select></div>`;
+  }
+  setH($('#kgrid'), h);
+  for (const a of ['chu', 'phu_de', 'ket']) {
+    const s = $('#p_' + a);
+    if (!s.options.length) s.innerHTML = `<option value="tu_dong">Claude chọn</option>` + Object.entries(KD[a].v).map(([v, t]) => `<option value="${v}">${esc(t)}</option>`).join('');
+    s.value = F.kieu[a] in KD[a].v ? F.kieu[a] : 'tu_dong'; s.classList.toggle('pinned', s.value !== 'tu_dong');
+  }
+}
+function capNhatPhu(){
+  const t = tenThuMuc(), ra = (S.health && S.health.thu_muc_ra) || 'E:\\Tool\\poly-edit', noi = joinP(ra, t) + sepOf(ra);
+  $('#chay').title = 'Claude đọc clip, lưu video vào ' + noi + ' và gửi lệnh vào Premiere. Không cài gì, không đăng TikTok.';
+  const n1 = [...F.hook1].length, n2 = [...F.hook2].length;
+  $('#c1').textContent = n1 + '/20'; $('#c1').classList.toggle('over', n1 > 20);
+  $('#c2').textContent = n2 + '/22'; $('#c2').classList.toggle('over', n2 > 22);
+  const ban = F.loai === 'ban_ipad' || F.loai === 'ban_laptop';
+  $('#may_box').hidden = !ban;
+  $('#them_tom').textContent = [F.ten.trim(), F.duong === 'premiere' ? 'dựng trong Premiere' : 'ffmpeg, chỉ ra mp4'].filter(Boolean).join(', ');
+  $('#ai_note').hidden = $('#ai_box').hidden = $('#ai_chon').hidden = F.giong !== 'giong_ai';
+  $('#mode_note').textContent = MODE_NOTE[F.kieu_che_do] || '';
+  $('#kgrid').hidden = F.kieu_che_do !== 'tu_chon';
+  $('#ten').placeholder = 'Trống thì lấy tên thư mục: ' + (baseName(F.thu_muc) || '');
+  $$('select[data-axis]').forEach(s => s.classList.toggle('pinned', s.value !== 'tu_dong'));
+  vePhac(); updRun();
+}
+function datCheDo(m){
+  F.kieu_che_do = m;
+  if (m === 'xoay_vong') for (const a of AXES) F.kieu[a] = 'tu_dong';
+  if (m === 'dung_gu') { for (const a of AXES) F.kieu[a] = 'tu_dong'; Object.assign(F.kieu, GU); }
+  napForm(); luuNhap();
+}
+$('#f').addEventListener('input', e => {
+  const el = e.target;
+  if (['ten', 'may', 'gia', 'hook1', 'hook2', 'ghi_chu'].includes(el.id)) { F[el.id] = el.value; capNhatPhu(); luuNhap(); }
+  if (el.id === 'thu_muc') el.classList.remove('bad');
+});
+document.addEventListener('change', e => {
+  const el = e.target; if (!el.closest('#f') && !el.closest('.prev')) return;
+  if (el.type === 'radio') {
+    if (el.name === 'kieu_che_do') return datCheDo(el.value);
+    if (el.name === 'giong_chon') { F.giong = el.value === 'ai' ? 'giong_ai' : 'loi_that'; if (S.audio) S.audio.pause(); }
+    else { F[el.name] = el.value; if (el.name === 'duong') veKieu(); if (el.name === 'do_dai') veChon(); }
+  } else if (el.id === 'duyet_truoc') F.duyet_truoc = el.checked;
+  else if (el.id === 'p_giong') { F.giong_ai_ten = el.value; if (S.audio) { S.audio.pause(); $('#bNghe').textContent = '▶ Nghe thử'; } }
+  else if (el.matches('select[data-axis]')) {
+    const a = el.dataset.axis; F.kieu[a] = el.value;
+    if (a === 'ket') S.tab = 'cuoi'; else if (a === 'chu' || a === 'phu_de') S.tab = 'dau';
+    if (F.kieu_che_do === 'dung_gu' && GU[a] && GU[a] !== el.value) { F.kieu_che_do = 'tu_chon'; const r = $('input[name="kieu_che_do"][value="tu_chon"]'); if (r) r.checked = true; }
+  } else if (el.id === 'p_safe') { S.safe = el.checked; vePhac(); return; }
+  else return;
+  capNhatPhu(); luuNhap();
+});
+$('#thu_muc').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); loadClips($('#thu_muc').value); } });
+$('#thu_muc').addEventListener('change', () => { const v = $('#thu_muc').value.trim(); if (v && v !== F.thu_muc) loadClips(v); });
+$('#bPick').onclick = pickFolder;
+$('#bNghe').onclick = async () => {   // nghe thử giọng AI đang chọn (server tạo 1 câu mẫu bằng bộ dựng, có rồi thì dùng lại)
+  const b = $('#bNghe'), cu = '▶ Nghe thử';
+  if (S.audio && !S.audio.paused) { S.audio.pause(); b.textContent = cu; return; }
+  b.disabled = true; b.textContent = 'Đang tạo giọng…';
+  try {
+    const r = await api('/api/giong-thu', {giong: F.giong_ai_ten, toc_do: F.giong_ai_toc});
+    S.audio = new Audio(r.url); S.audio.onended = () => { b.textContent = cu; };
+    await S.audio.play(); b.textContent = '■ Dừng nghe';
+  } catch(e) { toast(e.message, true); b.textContent = cu; }
+  finally { b.disabled = false; }
+};
+$('#xoa').onclick = () => { const tm = F.thu_muc; F = MAC_DINH(); F.thu_muc = tm; napForm(); veChon(); luuNhap(); bao('', ''); };
+for (const [id, tab] of [['#tab_dau', 'dau'], ['#tab_cuoi', 'cuoi']]) $(id).addEventListener('click', () => { S.tab = tab; vePhac(); });
+function vePhac(){
+  const p = $('#phone');
+  $('#tab_dau').setAttribute('aria-selected', S.tab === 'dau'); $('#tab_cuoi').setAttribute('aria-selected', S.tab === 'cuoi');
+  const ds = clipsDung(), c = S.tab === 'dau' ? ds[0] : ds[ds.length - 1];
+  let h = c ? `<img class="bgi" src="${thumbUrl(c.path, S.tab === 'dau' ? 1 : Math.max(0.5, (c.giay || 2) - 1))}" alt="" onerror="this.remove()">` : '<div class="dev"></div>';
+  if (F.kieu.thanh_tien_trinh === 'co') h += '<span class="pbar0"></span>';
+  if (S.tab === 'dau') {
+    const chonChu = F.kieu.chu === 'tu_dong', chu = chonChu ? 'bong_bong' : F.kieu.chu;
+    const ph = !F.hook1.trim() && !F.hook2.trim();
+    const t1 = esc(F.hook1.trim() || 'Hook dòng 1'), t2 = esc(F.hook2.trim() || (ph ? 'dòng 2 nổi bật?' : ''));
+    const L1 = c2 => `<span class="l1${c2 ? ' ' + c2 : ''}">${t1}</span>`, L2 = c2 => t2 ? `<span class="l2${c2 ? ' ' + c2 : ''}">${t2}</span>` : '';
+    let hk;
+    if (chu === 'bong_bong') hk = `<div class="bub khoi">${L1()}${L2()}</div>`;
+    else if (chu === 'nen_xanh') hk = `<div class="box khoi">${L1()}${L2()}</div>`;
+    else if (chu === 'vien_den') hk = L1('stroke') + L2('stroke');
+    else if (chu === 'hop_doi') hk = L1() + L2('khoi');
+    else if (chu === 'nhan_lon') hk = L1() + L2() + '<span class="spark" style="right:2%;top:-6%">✦</span><span class="spark" style="left:4%;bottom:-4%;font-size:3.4cqw">✦</span>';
+    else if (chu === 'the_bia') hk = `<span class="tag">${F.loai === 'ban_laptop' ? 'LAPTOP' : 'MÁY ĐẸP'}</span>${L1('khoi')}<span class="bar">${esc(F.may.trim() ? F.may.trim().slice(0, 34) : 'THÔNG SỐ MÁY')}</span>`;
+    else hk = L1() + L2();
+    h += `<div class="hook k-${chu}${ph ? ' ph' : ''}">${hk}</div>`;
+    h += F.kieu.phu_de === 'ca_cau' ? '<div class="sub-mau cau">PHỤ ĐỀ CẢ CÂU, <span class="y">TỪ ĐANG ĐỌC</span> TÔ VÀNG</div>'
+      : '<div class="sub-mau cum"><span>PHỤ ĐỀ </span><span class="y">IN HOA</span></div>';
+  } else {
+    const k = F.kieu.ket === 'tu_dong' ? 'the_comment' : F.kieu.ket;
+    if (k === 'khong') h += '<div class="ket-none">Không có thẻ kết. Video dừng ở cảnh cuối.</div>';
+    else {
+      if (k === 'vong_lap') h += '<div class="loop"></div>';
+      h += `<div class="ket k-${k}${k === 'the_comment' || k === 'the_xanh' ? ' khoi' : ''}">` + (k === 'the_comment'
+        ? '<span class="t1">Anh em cần hỏi gì để lại comment</span><span class="nut">Poly hỗ trợ nha ♥</span>'
+        : `<span class="t1">Ghé Poly test máy nha</span><span class="t2">${esc(DIA_CHI)}</span>`) + '</div>';
+    }
+  }
+  if (S.safe) h += khungTikTok();
+  setH(p, h);
+}
+function khungTikTok(){   // giao diện TikTok (vẽ phác) + vùng an toàn: dev/_khung-tiktok.js
+  const cap1 = ((F.hook1 + ' ' + F.hook2).trim() || 'Caption Claude viết khi dựng xong');
+  const tag = F.loai === 'ban_laptop' ? '#polystore #laptop #xuhuong' : '#polystore #ipad #xuhuong';
+  return khungTT('tiktok', {cap: cap1, tag});
+}
+function coKqGon(kq) { return !!(kq && kq.mp4); }   // thẻ có kết quả + mp4: dòng tóm tắt đã đủ, khỏi in lại câu cuối của Claude
+function updRun(){
+  const b = $('#chay'); if (S.busy) return;
+  const ok = canRun(), co = !!(S.list && S.list.clip.length);
+  b.disabled = !ok;
+  const h = S.health, p = S.prem || {};
+  let t = '';
+  if (!ok) t = h && h.login === false ? 'Chưa đăng nhập Claude, bấm Đăng nhập ở trên cùng.' : 'Máy chưa sẵn sàng, xem thông báo trên cùng.';
+  else if (!co) t = S.list ? 'Thư mục này chưa có clip video.' : 'Chọn thư mục clip trước.';
+  else if (S.jobs.some(j => GDS(j) === 'dang-chay')) t = 'Đang có video khác dựng, video này sẽ xếp hàng.';
+  else if (F.duong === 'premiere' && p.song && p.dang_nghe === false) t = 'Bảng Poly Bridge đang tạm dừng: bấm Nghe lệnh trong bảng trước bước dựng.';
+  else if (F.duong === 'premiere' && !p.song) t = 'Premiere chưa mở: tới bước dựng app tự mở.';
+  setH($('#why'), esc(t));
+  veSap();
+}
+$('#f').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (S.busy) return;
+  const go = ($('#thu_muc').value || '').trim().replace(/^"+|"+$/g, '');
+  if (go && go !== F.thu_muc) { await loadClips(go); bao('Đã mở thư mục vừa gõ. Xem lại clip rồi bấm Chạy lần nữa.', 'warn'); return; }
+  if (!F.thu_muc || !S.list) { $('#thu_muc').classList.add('bad'); $('#thu_muc').focus(); bao('Chọn thư mục clip trước đã.', 'err'); return; }
+  if (!S.list.clip.length) { bao('Thư mục này chưa có clip video.', 'err'); return; }
+  S.busy = true; $('#chay').disabled = true; bao('Đang giao cho Claude…', '');
+  try {
+    const r = await api('/api/run', {...F, clip: F.clip.slice()});
+    bao(r.cho ? 'Đã xếp hàng, xong video đang dựng thì tới video này.' : 'Đã giao cho Claude, xem ở Hàng dựng bên phải.', 'ok');
+    Object.assign(F, {ten:'', may:'', gia:'', hook1:'', hook2:'', ghi_chu:'', clip:[]}); napForm(); veChon(); luuNhap();
+    try { if (Notification.permission === 'default') Notification.requestPermission(); } catch(x) {}
+    await loadJobs();
+    const c = document.querySelector(`.don[data-id="${r.id}"]`); if (c) c.scrollIntoView({block:'nearest', behavior:'smooth'});
+  } catch(err) { bao(err.message, 'err'); }
+  finally { S.busy = false; updRun(); }
+});
+
+/* ===== Hàng dựng ===== */
+const GDS = j => j.giai_doan || j.status;
+const NHOM = {'dang-chay':0, cho:1, cho_duyet:2, loi:2, dung:3, xong:4, moi:5};
+function sapXep(ds){
+  return ds.slice().sort((a, b) => {
+    const ga = GDS(a), gb = GDS(b), na = NHOM[ga] ?? 5, nb = NHOM[gb] ?? 5;
+    if (na !== nb) return na - nb;
+    if (ga === 'cho') { const va = a.viec && a.viec !== 'dựng video' ? 0 : 1, vb = b.viec && b.viec !== 'dựng video' ? 0 : 1; return va - vb || (a.cho_luc || a.created || 0) - (b.cho_luc || b.created || 0); }
+    return (b.ended || b.started || b.created || 0) - (a.ended || a.started || a.created || 0);
+  });
+}
+function unseen(j){ return ['xong', 'cho_duyet', 'loi'].includes(GDS(j)) && j.ended && S.seen[j.id] !== j.ended; }
+function markSeen(j){ if (!unseen(j)) return; if (S.mo[j.id] == null) S.mo[j.id] = true; S.seen[j.id] = j.ended; store.set('poly-video-da-xem', S.seen); api('/api/job/' + j.id + '/xem', {}).catch(() => {}); }
+let dangTai = null, taiLai = false;
+function loadJobs(){   // 1 lượt tải 1 lúc: đang tải mà có ai gọi thì tải thêm 1 lượt nữa sau đó (không ghi đè dữ liệu mới bằng dữ liệu cũ)
+  if (dangTai) { taiLai = true; return dangTai; }
+  dangTai = (async () => { try { do { taiLai = false; await loadJobs1(); } while (taiLai); } finally { dangTai = null; } })();
+  return dangTai;
+}
+async function loadJobs1(){
+  try {
+    const r = await api('/api/jobs'); if (S.fail) { S.fail = 0; renderBanner(); }
+    if (r.ui) { if (!S.ui) S.ui = r.ui; else if (r.ui !== S.ui && canReload()) { location.reload(); return; } }
+    if (r.premiere) { S.prem = r.premiere; premChip(); }
+    S.hangDung = r.hang_dung || '';
+    const old = new Map(S.jobs.map(x => [x.id, GDS(x)]));
+    S.jobs = sapXep(r.jobs || []);
+    S.jobs.forEach(x => { if (old.get(x.id) === 'dang-chay' && x.status !== 'dang-chay') notify(x); });
+    await taiChiTiet();
+    veHang(); updRun();
+  } catch(e) { S.fail++; if (S.fail === 2) renderBanner(); }
+}
+function canReload(){
+  const a = document.activeElement;
+  if (a && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA' || a.tagName === 'SELECT')) return false;
+  if ($('.modal')) return false;
+  return !S.jobs.some(j => {
+    const g = GDS(j), d = S.det[j.id] && S.det[j.id].data;
+    if (S.fixOpen[j.id] && (S.fix[j.id] || '').trim() && g !== 'dang-chay') return true;
+    if (g === 'cho_duyet' && S.ed[j.id] && (S.ed[j.id].sua || (S.ed[j.id].ghi_chu || '').trim())) return true;
+    const c = S.chon[j.id];
+    return !!(d && (d.hoi || []).length && c && c.luot === d.hoi_luot && Object.keys(c.c).length);
+  });
+}
+function chonCua(j, d){   // lựa chọn câu hỏi của đúng lượt đang hỏi (lượt mới hỏi câu khác thì bắt đầu lại)
+  let c = S.chon[j.id];
+  if (!c || c.luot !== d.hoi_luot) c = S.chon[j.id] = {luot: d.hoi_luot, c: {}};
+  return c.c;
+}
+function quen(id){ delete S.det[id]; delete S.ed[id]; delete S.fix[id]; delete S.fixOpen[id]; delete S.chon[id]; delete S.ev[id]; delete S.nk[id]; delete S.cd[id]; }
+const sigList = j => [j.status, j.giai_doan, j.ended, j.started, j.n_luot, j.cho_luc].join('|');
+async function taiChiTiet(){
+  const can = S.jobs.slice(0, S.lim).filter(j => { const d = S.det[j.id]; return !d || d.sig !== sigList(j) || GDS(j) === 'dang-chay' || (d.t && nowS() - d.t > 60); });
+  for (let i = 0; i < can.length; i += 6) {
+    await Promise.all(can.slice(i, i + 6).map(async j => {
+      try { const d = await api('/api/job/' + j.id + '?ev=0'); S.offset = d.now - Date.now()/1000; S.det[j.id] = {data: d, sig: sigList(j), t: nowS()}; } catch(e) {}
+      if (S.nk[j.id]) await taiNhatKy(j.id);
+    }));
+  }
+}
+const nkDang = {};
+function taiNhatKy(id){
+  if (!nkDang[id]) nkDang[id] = taiNhatKy1(id).finally(() => { delete nkDang[id]; });
+  return nkDang[id];
+}
+async function taiNhatKy1(id){
+  const e = S.ev[id] || (S.ev[id] = {list: [], next: 0, gen: ''});
+  try {
+    const d = await api('/api/job/' + id + '?since=' + e.next);
+    if (e.gen && d.gen !== e.gen) { e.list = []; e.next = 0; e.gen = ''; return taiNhatKy1(id); }
+    e.gen = d.gen; e.list.push(...d.events); e.next = d.next;
+  } catch(x) {}
+}
+function notify(j){
+  const g = GDS(j);
+  const t = (g === 'xong' ? 'Xong video: ' : g === 'cho_duyet' ? 'Kế hoạch chờ anh duyệt: ' : 'Video dừng: ') + (j.ten || '');
+  toast(t, g !== 'xong' && g !== 'cho_duyet');
+  try { if (Notification.permission === 'granted') new Notification('POLY Cut', {body:t}); } catch(e) {}
+}
+function clipPath(don, c){ return joinP(don.thu_muc || '', c); }
+function stepsHtml(d, g){
+  const tasks = (d && d.tasks) || [], live = g === 'dang-chay', stop = g === 'loi' || g === 'dung';
+  const first = tasks.findIndex(t => t.st !== 'completed'), done = tasks.filter(t => t.st === 'completed').length;
+  const bars = tasks.length ? tasks.map((t, i) => `<i class="${t.st === 'completed' ? 'on' : live && (t.st === 'in_progress' || (i === first && !tasks.some(x => x.st === 'in_progress'))) ? 'cur' : stop && i === first ? 'stop' : ''}" title="${esc(t.x)}"></i>`).join('')
+    : `<i class="${live ? 'cur' : g === 'xong' || g === 'cho_duyet' ? 'on' : stop ? 'stop' : ''}"></i>`;
+  const cur = tasks.find(t => t.st === 'in_progress');
+  const buoc = live ? (cur ? cur.x : first >= 0 ? tasks[first].x : 'Claude đang làm') : g === 'cho' ? 'Chờ tới lượt' : g === 'cho_duyet' ? 'Chờ anh duyệt kế hoạch'
+    : g === 'xong' ? 'Xong' : stop ? 'Dừng ở ' + (first >= 0 ? tasks[first].x : 'giữa chừng') : '';
+  const run = d && d.run;
+  const phai = live && run ? `<span class="mono tm" data-start="${run.started}">${dur(nowS() - run.started)}</span>` : run && run.ended ? `<span class="mono">${hm(run.ended)} · ${Math.max(1, Math.round((run.ended - run.started) / 60))} phút</span>` : '';
+  return `<div class="steps${g === 'loi' ? ' err' : ''}">${bars}</div><div class="steps-lbl"><span>Bước: <b>${esc(buoc)}</b>${tasks.length && live ? ` · ${done}/${tasks.length}` : ''}</span>${phai}</div>`;
+}
+function kieuTxt(kt){
+  if (!kt) return '';
+  if (typeof kt === 'string') return esc(kt);
+  if (Array.isArray(kt)) return kt.map(esc).join(' · ');
+  return Object.entries(kt).map(([a, b]) => `${esc(KD[a] ? KD[a].t : a)}: ${esc(KD[a] && KD[a].v[b] ? KD[a].v[b] : b)}`).join(' · ');
+}
+function nutHai(id, a, nhan, cls){ const armed = S.armed && S.armed.id === id + a && S.armed.until > Date.now();
+  return `<button type="button" class="btn small ${cls || 'danger'}${armed ? ' armed' : ''}" data-a="${a}">${armed ? 'Bấm lần nữa để ' + nhan.toLowerCase() : nhan}</button>`; }
+function moThe(j, d){   // thẻ mở rộng: đang làm / cần anh xem; xong rồi đã xem thì thu gọn 1 dòng
+  if (S.mo[j.id] != null) return S.mo[j.id];
+  const g = GDS(j);
+  return !['xong', 'dung'].includes(g) || unseen(j) || !!(d && (d.hoi || []).length);
+}
+function buocHien(d, g){
+  const tasks = (d && d.tasks) || [], cur = tasks.find(t => t.st === 'in_progress'), first = tasks.find(t => t.st !== 'completed');
+  if (g === 'dang-chay') return cur ? cur.x : first ? first.x : 'Claude đang làm';
+  return {cho: 'Chờ tới lượt', cho_duyet: 'Chờ anh duyệt kế hoạch'}[g] || '';
+}
+function menuHtml(j, items){
+  if (!items.length) return '';
+  const open = S.menu === j.id;
+  return `<details class="menu"${open ? ' open' : ''}><summary class="btn small" aria-label="Thêm việc">Thêm<span class="chev"></span></summary><div class="mlist">${items.join('')}</div></details>`;
+}
+function the(j){
+  const D = S.det[j.id], d = D && D.data, g = GDS(j), [pc, pt] = PILL[g] || ['', g], live = g === 'dang-chay';
+  const kq = d && d.ket_qua, anh = (kq && kq.khung_dau) || j.anh, mo = moThe(j, d);
+  const meta = [LOAI[j.loai], DO_DAI[j.do_dai], j.duong === 'may_chu' ? 'ffmpeg' : '', ngay(j.created)].filter(Boolean).join(', ');
+  const buoc = !mo && d ? buocHien(d, g) : '';
+  let h = `<div class="dh" role="button" tabindex="0" data-a="mo-the" aria-expanded="${mo}">
+    <span class="mini${anh ? '' : ' trong'}"${anh ? ` style="background-image:url('${fileUrl(anh, kq && kq.mt)}')"` : ''}></span>
+    <div class="dt"><h3>${esc(j.ten)}${unseen(j) ? '<span class="moi">mới</span>' : ''}</h3><div class="meta">${esc(buoc || meta)}</div></div>
+    <div class="dh-r"><span class="pill ${pc}"><span class="dot"></span>${esc(pt)}</span><span class="chev" aria-hidden="true"></span></div></div>`;
+  if (!mo) return h;
+  if (!d) return h + `<div class="db"><p class="note">${S.jobs.indexOf(j) < S.lim ? 'Đang tải…' : ''}</p><div class="acts"><button type="button" class="btn small" data-a="tai">Xem chi tiết</button></div></div>`;
+  const don = d.job.don || {}, p = S.prem || {}, acts = [], menu = [];
+  const mb = (a, t, cls) => `<button type="button" data-a="${a}"${cls ? ` class="${cls}"` : ''}>${t}</button>`;
+  let b = '';
+  if (g !== 'xong') b += stepsHtml(d, g);
+  // đang dựng
+  if (live) {
+    if (d.final_live) b += `<div class="callout info"><p class="lastx">${inline(d.final_live)}</p></div>`;
+    if (don.duong === 'premiere' && p.song && p.dang_nghe === false)
+      b += `<div class="callout warn"><p><b>Bảng Poly Bridge đang tạm dừng.</b> Bấm Nghe lệnh trong bảng để Claude dựng tiếp.</p></div>`;
+    else if (don.duong === 'premiere' && !p.song && nowS() - d.run.started > 90) b += `<p class="note">Premiere chưa mở: tới bước dựng app tự mở.</p>`;
+    if (d.idle > 240) b += `<p class="note">Claude im ${Math.floor(d.idle / 60)} phút, thường là đang chờ Premiere dựng hoặc xuất video.</p>`;
+    if (kq && kq.mp4) b += `<p class="note">Đang dựng bản mới. Bản cũ vẫn giữ trong thư mục.</p>`;
+    acts.push(nutHai(j.id, 'dung', 'Dừng'));
+  }
+  // xếp hàng
+  if (g === 'cho') {
+    const cv = d.job.cho_viec || {}, viec = cv.kind && cv.kind !== 'dung', truoc = S.jobs.find(x => GDS(x) === 'dang-chay');
+    if (S.hangDung && don.duong === 'premiere' && !truoc) b += `<div class="callout warn"><p>Hàng đang tạm dừng vì Premiere chưa mở. Mở Premiere và bảng Poly Bridge là hàng tự chạy tiếp.</p><div class="acts"><button type="button" class="btn small" data-a="prem">Cách mở</button></div></div>`;
+    else b += `<p class="note">${viec ? esc(cv.ten[0].toUpperCase() + cv.ten.slice(1)) + ' sẽ chạy trước các video mới.' : 'Chờ video trước dựng xong rồi tự làm.'}${truoc ? ' Đang dựng: ' + esc(truoc.ten) + '.' : ''}</p>`;
+    acts.push(nutHai(j.id, 'dung', 'Bỏ khỏi hàng'));
+  }
+  // lỗi / dừng
+  if (g === 'loi' || g === 'dung') {
+    const ly = d.ly_do || (g === 'dung' ? 'Anh đã dừng video này.' : 'Claude dừng giữa chừng mà không ghi lý do.');
+    const pr = /premiere|poly bridge/i.test(ly), dn = /đăng nhập/i.test(ly);
+    b += `<div class="callout ${g === 'loi' ? 'err' : 'warn'}"><p>${esc(ly)}</p></div>`;
+    if (dn) acts.push(`<button type="button" class="btn small primary" data-login>Đăng nhập</button>`);
+    if (pr) acts.push(`<button type="button" class="btn small" data-a="prem">Cách mở Premiere</button>`);
+    acts.push(`<button type="button" class="btn small ${dn ? '' : 'primary'}" data-a="tiep">Chạy tiếp</button>`);
+  }
+  // Claude hỏi anh
+  const hoi = (!live && g !== 'cho' && d.hoi) || [];
+  if (hoi.length) {
+    const c = chonCua(j, d), kem = g === 'cho_duyet';
+    b += `<div class="callout gold"><p><b>Claude hỏi anh</b> <span class="hint">${kem ? 'câu trả lời gửi kèm khi bấm Dựng theo kế hoạch' : 'giữ lựa chọn đầu thì Claude không đổi gì'}</span></p>${hoi.map((q, i) => `<div class="hq"><p>${esc(q.q)}</p><div class="ho">${q.opts.map((o, k) => `<button type="button" data-a="hoi" data-q="${i}" data-k="${k}" class="${String(c[i] ?? '0') === String(k) ? 'on' : ''}">${esc(o)}${k === 0 ? ' <i>(đang làm)</i>' : ''}</button>`).join('')}</div></div>`).join('')}
+      ${kem ? '' : '<div class="acts"><button type="button" class="btn small primary" data-a="hoi-gui">Gửi trả lời</button></div>'}</div>`;
+  }
+  // kế hoạch chờ duyệt
+  if (g === 'cho_duyet') {
+    const k = d.ke_hoach;
+    if (k) {
+      let ed = S.ed[j.id];
+      if (!ed || ed.luot !== d.run.n) ed = S.ed[j.id] = {luot: d.run.n, hook1: k.hook[0] || '', hook2: k.hook[1] || '', ghi_chu: '', goc: [k.hook[0] || '', k.hook[1] || '']};
+      const canh = k.canh || [];
+      b += `<div class="plan"><h4>${canh.length} cảnh${k.tong_giay ? ', khoảng ' + giay(k.tong_giay) : ''}</h4>
+        ${canh.length ? `<ol class="scenes th">${canh.slice(0, 40).map(c => { const cp = clipPath(don, c.clip || ''), t = ((c.tu || 0) + (c.den || 0)) / 2, vid = /\.(mov|mp4|m4v|mts|mkv|avi)$/i.test(c.clip || '');
+          return `<li>${vid ? `<img loading="lazy" src="${thumbUrl(cp, t)}" alt="" onerror="this.style.visibility='hidden'">` : '<span class="noi"></span>'}<span class="d">${esc(c.mo_ta)}<small>${esc(baseName(c.clip).replace(/\.[^.]+$/, ''))}${c.tu != null && c.den != null ? ', ' + so(c.tu) + '–' + so(c.den) + 's' : ''}</small></span></li>`; }).join('')}</ol>` : ''}
+        ${k.kieu_ten || k.ket || k.bo.length ? `<p class="note">${[k.kieu_ten ? 'Kiểu: ' + kieuTxt(k.kieu_ten) : '', k.ket ? 'Thẻ kết: ' + esc(k.ket) : '', k.bo.length ? 'Bỏ: ' + k.bo.map(esc).join('; ') : ''].filter(Boolean).join('<br>')}</p>` : ''}
+        <div class="row">
+          <div class="cnt"><input class="inp" data-f="hook1" value="${esc(ed.hook1)}" aria-label="Hook dòng 1" placeholder="Hook dòng 1"><span class="count${[...ed.hook1].length > 20 ? ' over' : ''}">${[...ed.hook1].length}/20</span></div>
+          <div class="cnt"><input class="inp" data-f="hook2" value="${esc(ed.hook2)}" aria-label="Hook dòng 2" placeholder="Hook dòng 2"><span class="count${[...ed.hook2].length > 22 ? ' over' : ''}">${[...ed.hook2].length}/22</span></div>
+        </div>
+        <input class="inp" data-f="ghi_chu" value="${esc(ed.ghi_chu)}" placeholder="Muốn sửa gì thêm (tuỳ chọn): bỏ cảnh 6, video tầm 60 giây…" aria-label="Dặn thêm"></div>`;
+      acts.push(`<button type="button" class="btn small primary" data-a="duyet">Dựng theo kế hoạch</button>`);
+    } else {
+      b += `<div class="callout warn"><p>Không đọc được file kế hoạch. ${d.final ? inline(d.final) : ''}</p></div>`;
+      acts.push(`<button type="button" class="btn small primary" data-a="duyet">Dựng luôn</button>`);
+    }
+    acts.push(nutHai(j.id, 'huy-kh', 'Hủy video'));
+  }
+  // kết quả
+  const coKq = kq && kq.mp4 && g !== 'cho_duyet';
+  if (coKq) {
+    const dy = String(kq.duyet || ''), ok = /^\s*đạt/i.test(dy), ns = dy && !ok;
+    const facts = [kq.giay ? esc(giay(kq.giay)) : '', kq.kieu_ten ? kieuTxt(kq.kieu_ten) : ''].filter(Boolean).join(', ');
+    b += `<div class="kq">${kq.co_mp4 ? `<button type="button" class="vthumb" data-a="xem" title="Xem video" ${kq.khung_dau ? `style="background-image:url('${fileUrl(kq.khung_dau, kq.mt)}')"` : ''}></button>` : '<span class="vthumb trong"></span>'}
+      <div class="info"><div class="facts">${dy ? `<span class="badge ${ok ? 'ok' : 'warn'}">${ok ? 'Đã duyệt' : 'Nên sửa'}</span>` : ''}<span>${facts}</span></div>
+      ${ns ? `<p class="note warnt">${esc(dy.replace(/^\s*nên sửa\s*:?\s*/i, ''))}</p>` : ''}
+      ${kq.co_mp4 ? '' : '<p class="err-txt">Không thấy file mp4 này trên máy.</p>'}
+      ${kq.caption || kq.hashtag ? `<p class="capbox">${esc(txt(kq.caption))}${kq.hashtag ? `<br><span class="ht">${esc(txt(kq.hashtag))}</span>` : ''}</p>` : ''}
+      ${d.final && !live && g === 'xong' && !coKqGon(kq) ? `<p class="note">${inline(d.final)}</p>` : ''}</div></div>`;
+    if (!live) {
+      if (g === 'xong') {
+        if (kq.co_mp4) acts.push(`<button type="button" class="btn small primary" data-a="xem">Xem video</button>`);
+        if (kq.caption || kq.hashtag) acts.push(`<button type="button" class="btn small" data-a="chep-cap">Chép caption</button>`);
+        acts.push(`<button type="button" class="btn small" data-a="sua">${S.fixOpen[j.id] ? 'Đóng ô sửa' : 'Sửa video'}</button>`);
+        if (kq.sua_tay) acts.push(`<button type="button" class="btn small" data-a="sua-tay" title="Tự kéo cắt cảnh, sửa chữ, phụ đề rồi xuất (không tốn lượt Claude)">✂ Sửa tay</button>`);
+      } else if (kq.co_mp4 && g !== 'cho') menu.push(mb('xem', 'Xem video'));
+      if (kq.sua_tay && g !== 'xong' && g !== 'cho') menu.push(mb('sua-tay', 'Sửa tay (kéo cắt, sửa chữ)'));
+      if (kq.prproj) menu.push(mb('mo-pr', 'Mở trong Premiere'));
+      menu.push(mb('mo', 'Mở thư mục video'));
+      if (kq.to_duyet) menu.push(mb('to-duyet', 'Xem tờ duyệt'));
+      menu.push(mb('chep-mp4', 'Chép đường dẫn mp4'));
+    }
+  } else if (d.final && !live && g === 'xong') b += `<p class="note">${inline(d.final)}</p>`;
+  // ô sửa video
+  if (S.fixOpen[j.id] && coKq && !live && g !== 'cho') {
+    b += `<div class="fix"><div class="quick">${QUICK.map(q => `<button type="button" data-a="quick">${esc(q)}</button>`).join('')}</div>
+      <textarea class="inp" data-f="fix" rows="2" placeholder="Vd: hook ngắn lại, bỏ cảnh 0–3s bị rung" aria-label="Cần sửa gì">${esc(S.fix[j.id] || '')}</textarea>
+      <p class="err-txt" data-e="fix"></p>
+      <div class="acts"><button type="button" class="btn small primary" data-a="sua-gui">Gửi sửa</button><span class="note">Ra bản mới v2, v3…, bản cũ vẫn giữ.</span></div></div>`;
+  }
+  if (menu.length) menu.push('<hr>');
+  menu.push(mb('dunglai', 'Dùng lại cài đặt cho video mới'));
+  menu.push(mb('nk', S.nk[j.id] ? 'Ẩn nhật ký' : 'Nhật ký Claude'));
+  menu.push(mb('cd', S.cd[j.id] ? 'Ẩn chi tiết đơn' : 'Chi tiết đơn'));
+  if (!live && g !== 'cho') { const armed = S.armed && S.armed.id === j.id + 'xoa' && S.armed.until > Date.now(); menu.push('<hr>', mb('xoa', armed ? 'Bấm lần nữa để xoá' : 'Xoá khỏi hàng', 'danger')); }
+  b += `<div class="acts">${acts.join('')}<span class="sp"></span>${menuHtml(j, menu)}</div>`;
+  // nhật ký + chi tiết đơn
+  if (S.nk[j.id]) {
+    const e = S.ev[j.id], ev = e ? e.list : [], tasks = d.tasks || [];
+    const IC = {text:'💬', tool:'·', agent:'◆', agentdone:'✓', warn:'!', error:'✕', done:'✓', info:'·'};
+    let nk = tasks.length ? `<ul class="tasks">${tasks.map(t => `<li class="${t.st}"><span class="ck"></span>${esc(t.x)}</li>`).join('')}</ul>` : '', lastRun = null;
+    for (const x of ev.slice(-60)) {
+      if (x.r !== lastRun) { const r = (d.run_list || []).find(y => y.n === x.r); nk += `<div class="runsep">Lượt ${x.r}${r ? ', ' + esc(r.label) + ', ' + hm(r.started) : ''}</div>`; lastRun = x.r; }
+      nk += `<div class="ev ${x.k}${x.s ? ' sub' : ''}"><span class="ic2">${IC[x.k] || '·'}</span><span>${x.k === 'text' ? inline(x.x) : esc(x.x)}</span></div>`;
+    }
+    if (!ev.length) nk += `<div class="ev"><span class="ic2">·</span><span>${e ? 'Chưa có gì.' : 'Đang tải…'}</span></div>`;
+    b += `<div class="panel2"><h4>Nhật ký Claude <span><a href="/api/job/${esc(j.id)}/log" target="_blank">Chi tiết kỹ thuật</a><button type="button" class="lnk" data-a="nk">Ẩn</button></span></h4><div class="nk">${nk}</div></div>`;
+  }
+  if (S.cd[j.id]) {
+    const k = don.kieu || {}, pins = AXES.filter(a => k[a] && k[a] !== 'tu_dong');
+    const kv = [['Thư mục clip', esc(don.thu_muc)], ['Clip', esc((don.clip || []).join(', ') || 'cả thư mục')], ['Máy', esc([don.may, don.gia].filter(Boolean).join(', '))],
+      ['Hook', esc([don.hook1, don.hook2].filter(Boolean).join(' / ') || 'Claude tự viết')], ['Kiểu dựng', esc(CHE_DO[don.kieu_che_do] || '') + (pins.length ? ': ' + pins.map(a => esc(KD[a].t + ' ' + (KD[a].v[k[a]] || k[a]).toLowerCase())).join(', ') : '')],
+      ['Giọng', esc((GIONG[don.giong] || '') + (don.giong === 'giong_ai' ? ', ' + tenGiong(don.giong_ai_ten) + ', đọc ' + (TOC[don.giong_ai_toc] || '') : ''))], ['Dặn', esc(don.ghi_chu)], ['Duyệt trước', don.duyet_truoc ? 'có' : ''], ['Lưu vào', esc(d.job.thu_muc_video || '')],
+      ['Đã sửa', (d.job.sua || []).map(x => hm(x.t) + ' ' + esc(x.text)).join('<br>')]].filter(x => x[1]);
+    b += `<div class="panel2"><h4>Chi tiết đơn <button type="button" class="lnk" data-a="cd">Ẩn</button></h4><dl class="kv">${kv.map(([a, v]) => `<dt>${esc(a)}</dt><dd>${v}</dd>`).join('')}</dl></div>`;
+  }
+  return h + `<div class="db">${b}</div>`;
+}
+function rong(){ return `<div class="panel empty sap" id="sap">${sapHtml()}</div>`; }
+function sapHtml(){   // hàng còn trống: tóm tắt video sắp dựng theo đơn đang soạn + các bước Claude sẽ làm
+  const l = S.list, ds = clipsDung(), tong = ds.reduce((s, c) => s + (c.giay || 0), 0);
+  const th = ds.slice(0, 7).map(c => `<span style="background-image:url('${thumbUrl(c.path, 1)}')" title="${esc(c.ten)}"></span>`).join('') + (ds.length > 7 ? `<span class="more">+${ds.length - 7}</span>` : '');
+  const clip = !l ? '<span class="dim">Chưa chọn thư mục clip</span>' : !l.clip.length ? '<span class="dim">Thư mục này chưa có clip</span>'
+    : (F.clip.length ? F.clip.length + '/' + l.clip.length + ' clip' : 'Cả ' + l.clip.length + ' clip') + (tong ? ', ' + giay(tong) + ' quay' : '');
+  const ban = F.loai === 'ban_ipad' || F.loai === 'ban_laptop', may = ban ? [F.may.trim(), F.gia.trim()].filter(Boolean).join(', ') : '';
+  const hook = [F.hook1.trim(), F.hook2.trim()].filter(Boolean).join(' / ');
+  const pins = AXES.filter(a => F.kieu[a] && F.kieu[a] !== 'tu_dong' && KD[a].v[F.kieu[a]]);
+  const kieu = F.kieu_che_do === 'dung_gu' ? 'Đúng gu kênh' : F.kieu_che_do === 'tu_chon' ? 'Tự chọn, mục trống Claude chọn' : 'Claude xoay vòng, không trùng 5 video gần nhất';
+  const ra = (S.health && S.health.thu_muc_ra) || 'E:\\Tool\\poly-edit';
+  const ghi = F.ghi_chu.trim();
+  const kv = [['Clip', clip], ['Video', esc([LOAI[F.loai], DO_DAI[F.do_dai]].join(', '))], may && ['Máy', esc(may)],
+    ['Hook', hook ? esc(hook) : '<span class="dim">Claude tự viết</span>'],
+    ['Giọng', F.giong === 'giong_ai' ? esc('Giọng AI ' + tenGiong(F.giong_ai_ten) + ', đọc ' + (TOC[F.giong_ai_toc] || 'vừa')) : 'Lời nói trong clip'],
+    ['Kiểu dựng', esc(kieu)], pins.length && F.kieu_che_do !== 'dung_gu' && ['Anh chọn', pins.map(a => esc(KD[a].t + ': ' + KD[a].v[F.kieu[a]])).join('<br>'), 'pin'],
+    ghi && ['Dặn', esc(ghi.length > 120 ? ghi.slice(0, 120) + '…' : ghi)],
+    ['Dựng', F.duong === 'premiere' ? 'Trong Premiere <span class="dim">(chưa mở thì app tự mở)</span>' : 'ffmpeg trên máy, chỉ ra mp4'],
+    ['Lưu vào', esc(joinP(ra, tenThuMuc()) + sepOf(ra))]].filter(Boolean);
+  const buoc = [['Xem clip, nghe lời', 'tìm đoạn rõ, bỏ đoạn rung, lấy nét'],
+    ['Chọn cảnh, viết chữ', F.giong === 'giong_ai' ? 'hook, phụ đề, lời đọc rồi tạo giọng AI' : 'hook, phụ đề chép đúng lời nói']];
+  if (F.duyet_truoc) buoc.push(['Chờ anh duyệt kế hoạch', 'thẻ hiện kế hoạch, anh sửa rồi bấm Dựng', 'wait']);
+  buoc.push(F.duong === 'premiere' ? ['Dựng trong Premiere', 'gửi lệnh qua bảng Poly Bridge, xuất mp4'] : ['Dựng video trên máy', 'ffmpeg ghép cảnh, chữ, phụ đề']);
+  buoc.push(['Kiểm bản dựng', 'một agent khác soi lỗi trước khi giao'], ['Giao video', 'mp4, caption, hashtag hiện ở đây']);
+  return `<div class="sap-h"><h3>Video sắp dựng</h3><p>Theo đơn anh đang soạn. Bấm Chạy là Claude tự làm, anh làm việc khác được.</p></div>
+    <div class="sap-in"><div>${th ? `<div class="sap-th">${th}</div>` : ''}<dl class="kv">${kv.map(([a, v, c]) => `<dt>${esc(a)}</dt><dd${c ? ` class="${c}"` : ''}>${v}</dd>`).join('')}</dl></div>
+    <div><h4>Claude sẽ làm</h4><ol class="sap-steps">${buoc.map(([a, b, c]) => `<li${c ? ` class="${c}"` : ''}><b>${esc(a)}</b><span>${esc(b)}</span></li>`).join('')}</ol></div></div>
+    <p class="sap-ft">Bấm Chạy nhiều video thì xếp hàng, xong video này tới video kia. Mỗi video thành một thẻ ở đây.</p>`;
+}
+function veSap(){ const el = $('#sap'); if (el) setH(el, sapHtml()); }
+function veHang(){
+  const ds = $('#ds');
+  const dang = S.jobs.filter(j => GDS(j) === 'dang-chay').length, cho = S.jobs.filter(j => GDS(j) === 'cho').length,
+    can = S.jobs.filter(j => ['cho_duyet', 'loi'].includes(GDS(j)) || (S.det[j.id] && (S.det[j.id].data.hoi || []).length)).length;
+  $('#qcount').textContent = S.jobs.length ? [dang && dang + ' đang dựng', cho && cho + ' chờ', can && can + ' cần xem', S.jobs.length + ' video'].filter(Boolean).join(', ') : '';
+  document.title = (can ? '(' + can + ' cần xem) ' : '') + 'POLY Cut';
+  if (!S.jobs.length) { setH(ds, rong()); return; }
+  if (ds.firstElementChild && ds.firstElementChild.classList.contains('empty')) ds.innerHTML = '';
+  const phut = Math.floor(Date.now() / 60000), ngayNay = new Date().toDateString();
+  const cu = new Map([...ds.querySelectorAll(':scope > .don')].map(el => [el.dataset.id, el]));
+  const hien = S.jobs.slice(0, S.lim);
+  const moi = hien.map(j => {
+    const D = S.det[j.id], d = D && D.data;
+    const dk = d ? JSON.stringify([d.giai_doan, d.tasks, d.ly_do, d.hoi, d.ke_hoach, d.ket_qua, d.final, d.run, d.job, d.idle > 240 ? Math.floor(d.idle / 60) : 0]) : '';
+    const sig = JSON.stringify(j) + dk + (['dang-chay', 'cho'].includes(GDS(j)) ? phut : ngayNay) + (S.armed && S.armed.id.startsWith(j.id) && S.armed.until > Date.now() ? S.armed.id : '') + '|' + !!S.fixOpen[j.id] + '|' + !!S.nk[j.id] + !!S.cd[j.id] + moThe(j, d) + (S.menu === j.id) + '|' + (S.ev[j.id] ? S.ev[j.id].list.length : -1) + '|' + JSON.stringify(S.chon[j.id] ? S.chon[j.id].c : {}) + '|' + unseen(j) + '|' + JSON.stringify(S.prem && [S.prem.song, S.prem.dang_nghe]) + S.hangDung;
+    let el = cu.get(j.id);
+    const ae = document.activeElement, go = ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName);
+    if (el && (el.dataset.sig === sig || (go && el.contains(ae)))) return el;   // đang gõ trong thẻ thì không vẽ lại
+    if (!el) { el = document.createElement('article'); el.className = 'panel don'; el.dataset.id = j.id; }
+    const nk0 = el.querySelector('.nk'), cuoi = !nk0 || nk0.scrollHeight - nk0.scrollTop - nk0.clientHeight < 30, top0 = nk0 ? nk0.scrollTop : 0;
+    el.innerHTML = the(j); el.dataset.sig = sig;
+    const nk = el.querySelector('.nk'); if (nk) nk.scrollTop = cuoi ? nk.scrollHeight : top0;
+    return el;
+  });
+  const conLai = new Set(moi);
+  requestAnimationFrame(datMenuMo);
+  [...ds.querySelectorAll(':scope > .don')].forEach(el => { if (!conLai.has(el)) el.remove(); });
+  const ae = document.activeElement, giu = ae && ds.contains(ae) && /^(INPUT|TEXTAREA)$/.test(ae.tagName) ? [ae, ae.selectionStart, ae.selectionEnd] : null;
+  moi.forEach((el, i) => { if (ds.children[i] !== el) ds.insertBefore(el, ds.children[i] || null); });   // chỉ dời thẻ lệch chỗ
+  if (giu && document.activeElement !== giu[0] && giu[0].isConnected) { giu[0].focus({preventScroll: true}); try { giu[0].setSelectionRange(giu[1], giu[2]); } catch(x) {} }
+  let nut = $('#qmore');
+  if (S.jobs.length > S.lim) { if (!nut) { nut = document.createElement('button'); nut.id = 'qmore'; nut.type = 'button'; nut.className = 'btn small qmore'; ds.appendChild(nut); nut.onclick = () => { S.lim += 30; loadJobs(); }; } else ds.appendChild(nut); nut.textContent = 'Xem thêm ' + Math.min(30, S.jobs.length - S.lim) + ' video cũ'; }
+  else if (nut) nut.remove();
+}
+setInterval(() => { $$('.tm[data-start]').forEach(el => { el.textContent = dur(nowS() - (+el.dataset.start)); }); }, 1000);
+
+/* ===== Bấm trên thẻ ===== */
+function jobOf(el){ const c = el.closest('.don'); return c && S.jobs.find(j => j.id === c.dataset.id); }
+async function lam(b, fn, giu){
+  if (b) { b.disabled = true; }
+  try { await fn(); } catch(e) { toast(e.message, true); }
+  finally { if (b && !giu) b.disabled = false; }
+}
+function hai(j, a){ const k = j.id + a; if (S.armed && S.armed.id === k && S.armed.until > Date.now()) { S.armed = null; return true; } S.armed = {id: k, until: Date.now() + 4000}; veHang(); setTimeout(veHang, 4100); return false; }
+$('#ds').addEventListener('input', e => {
+  const el = e.target, j = jobOf(el); if (!j || !el.dataset.f) return;
+  if (el.dataset.f === 'fix') { S.fix[j.id] = el.value; el.classList.remove('bad'); return; }
+  const ed = S.ed[j.id]; if (!ed) return;
+  ed[el.dataset.f] = el.value; if (el.dataset.f !== 'ghi_chu') ed.sua = true;
+  const c = el.closest('.field') && el.closest('.field').querySelector('.count');
+  if (c) { const n = [...el.value].length, mx = el.dataset.f === 'hook1' ? 20 : 22; c.textContent = n + '/' + mx; c.classList.toggle('over', n > mx); }
+});
+function datMenuThem(dt) {   // menu "Thêm" (3/11): đặt theo CỬA SỔ (position:fixed) nên khung Hàng dựng không cắt; lật lên / xuống theo chỗ trống của cửa sổ
+  const ml = $('.mlist', dt), sm = $('summary', dt); if (!ml || !sm || !dt.open) return;
+  Object.assign(ml.style, {position: 'fixed', right: 'auto', bottom: 'auto', left: '0px', top: '0px', maxHeight: (innerHeight - 16) + 'px', overflowY: 'auto'});
+  const r = sm.getBoundingClientRect(), h = ml.offsetHeight, w = ml.offsetWidth, duoi = innerHeight - r.bottom - 8, tren = r.top - 8;
+  const xuong = duoi >= h || duoi >= tren;
+  ml.style.left = Math.max(8, Math.min(r.right - w, innerWidth - w - 8)) + 'px';
+  ml.style.top = (xuong ? Math.max(8, Math.min(r.bottom + 6, innerHeight - h - 8)) : Math.max(8, r.top - 6 - h)) + 'px';
+}
+const datMenuMo = () => { const dt = document.querySelector('#ds details.menu[open]'); if (dt) datMenuThem(dt); };
+addEventListener('resize', datMenuMo); addEventListener('scroll', datMenuMo, true);
+$('#ds').addEventListener('toggle', e => {   // menu "Thêm": nhớ đang mở để vẽ lại thẻ không tự đóng
+  const dt = e.target; if (!dt.matches || !dt.matches('details.menu')) return;
+  const j = jobOf(dt); if (!j) return;
+  if (dt.open) { $$('#ds details.menu[open]').forEach(x => { if (x !== dt) x.open = false; }); S.menu = j.id;
+    datMenuThem(dt); }
+  else if (S.menu === j.id) S.menu = null;
+}, true);
+document.addEventListener('click', e => { if (S.menu && !e.target.closest('details.menu')) { S.menu = null; $$('#ds details.menu[open]').forEach(x => x.open = false); } });
+$('#ds').addEventListener('keydown', e => { const h = e.target.closest && e.target.closest('.dh'); if (h && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); h.click(); } });
+$('#ds').addEventListener('mouseover', e => { const j = jobOf(e.target); if (j && unseen(j)) { markSeen(j); veHang(); } });
+$('#ds').addEventListener('click', async e => {
+  const b = e.target.closest('[data-a]'); if (!b) return;
+  const j = jobOf(b); if (!j) return;
+  const a = b.dataset.a, D = S.det[j.id], d = D && D.data, kq = d && d.ket_qua;
+  const url = '/api/job/' + j.id + '/';
+  if (b.closest('.mlist')) { S.menu = null; const m = b.closest('details.menu'); if (m && a !== 'xoa') m.open = false; }
+  if (a === 'mo-the') { S.mo[j.id] = !moThe(j, d); if (!S.mo[j.id]) { S.fixOpen[j.id] = false; } veHang(); return; }
+  if (a === 'nk') { S.nk[j.id] = !S.nk[j.id]; veHang(); if (S.nk[j.id]) taiNhatKy(j.id).then(veHang); return; }
+  if (a === 'cd') { S.cd[j.id] = !S.cd[j.id]; veHang(); return; }
+  if (a === 'tai') return lam(b, async () => { const x = await api('/api/job/' + j.id + '?ev=0'); S.det[j.id] = {data: x, sig: sigList(j), t: nowS()}; veHang(); });
+  if (a === 'prem') return premDialog();
+  if (a === 'dung') { if (!hai(j, 'dung')) return; const cho = GDS(j) === 'cho';
+    return lam(b, async () => { await api(url + 'dung', {}); toast(cho ? 'Đã bỏ khỏi hàng' : 'Đã dừng. Làm xong phần nào giữ phần đó, bấm Chạy tiếp để làm nốt.'); await loadJobs(); }); }
+  if (a === 'huy-kh') { if (!hai(j, 'huy-kh')) return; return lam(b, async () => { await api(url + 'xoa', {}); quen(j.id); toast('Đã hủy video (thư mục vẫn giữ)'); await loadJobs(); }); }
+  if (a === 'xoa') { if (!hai(j, 'xoa')) return; return lam(b, async () => { await api(url + 'xoa', {}); quen(j.id); toast('Đã xoá khỏi hàng. Video, project trong thư mục vẫn giữ.'); await loadJobs(); }); }
+  if (a === 'tiep') return lam(b, async () => { b.textContent = 'Đang chạy lại…'; const r = await api(url + 'chay-lai', {}); toast(r.cho ? 'Đang có video khác dựng: đã xếp hàng' : 'Đã chạy tiếp'); await loadJobs(); }, true);
+  if (a === 'hoi') { const c = chonCua(j, d); c[b.dataset.q] = b.dataset.k; $$('button', b.parentElement).forEach(x => x.classList.toggle('on', x === b)); return; }
+  if (a === 'hoi-gui') { const c = chonCua(j, d), chon = {}; (d.hoi || []).forEach((q, i) => chon[i] = c[i] ?? '0');
+    return lam(b, async () => { const r = await api(url + 'tra-loi', {chon}); delete S.chon[j.id]; toast(r.cho ? 'Đã xếp hàng: Premiere đang dựng video khác, xong thì Claude sửa' : r.chay ? 'Đã gửi, Claude đang sửa' : 'Giữ nguyên như đang làm'); delete S.det[j.id]; await loadJobs(); }); }
+  if (a === 'duyet') { const ed = S.ed[j.id] || {}, body = {ghi_chu: (ed.ghi_chu || '').trim()};
+    if ((d.hoi || []).length) { const c = chonCua(j, d); body.chon = {}; d.hoi.forEach((q, i) => body.chon[i] = c[i] ?? '0'); }
+    if (ed.goc && (ed.hook1.trim() !== ed.goc[0].trim() || ed.hook2.trim() !== ed.goc[1].trim())) { body.hook1 = ed.hook1.trim(); body.hook2 = ed.hook2.trim(); }
+    return lam(b, async () => { const r = await api(url + 'duyet', body); delete S.ed[j.id]; delete S.chon[j.id]; toast(r.cho ? 'Đã duyệt. Premiere đang dựng video khác: xong thì dựng video này ngay' : 'Đã duyệt, Claude dựng tiếp'); await loadJobs(); }); }
+  if (a === 'xem' && kq) {
+    const {m} = modal(`<h3>${esc(j.ten)} <span class="count">· ${esc(baseName(kq.mp4))}</span></h3><div class="vtall"><video controls autoplay playsinline src="${fileUrl(kq.mp4, kq.mt)}"${kq.khung_dau ? ` poster="${fileUrl(kq.khung_dau, kq.mt)}"` : ''}></video></div>
+      <div class="acts">${kq.prproj ? '<button class="btn" data-x="pr">Mở trong Premiere</button>' : ''}<button class="btn" data-x="mo">Mở thư mục</button><button class="btn primary" data-dong>Đóng</button></div>`, 'vid');
+    const pr = $('[data-x=pr]', m); if (pr) pr.onclick = () => api(url + 'mo-premiere', {}).then(() => toast('Đang mở project trong Premiere…')).catch(x => toast(x.message, true));
+    $('[data-x=mo]', m).onclick = () => api(url + 'mo', {p: kq.mp4}).catch(x => toast(x.message, true));
+    markSeen(j); return;
+  }
+  if (a === 'to-duyet' && kq) { modal(`<h3>Tờ duyệt · ${esc(j.ten)}</h3><img class="big" src="${fileUrl(kq.to_duyet, kq.mt)}" alt=""><div class="acts"><button class="btn primary" data-dong>Đóng</button></div>`, 'wide'); return; }
+  if (a === 'chep-mp4' && kq) return chep(kq.mp4, b);
+  if (a === 'chep-cap' && kq) return chep([txt(kq.caption), txt(kq.hashtag)].filter(Boolean).join('\n'), b);
+  if (a === 'mo') return api(url + 'mo', kq && kq.mp4 ? {p: kq.mp4} : {}).catch(x => toast(x.message, true));
+  if (a === 'sua-tay') { cheDo('tay', (d && d.job && d.job.thu_muc_video) || ''); return; }
+  if (a === 'mo-pr') return api(url + 'mo-premiere', {}).then(() => toast('Đang mở project trong Premiere…')).catch(x => toast(x.message, true));
+  if (a === 'sua') { S.fixOpen[j.id] = !S.fixOpen[j.id]; veHang(); if (S.fixOpen[j.id]) { const ta = $(`.don[data-id="${j.id}"] textarea[data-f=fix]`); if (ta) ta.focus(); } return; }
+  if (a === 'quick') { const ta = b.closest('.fix').querySelector('textarea'); ta.value = (ta.value.trim() ? ta.value.trim().replace(/[.,;]?$/, '') + '. ' : '') + b.textContent; S.fix[j.id] = ta.value; ta.focus(); return; }
+  if (a === 'sua-gui') { const ta = b.closest('.fix').querySelector('textarea'), t = (ta.value || '').trim(), er = b.closest('.fix').querySelector('[data-e=fix]');
+    if (!t) { ta.classList.add('bad'); ta.focus(); er.textContent = 'Gõ cần sửa gì trước đã (vd: hook ngắn lại).'; return; }
+    return lam(b, async () => { const r = await api(url + 'sua', {text: t}); delete S.fix[j.id]; S.fixOpen[j.id] = false; toast(r.cho ? 'Đã xếp hàng: Premiere đang dựng video khác, xong thì sửa video này' : 'Đã giao sửa'); await loadJobs(); }); }
+  if (a === 'dunglai') {
+    const don = (d && d.job.don) || {};
+    F = {...MAC_DINH(), thu_muc: don.thu_muc || '', clip: Array.isArray(don.clip) ? don.clip.slice() : [], ten: '', loai: don.loai || 'ban_ipad', may: don.may || '', gia: don.gia || '',
+      hook1: don.hook1 || '', hook2: don.hook2 || '', do_dai: don.do_dai || '75-95', kieu_che_do: don.kieu_che_do || 'xoay_vong', kieu: {...MAC_DINH().kieu, ...(don.kieu || {})},
+      giong: don.giong || 'loi_that', giong_ai_ten: don.giong_ai_ten || GIONG_DS.mac_dinh, giong_ai_toc: don.giong_ai_toc || '+10%', duong: don.duong || 'premiere', ghi_chu: don.ghi_chu || '', duyet_truoc: !!don.duyet_truoc};
+    luuNhap(); napForm(); if (F.thu_muc) await loadClips(F.thu_muc, true);
+    bao('Đã chép cài đặt của “' + (j.ten || '') + '”. Sửa rồi bấm Chạy.', 'ok');
+    $('#f').scrollIntoView({behavior: 'smooth', block: 'start'}); return;
+  }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { const m = $$('.modal').pop(); if (m) { const v = $('video', m); if (v) try { v.pause(); } catch(x) {} m.remove(); } } });
+
+/* ===== Chế độ Sửa tay (2/11): trang /sua-tay chạy trong khung #stF, không đổi trang =====
+   Địa chỉ giữ chế độ để F5 mở lại đúng chỗ: #sua-tay (danh sách) hoặc #sua-tay=<thư mục video>. */
+const ST = {mode: 'claude', v: null, xuat: null};
+function stTop(){
+  gopDau();
+  const y = document.body.classList.contains('gop') ? 0 : Math.max($('header.top').getBoundingClientRect().bottom, $('#banner').getBoundingClientRect().bottom);
+  document.documentElement.style.setProperty('--st-top', Math.max(0, Math.round(y)) + 'px');
+}
+/* 3/11 tối (làm đẹp): 2 thanh đầu chồng nhau tốn ~100px ở 1366 -> khi đang mở 1 video sửa (và không có băng báo lỗi), thanh POLY Cut
+   (logo + chip Claude) nổi đè góc trái thanh đầu của trình sửa, trình sửa chừa chỗ (html.gop + --gop-w, CSS ở dev/_lam-dep.css). */
+function gopDau(){
+  const f = $('#stF'); let d = null; try { d = f.contentDocument; } catch(e) {}
+  const t = d && d.querySelector('.top');
+  let gop = ST.mode === 'tay' && document.body.classList.contains('chi-sua') && !$('#banner').innerHTML.trim()
+    && !!(d && d.body && d.body.classList.contains('ed') && t && t.offsetHeight), w = 0;
+  if (gop) {   // chỉ gộp khi thanh đầu trình sửa vẫn nằm gọn 1 hàng sau khi chừa chỗ. Chật (đang xuất, cửa sổ hẹp) thì thu dần:
+    // bỏ chữ "POLY Cut 2.0" (gop-1) rồi chip Claude chỉ còn chấm màu (gop-2); vẫn không đủ thì để 2 tầng như cũ
+    const cs = d.defaultView.getComputedStyle(t), gap = parseFloat(cs.columnGap) || 0;
+    const con = [...t.children].filter(e => d.defaultView.getComputedStyle(e).display !== 'none');   // mục rỗng vẫn tính 1 khe gap
+    const con_lai = t.clientWidth - (parseFloat(cs.paddingRight) || 0) - 4 - gap * (con.length - 1)
+      - con.reduce((s, e) => s + (e.classList.contains('sp') ? 0 : e.getBoundingClientRect().width), 0);
+    const B = document.body.classList; B.add('gop'); gop = false;
+    for (const lv of [0, 1, 2]) {
+      B.toggle('gop-1', lv >= 1); B.toggle('gop-2', lv >= 2);
+      w = Math.ceil($('header.top').getBoundingClientRect().right + 12);
+      if (w <= con_lai) { gop = true; break; }
+    }
+  }
+  if (!gop) document.body.classList.remove('gop-1', 'gop-2');
+  document.body.classList.toggle('gop', gop);
+  document.body.classList.toggle('gop-toi', gop && !!d.querySelector('.mbg, .ctm-bg'));   // trình sửa đang mở hộp nổi: logo + chip mờ theo
+  if (!d || !d.documentElement) return;
+  d.documentElement.classList.toggle('gop', gop);
+  if (gop) {
+    document.documentElement.style.setProperty('--gop-h', t.offsetHeight + 'px');
+    d.documentElement.style.setProperty('--gop-w', w + 'px');
+  }
+}
+$('#stF').addEventListener('load', () => {   // trang trong khung tải xong: theo dõi thanh đầu của nó (mở / đóng video, xuống dòng)
+  try { const w = $('#stF').contentWindow, t = w.document.querySelector('.top');
+    if (t) { const ro = new w.ResizeObserver(() => { if (ST.mode === 'tay') stTop(); }); ro.observe(t); [...t.children].forEach(e => ro.observe(e)); }
+    new w.MutationObserver(() => { if (ST.mode === 'tay') stTop(); }).observe(w.document.body, {attributes: true, attributeFilter: ['class'], childList: true});
+  } catch(e) {}
+  if (ST.mode === 'tay') stTop();
+});
+function stHash(){ history.replaceState(null, '', ST.mode === 'tay' ? '#sua-tay' + (ST.v ? '=' + enc(ST.v) : '') : location.pathname + location.search); }
+function cheDo(m, v, moi){
+  const tay = m === 'tay', f = $('#stF');
+  if (!tay && ST.mode === 'tay') { try { f.contentWindow.dungPhat && f.contentWindow.dungPhat(); } catch(e) {} }
+  ST.mode = m;
+  document.body.classList.toggle('tay', tay);
+  $('#stView').hidden = !tay;
+  $$('.modes [data-mode]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.mode === m)));
+  if (tay) {
+    window.scrollTo(0, 0); stTop();
+    if (v != null && (moi || v !== ST.v || !f.getAttribute('src'))) { ST.v = v; f.src = '/sua-tay' + (v ? '?v=' + enc(v) + (moi === 'nghe' ? '&nghe=1' : '') : ''); }
+    else if (!f.getAttribute('src')) { ST.v = ''; f.src = '/sua-tay'; }
+    else { try { f.contentWindow.dispatchEvent(new Event('resize')); } catch(e) {} }
+    setTimeout(() => { try { f.contentWindow.focus(); } catch(e) {} }, 60);
+  }
+  stHash();
+}
+window.suaTay = (su, d) => {   // trang Sửa tay báo lên: mở video nào, đang xuất, xuất xong
+  if (su === 'mo') { ST.v = d.v || ''; if (ST.mode === 'tay') stHash(); }
+  else if (su === 'xuat') { ST.xuat = d.dang ? d : null; veMx(); }
+  else if (su === 'xong') { ST.xuat = null; veMx(); loadJobs(); }
+};
+/* r34: kéo file từ máy thả lệch lên trang ngoài (đầu trang): Chrome mặc định mở file thay trang app -> chặn. Đang ở Sửa tay thì chuyển
+   file vào trình sửa (thêm vào cuối video, dev/_mod-tha-file.js); chế độ Claude thì không nhận. */
+const coFileKeo = e => !!e.dataTransfer && [...(e.dataTransfer.types || [])].includes('Files');
+['dragenter', 'dragover'].forEach(t => addEventListener(t, e => { if (!coFileKeo(e)) return; e.preventDefault();
+  let w = null; try { w = ST.mode === 'tay' && $('#stF').contentWindow; } catch(x) {}
+  e.dataTransfer.dropEffect = w && w.thaFileRe ? 'copy' : 'none'; if (w && w.thaFileRe) w.thaFileRe(); }));
+addEventListener('drop', e => { if (!coFileKeo(e)) return; e.preventDefault();
+  let w = null; try { w = ST.mode === 'tay' && $('#stF').contentWindow; } catch(x) {}
+  if (!w || !w.thaFileTuNgoai) return;
+  const ds = [...(e.dataTransfer.items || [])].filter(i => i.kind === 'file').map(i => { let en = null; try { en = i.webkitGetAsEntry && i.webkitGetAsEntry(); } catch(x) {} return {f: i.getAsFile(), thuMuc: !!(en && en.isDirectory)}; }).filter(x => x.f);
+  w.thaFileTuNgoai(ds); });
+function veMx(){
+  const x = ST.xuat, el = $('#mx');
+  el.textContent = x ? (x.nhap ? 'nháp' : 'đang xuất') : '';
+  el.parentElement.title = x ? (x.nhap ? 'Đang dựng bản nháp' : 'Đang xuất ' + (x.ban || '')) + (x.ten ? ' · ' + x.ten : '') + (x.buoc ? ' · ' + x.buoc : '')
+    : 'Tự kéo cắt cảnh, sửa chữ, phụ đề rồi xuất bằng ffmpeg (không tốn lượt Claude, không cần Premiere)';
+}
+$$('.modes [data-mode]').forEach(b => b.addEventListener('click', () => cheDo(b.dataset.mode)));
+window.addEventListener('resize', () => { if (ST.mode === 'tay') stTop(); });
+try { const ro = new ResizeObserver(() => { if (ST.mode === 'tay') stTop(); }); ro.observe($('header.top')); ro.observe($('#banner')); } catch(e) {}
+$('#tuDung').onclick = async () => {   // tạo video sửa tay từ clip đang chọn ở cột Video mới
+  const go = ($('#thu_muc').value || '').trim().replace(/^"+|"+$/g, '');
+  if (go && go !== F.thu_muc) await loadClips(go);
+  if (!F.thu_muc || !S.list) { $('#thu_muc').classList.add('bad'); $('#thu_muc').focus(); bao('Chọn thư mục clip trước đã.', 'err'); return; }
+  if (!S.list.clip.length) { bao('Thư mục này chưa có clip video.', 'err'); return; }
+  const ds = clipsDung();
+  if (ds.length > 60) { bao('Thư mục có ' + ds.length + ' clip, bấm chọn những clip cần dùng (tối đa 60) rồi bấm lại.', 'err'); return; }
+  const b = $('#tuDung'), cu = b.textContent; b.disabled = true; b.textContent = 'Đang tạo…';
+  try {
+    const ban = F.loai === 'ban_ipad' || F.loai === 'ban_laptop';
+    const r = await api('/api/sua-tay/moi', {thu_muc: F.thu_muc, clip: ds.map(c => c.ten), ten: tenThuMuc(), hook: [F.hook1, F.hook2],
+      gia: ban ? F.gia : '', may: ban ? F.may : '', che_do: F.kieu_che_do, kieu: F.kieu});
+    bao('', ''); if (F.giong === 'giong_ai') toast('Sửa tay dùng tiếng trong clip, chưa làm giọng đọc AI.');
+    Object.assign(F, {ten:'', may:'', gia:'', hook1:'', hook2:'', ghi_chu:'', clip:[]}); napForm(); veChon(); luuNhap();
+    cheDo('tay', r.v, 'nghe');   // vừa tạo: trang Sửa tay tự nghe lời nói làm phụ đề
+  } catch(e) { bao(e.message, 'err'); }
+  finally { b.disabled = false; b.textContent = cu; }
+};
+
+/* ===== Khởi động ===== */
+napForm(); renderClips();
+// 3/11 17:51 anh: "bỏ cái này đi" (nút Dựng bằng Claude) -> POLY Cut mở thẳng trình sửa, ẩn nút chuyển chế độ.
+// Chế độ Dựng bằng Claude vẫn còn trong code: mở địa chỉ có #dung-claude để dùng lại (không hiện nút).
+const CO_CLAUDE = location.hash === '#dung-claude';
+document.body.classList.toggle('chi-sua', !CO_CLAUDE);
+// 3/11 18:04 anh: "phần này bị thừa, vào thẳng edit luôn dc rồi" -> mở thẳng video sửa gần nhất (chưa có video nào thì mới hiện trang chọn clip).
+if (!CO_CLAUDE) { const m = /^#sua-tay(?:=(.*))?$/.exec(location.hash); let v = ''; if (m) { try { v = decodeURIComponent(m[1] || ''); } catch(e) {} }
+  if (v) cheDo('tay', v);
+  else fetch('/api/sua-tay/ds').then(r => r.json()).then(d => cheDo('tay', ((d.ds || [])[0] || {}).v || '')).catch(() => cheDo('tay', '')); }
+(async () => {
+  health();
+  if (F.thu_muc) loadClips(F.thu_muc, true);
+  await loadJobs();
+  setInterval(loadJobs, 3000);
+  setInterval(() => health(false), 60000);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+/* ---- QUÉT CHỌN trên timeline (4/11 17:11, anh: "dưới này cho quét chọn") ---- dev/_mod-quet.js */
+/* khung chọn trong mờ (vẽ trong #tl, cắt theo phần timeline đang thấy) */
+.q-khung{position:absolute;z-index:9;pointer-events:none;border:1px solid rgba(255,255,255,.78);background:rgba(255,255,255,.09);border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.q-khung[hidden]{display:none}
+.q-khung span{position:absolute;right:3px;bottom:3px;padding:0 6px;border-radius:4px;background:rgba(0,0,0,.78);color:#fff;font:700 10.5px/16px var(--f);white-space:nowrap}
+.q-khung span[hidden]{display:none}
+body.q-dang-quet,body.q-dang-quet *{user-select:none!important}
+body.q-dang-keo,body.q-dang-keo *{user-select:none!important;cursor:grabbing!important}
+/* thanh chữ của nhóm đang kéo dời giờ */
+.bar.q-keo{z-index:3;opacity:.95;box-shadow:0 0 0 1px #fff,0 6px 14px rgba(0,0,0,.55)}
+/* bảng phải: dòng "Đã chọn N mục" + nút nhanh (bảng hẹp 320px vẫn gọn) */
+#qBen{position:sticky;top:0;z-index:6;gap:8px;padding:10px 12px;border-color:#5a4819;background:#1f1a10;box-shadow:0 6px 14px rgba(0,0,0,.35)}
+#qBen .q-dau{display:flex;align-items:center;gap:6px;min-width:0}
+#qBen .q-dau b{flex:none;font-size:13.5px;color:var(--gold-text);white-space:nowrap}
+#qBen .q-ct{flex:1;min-width:0;color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#qBen .q-dau .btn{flex:none;margin-right:-4px}
+#qBen .q-nut{display:flex;flex-wrap:wrap;gap:6px}
+#qBen .q-nut .btn{gap:5px}
+#qBen .q-nut .btn .ic{width:14px;height:14px}
+#qBen .q-nut .btn.danger .ic{color:var(--err)}
+#qBen .note{font-size:11.5px;line-height:1.4}
+@container ben (max-width:420px){   /* bảng hẹp (máy 1366): số mục xuống dòng 2, nút nhanh bỏ biểu tượng để vừa 1 hàng */
+  #qBen .q-dau{flex-wrap:wrap;row-gap:1px}
+  #qBen .q-dau .btn{margin-left:auto}
+  #qBen .q-ct{order:3;flex-basis:100%}
+  #qBen .q-nut .btn:not(.danger) .ic{display:none}
+}
+@container ben (max-width:350px){
+  #qBen{padding:9px 10px}
+  #qBen .q-nut{gap:5px}
+  #qBen .q-nut .btn{padding:5px 8px}
+}
+
+/* gộp 5/11: chừa ~30px trống dưới làn cuối để kéo quét chọn (anh xin "dưới này cho quét chọn"; làn Âm thanh mới làm hết chỗ) */
+.tls{padding-bottom:30px}

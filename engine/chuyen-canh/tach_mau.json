@@ -1,0 +1,43 @@
+{
+ "id": "tach_mau",
+ "loai": "poly-chuyen-1",
+ "ten": "Tách màu nhiễu nhẹ",
+ "nhom": "dac_biet",
+ "mo_ta": "Thoáng tách 3 màu + vài sọc lệch rồi sang cảnh sau, gọn không loè — máy công nghệ, thông số",
+ "giay": 0.3,
+ "giay_min": 0.21,
+ "giay_max": 0.48,
+ "tron": "cat",
+ "cat_tai": 0.5,
+ "mo_chuyen_dong": 0,
+ "A": {
+  "vien": "guong",
+  "zoom": [[0, 1], [0.5, 1.04, "in2"]],
+  "x": [[0.35, 0], [0.42, 0.015, "lin"], [0.48, -0.01, "lin"]]
+ },
+ "B": {
+  "vien": "guong",
+  "zoom": [[0.5, 1.04], [1, 1, "out2"]],
+  "x": [[0.5, 0.012], [0.58, -0.008, "lin"], [0.66, 0, "lin"]]
+ },
+ "lop": [
+  {
+   "kieu": "tach_mau",
+   "manh": [[0.15, 0], [0.5, 0.014, "in2"], [0.85, 0, "out2"]]
+  },
+  {
+   "kieu": "soc",
+   "so_dai": 5,
+   "lech": 0.05,
+   "hat": 11,
+   "manh": [[0.32, 0], [0.45, 1, "lin"], [0.62, 0.8, "lin"], [0.72, 0, "lin"]]
+  }
+ ],
+ "xfade_du_phong": "fade",
+ "premiere_match": "AE.AE_Impact_Glitch",
+ "premiere_gan_nhat": "Impact Glitch (AE.AE_Impact_Glitch)",
+ "xem_truoc": "css: lọc SVG tách kênh (feColorMatrix + feOffset) + vài dải clip-path lệch (gần đúng)",
+ "y_tuong": "RGB split / glitch nhẹ (CapCut 'Glitch', Film Impact 'Glitch')",
+ "giay_phep": "CC0 — Poly tự viết (chuyen_moi.py), không dùng mã / tài nguyên ngoài",
+ "thay": ["vo_diem"]
+}

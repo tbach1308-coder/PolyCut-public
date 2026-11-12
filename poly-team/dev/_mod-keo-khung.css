@@ -1,0 +1,41 @@
+/* ---- KÉO CHỮ TRÊN KHUNG XEM (r31, 10/11, dev/_mod-keo-khung.js): khung chọn, viền rê chuột, đường hít, báo ra ngoài vùng an toàn ---- */
+:root{--kk-xanh:#074D3A;--kk-vang:#FFD600;--kk-do:#e5484d;--kk-do-nen:rgba(28,8,8,.9);--kk-re:rgba(255,214,0,.55);--kk-nen:rgba(11,11,11,.92)}
+.stage .kk-o{position:absolute;inset:0;z-index:4;pointer-events:none}
+.stage.kk-tay{cursor:move}
+.kk-o [hidden]{display:none!important}
+.kk-o .kk-re{position:absolute;border:1px solid var(--kk-re);border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.3)}
+.kk-o .kk-chon{position:absolute;border:1.5px solid var(--kk-vang);border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.45)}
+.kk-o .kk-chon.do{border-color:var(--kk-do);box-shadow:0 0 0 1px rgba(0,0,0,.45),0 0 0 3px rgba(229,72,77,.25)}
+.kk-o .kk-g{display:none;position:absolute;width:11px;height:11px;box-sizing:border-box;background:#fff;border:2px solid var(--kk-xanh);border-radius:2px;pointer-events:auto;touch-action:none}
+.kk-o .kk-chon.co-co .kk-g{display:block}
+.kk-o .kk-chon.do .kk-g{border-color:var(--kk-do)}
+.kk-o .kk-g[data-g="tl"]{left:-6px;top:-6px;cursor:nwse-resize}
+.kk-o .kk-g[data-g="br"]{right:-6px;bottom:-6px;cursor:nwse-resize}
+.kk-o .kk-g[data-g="tr"]{right:-6px;top:-6px;cursor:nesw-resize}
+.kk-o .kk-g[data-g="bl"]{left:-6px;bottom:-6px;cursor:nesw-resize}
+/* đường hít: vàng mảnh suốt khung */
+.kk-o .kk-doc{position:absolute;top:0;bottom:0;width:0;border-left:1px solid var(--kk-vang);opacity:.95}
+.kk-o .kk-ngang{position:absolute;left:0;right:0;height:0;border-top:1px solid var(--kk-vang);opacity:.95}
+/* khung báo lúc kéo (như timeline r25) + dòng báo ra ngoài vùng an toàn */
+.kk-o .kk-nhan,.kk-o .kk-bao{position:absolute;left:50%;transform:translateX(-50%);max-width:94%;box-sizing:border-box;padding:3px 8px;border-radius:7px;
+  font:600 11.5px/1.35 var(--f);color:#fff;text-align:center;overflow-x:clip;font-variant-numeric:tabular-nums;box-shadow:0 3px 8px rgba(0,0,0,.45)}
+.kk-o .kk-nhan{background:var(--kk-nen);border:1px solid var(--kk-vang);width:max-content}
+.kk-o .kk-nhan b{color:var(--kk-vang);font-weight:700}
+.kk-o .kk-nhan i{color:#cfcfcf;font-style:normal}
+.kk-o .kk-bao{display:flex;gap:5px;align-items:flex-start;justify-content:center;background:var(--kk-do-nen);border:1px solid var(--kk-do);width:max-content}
+.kk-o .kk-bao .ic{width:13px;height:13px;flex:none;margin-top:1px;color:var(--kk-do)}
+body.kk-dang-keo,body.kk-dang-keo *{cursor:move!important;user-select:none!important}
+body.kk-dang-keo.kk-keo-goc,body.kk-dang-keo.kk-keo-goc *{cursor:nwse-resize!important}
+/* lớp PNG đang kéo: dời / phóng bằng transform (không đổi lớp khác) */
+.stage .lop{will-change:auto}
+/* bảng phải: dòng Vị trí (bảng 1 chữ) + bảng nhỏ chữ POLY STORE / sticker */
+#pane .kk-vt{display:flex;align-items:center;gap:8px;min-height:30px;margin:0 0 10px;padding:4px 8px 4px 10px;border:1px solid var(--line-2);border-radius:9px;background:var(--surface)}
+#pane .kk-ben .kk-vt{margin:0}
+#pane .kk-vt .lbl{margin:0;font-weight:700}
+#pane .kk-vt-tx{font-size:12.5px;color:var(--muted)}
+#pane .kk-vt-tx.da{color:var(--kk-vang);font-weight:600}
+#pane .kk-vt .sp{flex:1}
+#pane .kk-vt .btn .ic{width:14px;height:14px}
+#pane .kk-i{display:inline-grid;place-items:center;width:22px;height:22px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--muted);cursor:help}
+#pane .kk-i:hover{color:var(--ink);background:var(--hover)}
+#pane .kk-i .ic{width:15px;height:15px}

@@ -1,0 +1,24 @@
+{
+ "id": "review_nhanh",
+ "ten": "Review nhanh",
+ "mo_ta": "Đánh giá nhanh 45–55s: chữ tối giản, từ khoá bút dạ vàng, cắt nhanh, thanh tiến trình.",
+ "bo_mau": "toi_gian",
+ "phu_de": "tg_but_da",
+ "kieu": {
+  "chu": "toi_gian",
+  "phu_de": "cum_ngan",
+  "mo_dau": "chu_zoom",
+  "chuyen_dong": "punch_nhip",
+  "nhip": "nhanh",
+  "chuyen_canh": "cat_cung",
+  "diem_nhan": "zoom_dap",
+  "mau": "tuong_phan",
+  "lop_phu": "khong",
+  "ket": "the_comment",
+  "thanh_tien_trinh": "co",
+  "am_nhan": "co"
+ },
+ "thu_tu": 2,
+ "anh_bia": "review_nhanh.jpg",
+ "phien_ban": 1
+}

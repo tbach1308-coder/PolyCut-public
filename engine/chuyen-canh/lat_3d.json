@@ -1,0 +1,34 @@
+{
+ "id": "lat_3d",
+ "loai": "poly-chuyen-1",
+ "ten": "Lật 3D",
+ "nhom": "dac_biet",
+ "mo_ta": "Cảnh lật quanh trục dọc có phối cảnh như xoay tấm thẻ, nền mờ tối — mặt trước / mặt lưng máy",
+ "giay": 0.45,
+ "giay_min": 0.32,
+ "giay_max": 0.72,
+ "tron": "cat",
+ "cat_tai": 0.5,
+ "mo_chuyen_dong": 0.4,
+ "nen": {
+  "kieu": "mo",
+  "toi": 0.62
+ },
+ "A": {
+  "vien": "trong",
+  "lat_y": [[0, 0], [0.5, 90, "in2"]],
+  "zoom": [[0, 1], [0.5, 0.86, "out2"]]
+ },
+ "B": {
+  "vien": "trong",
+  "lat_y": [[0.5, -90], [1, 0, "out2"]],
+  "zoom": [[0.5, 0.86], [1, 1, "in2"]]
+ },
+ "xfade_du_phong": "fade",
+ "premiere": "cross dissolve",
+ "premiere_gan_nhat": "3D Spin / Flip Motion (Film Impact), chưa có match name",
+ "xem_truoc": "css: perspective + rotateY + scale; nền = ảnh cảnh trước blur + brightness",
+ "y_tuong": "3D spin / flip (Film Impact '3D Spin')",
+ "giay_phep": "CC0 — Poly tự viết (chuyen_moi.py), không dùng mã / tài nguyên ngoài",
+ "thay": ["lat_the"]
+}

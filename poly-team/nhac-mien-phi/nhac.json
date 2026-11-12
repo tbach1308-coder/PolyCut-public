@@ -1,0 +1,173 @@
+{
+ "poly-nhe-nhang.mp3": {
+  "ten": "Nhẹ nhàng",
+  "mo_ta": "đàn điện, trống nhẹ, kiểu lofi chill · 84 BPM",
+  "bpm": 84,
+  "giay": 68.57,
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac.py)",
+  "phong_cach": "Nhẹ nhàng"
+ },
+ "poly-lofi-dem.mp3": {
+  "ten": "Lofi đêm",
+  "mo_ta": "piano jazz, trống lệch, đĩa than · kể chuyện, tư vấn · 76 BPM",
+  "bpm": 76,
+  "giay": 63.16,
+  "phong_cach": "Nhẹ nhàng",
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac_them.py)"
+ },
+ "poly-acoustic.mp3": {
+  "ten": "Acoustic",
+  "mo_ta": "guitar gảy ngón, lắc nhẹ · tiệm, khách, cảm ơn · 96 BPM",
+  "bpm": 96,
+  "giay": 65.0,
+  "phong_cach": "Nhẹ nhàng",
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac_them.py)"
+ },
+ "poly-soi-dong.mp3": {
+  "ten": "Sôi động",
+  "mo_ta": "nhịp 4/4 dồn, pluck rải, kiểu pop / house · 120 BPM",
+  "bpm": 120,
+  "giay": 64.0,
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac.py)",
+  "phong_cach": "Sôi động"
+ },
+ "poly-nang-dong.mp3": {
+  "ten": "Năng động",
+  "mo_ta": "piano nhấn phách, vỗ tay, 4/4 · khuyến mãi, chốt đơn · 124 BPM",
+  "bpm": 124,
+  "giay": 61.94,
+  "phong_cach": "Sôi động",
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac_them.py)"
+ },
+ "poly-chill-house.mp3": {
+  "ten": "Chill house",
+  "mo_ta": "hợp âm house, hi-hat lệch nhịp · lướt máy, đổi cảnh nhanh · 118 BPM",
+  "bpm": 118,
+  "giay": 65.08,
+  "phong_cach": "Sôi động",
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac_them.py)"
+ },
+ "poly-dien-tu-nhe.mp3": {
+  "ten": "Điện tử nhẹ",
+  "mo_ta": "hợp âm supersaw nhún nhịp · máy mới về, giá sốc · 140 BPM",
+  "bpm": 140,
+  "giay": 61.71,
+  "phong_cach": "Sôi động",
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac_them.py)"
+ },
+ "poly-cong-nghe.mp3": {
+  "ten": "Công nghệ",
+  "mo_ta": "pluck dội, bass sâu, kiểu review công nghệ · 110 BPM",
+  "bpm": 110,
+  "giay": 69.82,
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac.py)",
+  "phong_cach": "Công nghệ"
+ },
+ "poly-toi-gian.mp3": {
+  "ten": "Tối giản",
+  "mo_ta": "pluck dội, sub bass, gõ nhẹ · review gọn · 100 BPM",
+  "bpm": 100,
+  "giay": 62.4,
+  "phong_cach": "Công nghệ",
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac_them.py)"
+ },
+ "poly-hiphop-nhe.mp3": {
+  "ten": "Hip-hop nhẹ",
+  "mo_ta": "boom bap, đàn điện · so sánh máy, thông số · 90 BPM",
+  "bpm": 90,
+  "giay": 64.0,
+  "phong_cach": "Công nghệ",
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac_them.py)"
+ },
+ "poly-sang-trong.mp3": {
+  "ten": "Sang trọng",
+  "mo_ta": "piano, dàn dây, nhịp nhẹ · máy cao cấp, mở hộp · 88 BPM",
+  "bpm": 88,
+  "giay": 65.45,
+  "phong_cach": "Sang trọng",
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac_them.py)"
+ },
+ "poly-kham-pha.mp3": {
+  "ten": "Khám phá",
+  "mo_ta": "nhịp dồn kiểu phim, dàn dây · mở hộp, lộ máy · 100 BPM",
+  "bpm": 100,
+  "giay": 62.4,
+  "phong_cach": "Sang trọng",
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac_them.py)"
+ },
+ "poly-vui-tuoi.mp3": {
+  "ten": "Vui tươi",
+  "mo_ta": "dây gảy kiểu ukulele, vỗ tay, chuông · 112 BPM",
+  "bpm": 112,
+  "giay": 68.57,
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac.py)",
+  "phong_cach": "Vui tươi"
+ },
+ "poly-marimba.mp3": {
+  "ten": "Marimba vui",
+  "mo_ta": "marimba, vỗ tay, lắc · mẹo hay, phụ kiện · 104 BPM",
+  "bpm": 104,
+  "giay": 64.62,
+  "phong_cach": "Vui tươi",
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac_them.py)"
+ },
+ "poly-drop-dien-tu.mp3": {
+  "ten": "Drop điện tử",
+  "mo_ta": "EDM nhẹ, dồn trống rồi drop supersaw · lộ máy, mở hộp · 128 BPM",
+  "bpm": 128,
+  "giay": 60.0,
+  "phong_cach": "Trend có drop",
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac_r37.py)",
+  "drop": [
+   15.0,
+   45.0
+  ],
+  "nhip_dau": 0.0,
+  "sha256": "a1709ba569ae83298d9647879a25de863bc7d7bac7b1a8547d9feea6eb7a4a1b",
+  "kho": "r37"
+ },
+ "poly-phonk.mp3": {
+  "ten": "Phonk",
+  "mo_ta": "cowbell + 808 méo kiểu phonk · khoe máy, game, trend · 130 BPM",
+  "bpm": 130,
+  "giay": 59.08,
+  "phong_cach": "Trend có drop",
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac_r37.py)",
+  "drop": [
+   7.38,
+   36.92
+  ],
+  "nhip_dau": 0.0,
+  "sha256": "b062e0d063eeb5550169e45694e7f350d37c638fb36dfafb35f425a9ecca9cb5",
+  "kho": "r37"
+ },
+ "poly-piano-sang-trong.mp3": {
+  "ten": "Piano sang trọng",
+  "mo_ta": "piano thật, dàn dây, nhịp nhẹ vào ô 9 · máy cao cấp · 84 BPM",
+  "bpm": 84,
+  "giay": 62.86,
+  "phong_cach": "Sang trọng",
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac_r37.py; piano: mẫu Meta Piano CC0)",
+  "drop": [
+   22.86
+  ],
+  "nhip_dau": 0.0,
+  "sha256": "19cf6a33a8482827aa5c161ec51ee90ade0c560c5033d8d04ed55c672167d7c1",
+  "kho": "r37"
+ },
+ "poly-corporate.mp3": {
+  "ten": "Tươi sáng",
+  "mo_ta": "piano thật nhấn phách, ukulele, vỗ tay · giới thiệu tiệm, ưu đãi · 118 BPM",
+  "bpm": 118,
+  "giay": 56.95,
+  "phong_cach": "Vui tươi",
+  "giay_phep": "CC0 1.0 (Poly Store tự tạo bằng dev/tao_nhac_r37.py; piano: mẫu Meta Piano CC0)",
+  "drop": [
+   16.27,
+   40.68
+  ],
+  "nhip_dau": 0.0,
+  "sha256": "c8638bf285efc85768735ae7e4ab8114947f4f4ed1854fdd56dd6b50834669f2",
+  "kho": "r37"
+ }
+}

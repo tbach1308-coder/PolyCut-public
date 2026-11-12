@@ -1,0 +1,14 @@
+/* ---- XEM CHUYỂN CẢNH trong khung Xem nhanh (r27, 5/11): dev/_mod-xem-chuyen.js ----
+   #xcW (z-index 0) nằm dưới #lops / #khung -> chữ, phụ đề, khung canh lề luôn trên cùng. Trong #xcW: #xcB (cảnh sau = #vids + #ph),
+   #xcA / #xcA2 (khung cảnh trước, canvas), #xcF (nháy đen / trắng). */
+.stage .xc-w{position:absolute;inset:0;z-index:0;overflow:hidden}
+.stage .xc-b{position:absolute;inset:0}
+.stage .xc-a{position:absolute;inset:0;display:none;pointer-events:none}
+.stage .xc-a.on{display:block}
+.stage .xc-a canvas,.stage .xc-bp{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 50%;display:block}
+.stage .xc-bp{display:none;pointer-events:none}
+.stage .xc-bp.on{display:block}
+.stage .xc-a canvas.px,.stage .xc-bp{image-rendering:pixelated}
+.stage .xc-a canvas[hidden]{display:none}
+.stage .xc-f{position:absolute;inset:0;z-index:3;display:none;pointer-events:none;opacity:0}
+.stage .xc-f.on{display:block}

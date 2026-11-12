@@ -1,0 +1,116 @@
+/* ---- GỌN CHIP (r28, 5/11, anh: "hiển thị nhiều quá, xấu chiếm chỗ") ---- dev/_mod-gon-chip.js
+   Nhóm chọn nhiều lựa chọn ở khung phải = 1 hàng: nhãn · [giá trị ▾] · ↺ ; bấm = danh sách nổi (xem trước bên trái, ✓, nhóm con, ô tìm).
+   Màu: lục bảo #074D3A (mục đang dùng / nút đang mở) + vàng #FFD600 (✓, biểu tượng khi cảnh có giá trị riêng), nền tối như bảng phải.
+   File chèn sau _thu-vien.css / _mod-ben-phai.css, trước _lam-dep.css: luật trong bảng phải viết kèm #pane. */
+
+/* nhóm chip cũ: giấu (vẫn trong trang, chọn trong danh sách = bấm đúng chip này) */
+.gc-an{display:none !important}
+/* nhãn phụ trong chip cũ (nếu còn chỗ nào hiện chip): viên nhỏ, không dính chữ */
+.tvchip .cm-tag{margin-left:3px;padding:0 5px;border-radius:4px;background:rgba(255,214,0,.12);color:#e8c84a;font:600 10.5px/16px var(--f);white-space:nowrap}
+
+/* ===== hàng chọn: nhãn · nút · ↺ ===== */
+#pane .tt-box.gc-box{padding:9px 0 9px;gap:8px}
+#pane .tt-tabs + .tt-box.gc-box,#pane .tt-tabs + .dy-goi + .tt-box.gc-box{padding-top:6px}
+#pane .tt-box.gc-box > .row.gc-hang,#pane .gc-hang.gc-tt{display:grid;grid-template-columns:104px minmax(0,1fr) 24px;gap:8px;align-items:center;min-height:32px;flex-wrap:nowrap}
+#pane .gc-hang.gc-tt{grid-template-columns:84px minmax(0,1fr) 24px}
+#pane .gc-hang > h2.sec{display:flex;align-items:center;gap:2px;min-width:0;margin:0;overflow:visible}
+#pane .gc-hang > h2.sec .gc-nt{min-width:0;white-space:nowrap;overflow:hidden;overflow:clip;overflow-clip-margin:4px;text-overflow:ellipsis;line-height:1.5;padding-block:1px}
+#pane .gc-hang > h2.sec .tt-i{margin:0 0 0 1px;width:20px;height:20px}
+#pane .gc-hang > h2.sec .tt-i .ic{width:14px;height:14px;margin:0;vertical-align:0;color:inherit}
+#pane .gc-hang > h2.sec .tt-i{color:var(--dim)}
+#pane .gc-hang > h2.sec .tt-i:hover,#pane .gc-hang > h2.sec .tt-i:focus-visible{color:var(--ink)}
+#pane .gc-hang > .note{display:none}
+#pane .gc-nhan{font:500 12.5px/1.45 var(--f);color:var(--ink);white-space:nowrap;overflow:visible;overflow-x:clip;text-overflow:ellipsis;min-width:0}
+#pane .kc-ben .gc-hang.gc-tt{margin:0}
+
+/* nút giá trị */
+#pane .gc-chon{display:flex;align-items:center;gap:7px;width:100%;min-width:0;height:30px;margin:0;padding:0 6px 0 6px;border:1px solid #333;border-radius:7px;background:#141414;
+  color:var(--ink);font:600 12.5px/1 var(--f);text-align:left;cursor:pointer;transition:border-color .12s,background .12s}
+#pane .gc-chon:hover{border-color:#4a4a4a;background:#181818}
+#pane .gc-chon:focus-visible{outline:none;border-color:#0f7a5a;box-shadow:0 0 0 2px rgba(15,122,90,.38)}
+#pane .gc-chon.mo{border-color:#0f7a5a;background:#101a16;box-shadow:0 0 0 2px rgba(15,122,90,.3)}
+#pane .gc-dau{flex:none;display:grid;place-items:center;width:20px;height:20px;color:var(--dim)}
+#pane .gc-dau .ic{width:15px;height:15px}
+#pane .gc-chon.rieng .gc-dau{color:#FFD600}
+#pane .gc-dau .gc-anh{width:16px;height:20px;border-radius:3px;background:#0d0d0d center/cover no-repeat;box-shadow:0 0 0 1px #333}
+#pane .gc-gt{flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:6px}
+#pane .gc-ten{min-width:0;white-space:nowrap;overflow:hidden;overflow:clip;overflow-clip-margin:4px;text-overflow:ellipsis;line-height:1.5;padding-block:1px}
+#pane .gc-chung{flex:none;padding:0 5px;border-radius:4px;background:#232323;color:var(--muted);font:600 10.5px/17px var(--f)}
+#pane .gc-tag{flex:none;padding:0 5px;border-radius:4px;background:rgba(255,214,0,.12);color:#e8c84a;font:600 10.5px/17px var(--f);white-space:nowrap}
+#pane .gc-mui{flex:none;display:grid;place-items:center;color:var(--dim)}
+#pane .gc-mui .ic{width:14px;height:14px;transition:transform .15s}
+#pane .gc-chon.mo .gc-mui .ic{transform:rotate(180deg)}
+#pane .gc-chon:hover .gc-mui{color:var(--ink)}
+/* ↺ */
+#pane .gc-lai{display:grid;place-items:center;width:24px;height:24px;margin:0;padding:0;border:0;border-radius:6px;background:none;color:var(--muted);cursor:pointer}
+#pane .gc-lai:hover:not([disabled]){background:#262626;color:var(--ink)}
+#pane .gc-lai[disabled]{opacity:.22;cursor:default}
+#pane .gc-lai .ic{width:14px;height:14px}
+/* mẫu chữ / font ở đầu nút */
+.gc-sw{display:inline-grid;place-items:center;min-width:0;font-size:8.5px;line-height:1}
+.gc-sw .kc-o{padding:.15em .3em}
+.gc-aa{font:700 13px/1 var(--f);color:var(--ink)}
+
+/* ===== danh sách nổi ===== */
+.gc-ds{position:fixed;z-index:94;left:0;top:0;display:flex;max-width:calc(100vw - 12px);border:1px solid #333;border-radius:10px;background:#161616;
+  box-shadow:0 16px 44px rgba(0,0,0,.62);color:var(--ink);font:500 12.5px/1.4 var(--f);overflow:clip;user-select:none}
+.gc-xc{flex:none;width:124px;display:grid;align-content:start;gap:6px;padding:10px;border-right:1px solid #262626;background:#121212}
+.gc-ds.hep .gc-xc{display:none}
+.gc-xc .gc-xem{pointer-events:none}
+.gc-xc .gc-xem .xv{width:104px;box-shadow:0 0 0 1px #2c2c2c}
+.gc-ds .gc-xem .xv > i{animation-play-state:running !important;animation-delay:0s !important}
+.gc-xc .kc-m .xv.kc-xv{aspect-ratio:16/10}
+.gc-xc .gc-fxv{aspect-ratio:16/10;display:grid !important;place-content:center;justify-items:center;gap:3px;background:linear-gradient(160deg,#0f2a21,#0a0a0a)}
+.gc-xc .gc-fxv b{font-size:26px;font-weight:800;line-height:1;color:#FFD600}
+.gc-xc .gc-fxv small{font-size:10.5px;font-weight:700;line-height:1.2;color:#fff;text-transform:uppercase}
+.gc-xt{font:650 12.5px/1.4 var(--f);color:var(--ink);overflow-wrap:anywhere}
+.gc-xm{font-size:11.5px;line-height:1.45;color:var(--muted);overflow-wrap:anywhere}
+.gc-xm.vang{color:#e8c84a}
+.gc-cot{flex:1 1 auto;width:256px;min-width:0;display:flex;flex-direction:column}
+.gc-ds.rong .gc-cot{width:272px}
+.gc-tim{position:relative;display:block;padding:8px 8px 6px;border-bottom:1px solid #222}
+.gc-tim .ic{position:absolute;left:17px;top:50%;width:14px;height:14px;margin-top:1px;transform:translateY(-50%);color:var(--dim);pointer-events:none}
+.gc-tim input{width:100%;height:30px;padding:0 9px 0 28px;font-size:12.5px;border-radius:7px;background:#111}
+.gc-list{flex:1 1 auto;min-height:0;max-height:400px;overflow-y:auto;padding:4px;scrollbar-width:thin;outline:none}
+.gc-nh{display:flex;align-items:center;gap:6px;margin:6px 6px 2px;font:700 11px/1.4 var(--f);letter-spacing:.02em;color:#c9c9c9}
+.gc-nh::before{content:"";width:3px;height:10px;border-radius:2px;background:#FFD600}
+.gc-nh span{font-weight:600;font-size:10.5px;color:var(--dim)}
+.gc-o{display:grid;grid-template-columns:16px minmax(0,1fr) auto auto;align-items:center;column-gap:8px;min-height:30px;padding:3px 8px 3px 6px;border-radius:6px;cursor:pointer;color:var(--ink)}
+.gc-o.co-anh{grid-template-columns:16px auto minmax(0,1fr) auto auto}
+.gc-o.co-phu{grid-template-columns:16px auto minmax(0,1fr)}
+.gc-o.act{background:#262626}
+.gc-o.on{background:rgba(7,77,58,.5);color:#fff}
+.gc-o.on.act{background:rgba(7,77,58,.78)}
+.gc-o.tat{opacity:.4;cursor:not-allowed}
+.gc-o.thieu .gc-ot{opacity:.5}
+.gc-ck{display:grid;place-items:center;width:16px;height:16px;color:#FFD600}
+.gc-ck .ic{width:13px;height:13px;stroke-width:3}
+.gc-ot{min-width:0;white-space:nowrap;overflow:hidden;overflow:clip;overflow-clip-margin:4px;text-overflow:ellipsis;line-height:1.5;padding-block:1px}
+.gc-phu{justify-self:end;max-width:100%;min-width:0;color:var(--dim);font-size:11.5px;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gc-o.on .gc-phu{color:#b9d8cc}
+.gc-otag{justify-self:end;padding:0 5px;border-radius:4px;background:rgba(255,214,0,.12);color:#e8c84a;font:600 10.5px/16px var(--f);white-space:nowrap}
+.gc-o .gc-anh{width:18px;height:22px;border-radius:3px;background:#0d0d0d center/cover no-repeat;box-shadow:0 0 0 1px #333}
+.gc-sw.lon{width:62px;height:24px;border-radius:4px;background:#24302c;font-size:9.5px;overflow:hidden}
+.gc-o .gc-ot[class*="kcf-"]{font-size:13.5px}
+.gc-rong{margin:0;padding:10px 8px;color:var(--muted);font-size:12px;line-height:1.5}
+.gc-chan{display:flex;align-items:center;gap:8px;padding:4px 4px 4px 10px;border-top:1px solid #222;color:var(--dim);font-size:11.5px}
+.gc-chan span{flex:1;min-width:0;white-space:nowrap}
+.gc-tv{flex:none;height:26px;padding:0 8px;border:0;border-radius:6px;background:none;color:#FFD600;font:600 12px/1 var(--f);cursor:pointer}
+.gc-tv:hover{background:#262626}
+
+/* ===== bảng hẹp ===== */
+@container ben (max-width:410px){
+  #pane .tt-box.gc-box > .row.gc-hang{grid-template-columns:96px minmax(0,1fr) 22px;gap:6px}
+  #pane .gc-hang.gc-tt{grid-template-columns:80px minmax(0,1fr) 22px;gap:6px}
+  #pane .gc-hang > h2.sec{font-size:12.5px}
+  #pane .gc-lai{width:22px;height:22px}
+}
+@container ben (max-width:385px){
+  #pane .gc-chon{gap:5px;padding:0 4px 0 5px}
+}
+@container ben (max-width:350px){
+  #pane .tt-box.gc-box > .row.gc-hang{grid-template-columns:96px minmax(0,1fr) 22px;gap:5px}
+  #pane .gc-hang.gc-tt{grid-template-columns:74px minmax(0,1fr) 22px;gap:5px}
+  #pane .gc-hang > h2.sec{font-size:12px}
+  #pane .gc-tag{display:none}
+}

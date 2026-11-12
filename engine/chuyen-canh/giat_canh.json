@@ -1,0 +1,63 @@
+{
+ "id": "giat_canh",
+ "loai": "poly-chuyen-1",
+ "ten": "Giật cảnh",
+ "nhom": "dac_biet",
+ "mo_ta": "Lao nhanh vào rồi cảnh sau rung giật tắt dần, tách màu thoáng qua — giá sốc, điểm nhấn",
+ "giay": 0.42,
+ "giay_min": 0.29,
+ "giay_max": 0.67,
+ "tron": "cat",
+ "cat_tai": 0.3,
+ "mo_chuyen_dong": 0.7,
+ "A": {
+  "vien": "guong",
+  "zoom": [[0, 1], [0.3, 1.2, "in3"]]
+ },
+ "B": {
+  "vien": "guong",
+  "zoom": [[0.3, 1.16], [1, 1.0, "out3"]],
+  "x": {
+   "rung": {
+    "tu": 0.3,
+    "den": 1,
+    "bien_do": 0.04,
+    "so_lan": 2.5,
+    "tat": 3.2
+   }
+  },
+  "y": {
+   "rung": {
+    "tu": 0.3,
+    "den": 1,
+    "bien_do": 0.018,
+    "so_lan": 3,
+    "tat": 3.5,
+    "pha": 1.2
+   }
+  },
+  "xoay": {
+   "rung": {
+    "tu": 0.3,
+    "den": 1,
+    "bien_do": 1.6,
+    "so_lan": 2,
+    "tat": 3.0,
+    "pha": 0.5
+   }
+  }
+ },
+ "lop": [
+  {
+   "kieu": "tach_mau",
+   "manh": [[0.22, 0], [0.3, 0.008, "in2"], [0.5, 0, "out2"]]
+  }
+ ],
+ "xfade_du_phong": "fade",
+ "premiere_match": "AE.AE_Impact_Zoom_Blur",
+ "premiere_gan_nhat": "Impact Zoom Blur (AE.AE_Impact_Zoom_Blur), gần nhất",
+ "xem_truoc": "css: translate/rotate/scale theo cùng đường cong + blur; tách màu bằng lọc SVG (feOffset từng kênh)",
+ "y_tuong": "Impact shake / camera shake",
+ "giay_phep": "CC0 — Poly tự viết (chuyen_moi.py), không dùng mã / tài nguyên ngoài",
+ "thay": ["lac_keo"]
+}

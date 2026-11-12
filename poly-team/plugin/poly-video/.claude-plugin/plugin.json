@@ -1,0 +1,10 @@
+{
+  "name": "poly-video",
+  "displayName": "Poly Dựng Video",
+  "version": "1.0.0",
+  "description": "Dựng video TikTok Poly Store ngay trên máy shop (Windows): skill dung-video (đơn từ app Poly Dựng Video → mp4 qua Premiere / Poly Bridge hoặc ffmpeg) + agent duyet-video (duyệt độc lập).",
+  "author": {
+    "name": "Poly Store"
+  },
+  "keywords": ["video", "tiktok", "premiere", "poly-store"]
+}

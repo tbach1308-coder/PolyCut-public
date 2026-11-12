@@ -1,0 +1,30 @@
+{
+ "id": "xoay_nhanh",
+ "loai": "poly-chuyen-1",
+ "ten": "Xoay nhanh",
+ "nhom": "dac_biet",
+ "mo_ta": "Cảnh trước xoay vút có mờ xoay, cảnh sau xoay về thẳng — chuyển đoạn vui, khoe nhiều màu",
+ "giay": 0.45,
+ "giay_min": 0.32,
+ "giay_max": 0.72,
+ "tron": "cat",
+ "cat_tai": 0.5,
+ "mo_chuyen_dong": 0.75,
+ "A": {
+  "vien": "guong",
+  "xoay": [[0, 0], [0.5, 90, "in3"]],
+  "zoom": [[0, 1], [0.5, 1.25, "in2"]]
+ },
+ "B": {
+  "vien": "guong",
+  "xoay": [[0.5, -90], [1, 0, "out3"]],
+  "zoom": [[0.5, 1.25], [1, 1, "out2"]]
+ },
+ "xfade_du_phong": "fade",
+ "premiere": "cross dissolve",
+ "premiere_gan_nhat": "Spin Motion / Roll (Film Impact), chưa có match name",
+ "xem_truoc": "css: rotate + scale + blur; góc trống phóng to để che (không có mép gương)",
+ "y_tuong": "Spin (CapCut 'Spin', Film Impact 'Roll')",
+ "giay_phep": "CC0 — Poly tự viết (chuyen_moi.py), không dùng mã / tài nguyên ngoài",
+ "thay": []
+}

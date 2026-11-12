@@ -1,0 +1,7 @@
+/* ---- CHUYỂN CẢNH MỚI (r35, 11/11): dev/_mod-chuyen-moi.js ----
+   Ô xem trước kiểu mới (.xv.xc-moi): không có keyframes CSS, JS đặt transform / filter / opacity cho .xa / .xb / .xf theo cssChuyen.
+   Nhãn "cũ": kiểu đã ẩn nhưng video này đang dùng (vẫn đổi được). */
+.tvx .xv.xc-moi > i{animation:none!important;transform-origin:50% 50%;will-change:transform,opacity,filter}
+.tvx .xv.xc-moi .xf{opacity:0;z-index:2}
+.tv-tag.cu{top:auto;bottom:5px;background:rgba(70,70,70,.88);color:#ddd}
+.tvl-sec[data-tvl-sec="moi"] .tvl-h{color:var(--brand-text)}

@@ -1,0 +1,24 @@
+{
+ "id": "meo_hay",
+ "ten": "Mẹo hay",
+ "mo_ta": "Mẹo trên máy thật 35–55s: tiêu đề ghim, nhãn MẸO 1/2/3, phụ đề cả câu trên kính, kêu lưu.",
+ "bo_mau": "kinh",
+ "phu_de": "kn_cau_kinh",
+ "kieu": {
+  "chu": "nen_xanh",
+  "phu_de": "ca_cau",
+  "mo_dau": "chu_zoom",
+  "chuyen_dong": "zoom_vao",
+  "nhip": "vua",
+  "chuyen_canh": "truot_ngang",
+  "diem_nhan": "khong",
+  "mau": "trung_tinh",
+  "lop_phu": "khong",
+  "ket": "the_comment",
+  "thanh_tien_trinh": "co",
+  "am_nhan": "khong"
+ },
+ "thu_tu": 4,
+ "anh_bia": "meo_hay.jpg",
+ "phien_ban": 1
+}

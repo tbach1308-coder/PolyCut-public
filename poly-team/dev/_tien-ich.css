@@ -1,0 +1,28 @@
+/* tiện ích / script (dev/_tien-ich.js) */
+.timenu{position:fixed;z-index:45;width:360px;max-width:calc(100vw - 16px);max-height:70vh;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 40px rgba(0,0,0,.55);padding:6px;display:grid;gap:2px}
+.timenu .ti-it{display:grid;gap:2px;text-align:left;padding:8px 10px;border-radius:8px;border:0;background:none;color:var(--ink);cursor:pointer;font:inherit}
+.timenu .ti-it:hover,.timenu .ti-it:focus-visible{background:var(--hover);outline:none}
+.timenu .ti-it b{font-size:13.5px;font-weight:600}
+.timenu .ti-it small{color:var(--muted);font-size:12px;line-height:1.4}
+.timenu .ti-ql{border-top:1px solid var(--line-2);border-radius:0 0 8px 8px;margin-top:4px;padding-top:10px}
+.mbox.rong{width:min(1120px,100%)}
+.tids{display:grid;gap:6px}
+.tid{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;border:1px solid var(--line-2);border-radius:10px;background:var(--surface-2)}
+.tid.tat{opacity:.62}
+.tid small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.tid .err{color:var(--err)}
+.tid .row{display:flex;gap:6px}
+.tid .sw input{width:18px;height:18px;accent-color:var(--brand)}
+.tag2{display:inline-block;padding:0 6px;border-radius:5px;background:var(--surface);border:1px solid var(--line);font-size:11px;font-weight:600;color:var(--muted);vertical-align:1px}
+.tied{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(260px,1fr);gap:14px;align-items:start}
+.tied-l{display:grid;gap:10px;min-width:0}
+.tied label,.tiform label{display:grid;gap:5px;font-size:12.5px;font-weight:600;color:var(--muted)}
+.tied label small{font-weight:500}
+.tied .mono{font:500 12.5px/1.55 var(--mono);tab-size:2;white-space:pre;overflow:auto}
+.tied-r pre{white-space:pre-wrap;font:12.5px/1.6 var(--f);color:#cfcfcf;max-height:62vh;overflow:auto;margin:6px 0 0;padding:10px 12px;background:var(--surface-2);border:1px solid var(--line-2);border-radius:8px}
+.tiform{display:grid;gap:10px}
+.tikq .note.ok{color:var(--ok)}
+ul.tt{margin:4px 0 0;padding-left:18px;font-size:12.5px;color:var(--muted);display:grid;gap:2px}
+ul.tt .q{color:var(--ink)}
+ol.kh{margin:6px 0 2px;padding-left:20px;display:grid;gap:3px;font-size:13px}
+@media (max-width:860px){.tied{grid-template-columns:1fr}}

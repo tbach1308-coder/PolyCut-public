@@ -1,0 +1,424 @@
+{
+ "_ghi_chu": "Kiểu giọng trend của POLY Cut (r39, anh duyệt 11/11 11:30: giữ cả 9 kiểu). Kiểu = giọng có sẵn (giong-ds.json) + tốc độ (giong.py --toc-do, chỉ -5% / +10% / +20% như app) + phong cách xử lý sau (phong_giong.py, giong.py --phong). Chỉ học KIỂU giọng đang chạy trên TikTok, không nhái giọng người thật hay giọng riêng của app khác. mau = file nghe thử gói sẵn trong app (poly-team/giong-mau/), cùng dạng để sau này để được trong kho effect. nhan_giong: nhãn từng giọng (số đo 11/11 trên câu thử: âm tiết/giây, cao độ).",
+ "phien_ban": 1,
+ "cau_thu": "iPad Air M2 màn 11 inch, pin 98%, giá chỉ 13 triệu 9. Anh em ghé Poly Store xem máy nha!",
+ "kieu": [
+  {
+   "id": "review-nhanh-nam",
+   "ten": "Review nhanh · chốt sale",
+   "nhan": [
+    "review nhanh",
+    "chốt sale",
+    "nam"
+   ],
+   "hop": "Báo giá, lên máy mới, chốt đơn",
+   "giong": "vn-adam",
+   "toc_do": "+20%",
+   "phong": "ro",
+   "giong_khac": [
+    [
+     "vn-hai-dang",
+     "+20%"
+    ],
+    [
+     "vn-minh-triet",
+     "+10%"
+    ]
+   ],
+   "mau": "trend-review-nhanh-nam.mp3",
+   "nguon": "hype fast-paced / sales clip: câu ngắn, rõ phụ âm, ~5 âm tiết/giây"
+  },
+  {
+   "id": "review-nhanh-nu",
+   "ten": "Review nhanh · giọng nữ",
+   "nhan": [
+    "review nhanh",
+    "chốt sale",
+    "nữ",
+    "miền Nam"
+   ],
+   "hop": "Báo giá, ưu đãi, livestream ngắn",
+   "giong": "vn-thuy-dung",
+   "toc_do": "+10%",
+   "phong": "ro",
+   "giong_khac": [
+    [
+     "vn-truc-ly",
+     "+20%"
+    ],
+    [
+     "vn-mai-anh",
+     "+10%"
+    ]
+   ],
+   "mau": "trend-review-nhanh-nu.mp3",
+   "nguon": "hype fast-paced; giọng theo miền khách hàng"
+  },
+  {
+   "id": "ke-chuyen-tram",
+   "ten": "Kể chuyện trầm",
+   "nhan": [
+    "kể chuyện",
+    "trầm",
+    "review phim"
+   ],
+   "hop": "Máy có câu chuyện, so sánh đời máy, mở đầu gây tò mò",
+   "giong": "vn-thien-minh",
+   "toc_do": "-5%",
+   "phong": "tram",
+   "giong_khac": [
+    [
+     "vn-thien-tam-duc",
+     "+10%"
+    ],
+    [
+     "vn-thai-son",
+     "+10%"
+    ],
+    [
+     "vn-pham-tuyen",
+     "+10%"
+    ]
+   ],
+   "mau": "trend-ke-chuyen-tram.mp3",
+   "nguon": "deep dramatic / mysterious narrator: 120–140 từ/phút, hạ 2–3 cung, vang nhẹ"
+  },
+  {
+   "id": "nu-ngot",
+   "ten": "Nữ ngọt · nhẹ nhàng",
+   "nhan": [
+    "ngọt",
+    "nữ",
+    "chill"
+   ],
+   "hop": "Đập hộp, iPad cho học sinh, phụ kiện xinh",
+   "giong": "vn-quynh-anh",
+   "toc_do": "+10%",
+   "phong": "ngot",
+   "giong_khac": [
+    [
+     "vn-doan-trang",
+     "+10%"
+    ],
+    [
+     "vn-ngoc-huyen",
+     "+10%"
+    ],
+    [
+     "vn-my-duyen",
+     "+20%"
+    ]
+   ],
+   "mau": "trend-nu-ngot.mp3",
+   "nguon": "calm narrative / warm: đều, ấm, tin cậy"
+  },
+  {
+   "id": "tre-trung",
+   "ten": "Trẻ trung · Gen Z",
+   "nhan": [
+    "Gen Z",
+    "tươi",
+    "nhanh"
+   ],
+   "hop": "Trend nhanh, máy cho sinh viên, meme nhẹ",
+   "giong": "vn-truc-ly",
+   "toc_do": "+20%",
+   "phong": "genz",
+   "giong_khac": [
+    [
+     "vn-thanh-binh",
+     "+10%"
+    ],
+    [
+     "vn-hai-dang",
+     "+20%"
+    ]
+   ],
+   "mau": "trend-tre-trung.mp3",
+   "nguon": "upbeat / hype: cao, tươi, nhịp nhanh"
+  },
+  {
+   "id": "loa-thong-bao",
+   "ten": "Loa thông báo",
+   "nhan": [
+    "thông báo",
+    "loa",
+    "hài"
+   ],
+   "hop": "Xả kho, flash sale, thông báo giờ mở cửa",
+   "giong": "vn-mai-anh",
+   "toc_do": "+10%",
+   "phong": "loa",
+   "giong_khac": [
+    [
+     "vn-minh-duc",
+     "+20%"
+    ],
+    [
+     "vn-minh-triet",
+     "+10%"
+    ]
+   ],
+   "mau": "trend-loa-thong-bao.mp3",
+   "nguon": "meme 'loa phường' Việt Nam: giọng phát thanh qua loa ngoài trời"
+  },
+  {
+   "id": "ban-tin",
+   "ten": "Bản tin radio",
+   "nhan": [
+    "tin tức",
+    "radio"
+   ],
+   "hop": "Tin giá hot, 'tin nóng' máy mới về",
+   "giong": "vn-minh-duc",
+   "toc_do": "+20%",
+   "phong": "radio",
+   "giong_khac": [
+    [
+     "vn-mai-anh",
+     "+10%"
+    ],
+    [
+     "vn-minh-triet",
+     "+10%"
+    ]
+   ],
+   "mau": "trend-ban-tin.mp3",
+   "nguon": "neutral narration / announcer"
+  },
+  {
+   "id": "robot-ai",
+   "ten": "Robot nhẹ",
+   "nhan": [
+    "robot",
+    "công nghệ",
+    "meme AI"
+   ],
+   "hop": "Mẹo công nghệ, 'AI review máy', meme",
+   "giong": "vn-xuan-vinh",
+   "toc_do": "+10%",
+   "phong": "robot",
+   "giong_khac": [
+    [
+     "vn-quoc-tuan",
+     "+10%"
+    ]
+   ],
+   "mau": "trend-robot-ai.mp3",
+   "nguon": "hiệu ứng Robot trên TikTok (comedy character)"
+  },
+  {
+   "id": "bua-hai",
+   "ten": "Bựa · hài",
+   "nhan": [
+    "bựa",
+    "hài",
+    "chipmunk"
+   ],
+   "hop": "Câu chốt hài, video vui trong tiệm",
+   "giong": "vn-adam-bua",
+   "toc_do": "+20%",
+   "phong": "chipmunk",
+   "giong_khac": [
+    [
+     "vn-adam-bua",
+     "+20%",
+     "goc"
+    ]
+   ],
+   "mau": "trend-bua-hai.mp3",
+   "nguon": "chipmunk / chaotic energy; VieNeu có mã cảm xúc thử nghiệm [cười] [thở dài] [hắng giọng]"
+  }
+ ],
+ "nhan_giong": {
+  "vn-adam": {
+   "nhan": [
+    "review nhanh",
+    "miền Nam"
+   ],
+   "_do": "4.2 ât/s · 146 Hz · lên xuống nhiều"
+  },
+  "vn-adam-bua": {
+   "nhan": [
+    "bựa",
+    "đều giọng"
+   ],
+   "_do": "3.7 ât/s · 155 Hz · ít lên xuống"
+  },
+  "vn-hai-dang": {
+   "nhan": [
+    "review nhanh",
+    "sáng"
+   ],
+   "_do": "4.1 ât/s · 158 Hz"
+  },
+  "vn-truc-ly": {
+   "nhan": [
+    "trẻ trung",
+    "review nhanh"
+   ],
+   "_do": "4.3 ât/s · 266 Hz (cao nhất)"
+  },
+  "vn-mai-anh": {
+   "nhan": [
+    "thông báo",
+    "tin tức",
+    "đọc rõ tên máy"
+   ],
+   "_do": "3.7 ât/s · 213 Hz"
+  },
+  "vn-thuy-dung": {
+   "nhan": [
+    "review nhanh",
+    "miền Nam"
+   ],
+   "_do": "4.5 ât/s (nhanh nhất) · 225 Hz"
+  },
+  "vn-thien-minh": {
+   "nhan": [
+    "kể chuyện",
+    "trầm"
+   ],
+   "_do": "3.8 ât/s · 105 Hz"
+  },
+  "vn-thien-tam-duc": {
+   "nhan": [
+    "kể chuyện",
+    "trầm tối"
+   ],
+   "_do": "3.2 ât/s · 107 Hz · tối tiếng nhất"
+  },
+  "vn-ngoc-huyen": {
+   "nhan": [
+    "ngọt",
+    "tự nhiên"
+   ],
+   "_do": "3.9 ât/s · 211 Hz"
+  },
+  "vn-quang-son": {
+   "nhan": [
+    "miền Trung"
+   ],
+   "_do": "3.6 ât/s · 149 Hz"
+  },
+  "vn-ngoc-tran": {
+   "nhan": [
+    "miền Trung"
+   ],
+   "_do": "3.5 ât/s · 190 Hz"
+  },
+  "vn-minh-duc": {
+   "nhan": [
+    "tin tức",
+    "chậm, rõ"
+   ],
+   "_do": "3.0 ât/s · 150 Hz"
+  },
+  "vn-pham-tuyen": {
+   "nhan": [
+    "trầm ấm"
+   ],
+   "_do": "3.8 ât/s · 101 Hz (trầm nhất)"
+  },
+  "vn-thai-son": {
+   "nhan": [
+    "kể chuyện",
+    "miền Nam",
+    "trầm"
+   ],
+   "_do": "3.4 ât/s · 125 Hz"
+  },
+  "vn-xuan-vinh": {
+   "nhan": [
+    "đều giọng",
+    "robot"
+   ],
+   "_do": "4.0 ât/s · 106 Hz · ít lên xuống nhất"
+  },
+  "vn-thanh-binh": {
+   "nhan": [
+    "trẻ trung",
+    "nam"
+   ],
+   "_do": "4.2 ât/s · 183 Hz"
+  },
+  "vn-ngoc-linh": {
+   "nhan": [
+    "kể chuyện",
+    "nữ trầm"
+   ],
+   "_do": "3.9 ât/s · 202 Hz · tối tiếng"
+  },
+  "vn-doan-trang": {
+   "nhan": [
+    "ngọt",
+    "đọc rõ tên máy"
+   ],
+   "_do": "3.7 ât/s · 231 Hz"
+  },
+  "vn-thuc-doan": {
+   "nhan": [
+    "kể chuyện",
+    "miền Nam"
+   ],
+   "_do": "3.4 ât/s · 238 Hz"
+  },
+  "vn-minh-triet": {
+   "nhan": [
+    "miền Nam",
+    "tin tức",
+    "review"
+   ],
+   "_do": "4.0 ât/s · 149 Hz · lên xuống nhiều"
+  },
+  "vn-my-duyen": {
+   "nhan": [
+    "ngọt",
+    "miền Nam",
+    "chậm"
+   ],
+   "_do": "2.9 ât/s · 225 Hz"
+  },
+  "vn-quynh-anh": {
+   "nhan": [
+    "ngọt",
+    "sáng"
+   ],
+   "_do": "3.6 ât/s · 217 Hz · sáng tiếng nhất"
+  },
+  "vn-duc-tri": {
+   "nhan": [
+    "kể chuyện",
+    "miền Nam",
+    "chậm"
+   ],
+   "_do": "2.8 ât/s · 102 Hz"
+  },
+  "vn-kim-thanh": {
+   "nhan": [
+    "đọc truyện",
+    "miền Nam",
+    "chậm nhất"
+   ],
+   "_do": "2.6 ât/s · 235 Hz"
+  },
+  "vn-quoc-tuan": {
+   "nhan": [
+    "tự nhiên"
+   ],
+   "_do": "3.8 ât/s · 152 Hz"
+  },
+  "nu": {
+   "nhan": [
+    "Microsoft",
+    "cần mạng"
+   ]
+  },
+  "nam": {
+   "nhan": [
+    "Microsoft",
+    "cần mạng"
+   ]
+  }
+ }
+}

@@ -1,0 +1,960 @@
+{
+ "_ghi_chu": "Bộ kiểu dựng của agent dựng Poly Store. Mỗi video chọn 1 giá trị cho mỗi mục, không trùng tổ hợp chính của 5 video gần nhất. 'premiere' = các giá trị Premiere (Poly Bridge) làm được; giá trị khác chỉ dựng trên máy chủ. Bộ hiệu ứng Poly (27/10): chuyen_canh thêm 7 kiểu, diem_nhan (nhấn ở chỗ đổi cảnh), lop_phu (lớp phủ cả video); mỗi video tối đa 2 hiệu ứng: chuyển cảnh + (điểm nhấn HOẶC lớp phủ). Hiệu ứng làm trên hình trước khi đặt chữ, chữ luôn nét. Gu kênh @poly.store (27/10, xem 19 video): mục 'gu_kenh' là luật cố định mọi video phải theo; 'trong_so' là độ ưu tiên khi bốc kiểu (kiểu kênh hay dùng và video tốt dùng thì nặng hơn), vẫn không trùng video trước. Nâng cấp xu hướng (29/10): Premiere có chữ mỗi lớp 1 track + chuyển động khi hiện (ve_chu lop_rieng), điểm nhấn zoom_dap / rung_nhip / chop_trang, lớp phủ toi_vien / loa_sang, thanh tiến trình, kết vòng lặp, mở đầu punch_mo, âm nhấn tự tổng hợp (am_nhan) — xem khối 'xu_huong'.",
+ "muc": {
+  "mo_dau": {
+   "chu_zoom": "Cảnh đầu zoom vào chậm, chữ hook 2 dòng hiện ngay từ khung đầu",
+   "dong_bang": "Đóng băng khung đầu 0,5s kèm chữ hook rồi mới chạy",
+   "montage": "1,5s đầu: 3 cảnh hay nhất nháy nhanh 0,5s/cảnh, rồi vào cảnh 1",
+   "hoi_truoc": "Khung đầu làm mờ nền + câu hỏi to 1s, rồi vào cảnh",
+   "punch_mo": "Khung đầu đã chuyển động: cảnh đầu cận 125% bật lùi về 104% trong 0,4s rồi trôi về 100% (có âm nhấn thì kèm tiếng thump), chữ hook hiện ngay khung đầu"
+  },
+  "chuyen_dong": {
+   "zoom_xen_ke": "Mỗi cảnh zoom chậm, xen kẽ vào/ra (100%→108%)",
+   "zoom_vao": "Mọi cảnh zoom vào chậm (100%→106%)",
+   "punch_nhip": "Cảnh dài tách đôi, nửa sau cắt cận 112% (đổi khung theo nhịp)",
+   "pan_ngang": "Lia ngang nhẹ trong khung (trái→phải xen kẽ)"
+  },
+  "nhip": {
+   "nhanh": "Cảnh tối đa 2,5s (cảnh dài tự tách)",
+   "vua": "Cảnh tối đa 4s"
+  },
+  "chuyen_canh": {
+   "cat_cung": "Cắt cứng",
+   "hoa_tan_nhanh": "Hòa tan 0,2s giữa các cảnh",
+   "nhay_trang": "Chớp trắng 0,16s ở chỗ chuyển ý",
+   "truot_ngang": "Cảnh sau trượt ngang đẩy cảnh trước (0,3s)",
+   "truot_doc": "Cảnh sau trượt từ dưới lên như lướt TikTok (0,3s)",
+   "zoom_xuyen": "Zoom xuyên vào cảnh sau (0,35s)",
+   "lau_mem": "Lau ngang mềm mép (0,3s)",
+   "mo_tron": "Mở tròn từ giữa khung (0,35s)",
+   "mo_chuyen_dong": "Nhòe chuyển động ngang như lia nhanh (0,3s)",
+   "vo_diem": "Vỡ điểm ảnh rồi hiện cảnh sau (0,35s)",
+   "tron_poly": "Trộn bộ chuyển cảnh Film Impact có sẵn trong Premiere: zoom blur / whip / push / stretch nối cảnh, flash / light sweep sang ý mới, blur dissolve / light leaks vào cảnh cuối; ~1/3 chỗ nối, không lặp liền"
+  },
+  "chu": {
+   "bong_bong": "Bong bóng thoại xanh lục bảo Poly (đổ dải + vệt bóng) viền trắng, chữ trắng, dòng 2 vàng (chữ ký kênh, video top dùng)",
+   "vien_den": "Chữ trắng viền đen, dòng 2 vàng (Be Vietnam Pro Black)",
+   "dai_trang": "Chữ xanh lục bảo trên dải nền trắng bo góc, dòng 2 dải vàng",
+   "nen_xanh": "Chữ trắng trên khối xanh lục bảo Poly bo góc (đổ dải + vệt bóng)",
+   "vang_tieu_de": "Tiêu đề vàng to có bóng đổ, dòng 2 trắng nhỏ",
+   "toi_gian": "Tối giản (anh chọn 28/10): không khung, chữ thường có bóng mềm; hook trắng + dòng 2 vàng; nhãn gọn góc trên trái gạch chân vàng, chỉ hiện lúc đổi ý; phụ đề cụm nảy lên (Premiere: keyframe Scale/Opacity)",
+   "nhan_lon": "Nhãn trắng bo tròn chữ xanh nhỏ + dòng chính VÀNG IN HOA viền xanh tối, sao lấp lánh (mẫu 'Cách hạn chế / TỤT PIN IPAD' anh gửi 29/10)",
+   "hop_doi": "Hai hộp chồng: dòng 1 chữ xanh hộp vàng, dòng 2 chữ trắng hộp xanh lục bảo viền trắng (mẫu 'iPad Mini 4 / Pin tụt nhanh')",
+   "vang_pill": "Dòng chính VÀNG IN HOA viền đen to + dòng 2 chữ xanh trên viên thuốc vàng (mẫu 'IPAD AIR 5 / THÔNG SỐ & GIÁ')",
+   "the_bia": "Thẻ bìa máy: tag vàng nghiêng chữ xanh + hộp xanh lục bảo viền trắng chữ trắng rất to + thanh thông số trắng chữ xanh '11 INCH | 256GB | 4G' (chu.the_bia từ kho; mẫu 'iPAD PRO 2018') — khung đầu làm ảnh bìa"
+  },
+  "phu_de": {
+   "ca_cau": "Cả câu 1–2 dòng, từ đang đọc vàng + nảy",
+   "cum_ngan": "Cụm 1–3 từ IN HOA nảy theo nhịp nói (kiểu phụ đề tự động CapCut kênh hay dùng)"
+  },
+  "vi_tri_chu": {
+   "tren": "Hook đặt khoảng y 300–520 (mặc định; agent đổi sau khi ghép thử lên khung)",
+   "giua_tren": "Hook đặt khoảng y 600–850",
+   "giua": "Hook đặt khoảng y 900–1150 (chỗ kênh hay đặt bong bóng), chỉ khi mặt người và tay thao tác ở nửa trên"
+  },
+  "mau": {
+   "trung_tinh": "Giữ màu gốc",
+   "am_nhe": "Bão hòa +8%, tương phản +3%",
+   "tuong_phan": "Tương phản +8%, sáng −2%"
+  },
+  "ket": {
+   "the_comment": "Thẻ xanh lục bảo Poly viền trắng: câu kêu comment + nút trắng 'Poly hỗ trợ nha ♥' (thẻ kết của kênh)",
+   "the_xanh": "Thẻ địa chỉ nền xanh lục bảo Poly",
+   "the_den": "Thẻ địa chỉ nền tối Poly (xanh đen mờ) viền xanh, ở giữa dưới",
+   "vong_lap": "Thẻ đen + cảnh cuối zoom ra để nối vòng về cảnh đầu"
+  },
+  "thanh_tien_trinh": {
+   "co": "Thanh tiến trình mảnh màu vàng trên cùng",
+   "khong": "Không có thanh tiến trình"
+  },
+  "diem_nhan": {
+   "khong": "Không nhấn",
+   "chop_trang": "Chớp trắng 2–3 khung ở đầu mỗi cảnh mới",
+   "rung_nhip": "Rung máy nhẹ 0,35s ở đầu mỗi cảnh mới",
+   "glitch_rgb": "Tách màu RGB kiểu glitch 0,12s ở chỗ đổi cảnh",
+   "zoom_dap": "Đập zoom 110%→100% trong 0,25s ở đầu mỗi cảnh mới"
+  },
+  "lop_phu": {
+   "khong": "Không phủ",
+   "hat_film": "Hạt film nhẹ cả video",
+   "toi_vien": "Tối viền nhẹ, dồn mắt vào giữa",
+   "loa_sang": "Lóa vàng ấm 1,2s đầu video và lúc vào thẻ kết"
+  },
+  "am_nhan": {
+   "co": "Âm nhấn tự tổng hợp (am_nhan.py, không bản quyền): vút ở chuyển cảnh, bụp khi nhãn / sticker hiện và ở điểm nhấn, ting khi thẻ giá hiện, vút lên ở thẻ kết; nhỏ hơn tiếng nói (đỉnh −17…−21 dBFS)",
+   "khong": "Không âm nhấn"
+  },
+  "bo_font": {
+   "poly_goc": "Be Vietnam Pro (gốc kênh)",
+   "tiktok_dam": "Montserrat Black — đậm, tròn góc, kiểu TikTok",
+   "cao_gon": "Anton + Barlow Condensed — cao gọn như mẫu 2, 4",
+   "cong_nghe": "Kanit Black / ExtraBold Italic — kiểu công nghệ",
+   "vui_tron": "Baloo 2 + Paytone One — tròn vui như mẫu 1"
+  },
+  "hoat_hinh": {
+   "mov": "Chữ động dựng sẵn (hoat_hinh.py → MOV alpha): hook nảy lệch nhịp + vệt sáng + sao, thẻ giá đóng dấu rung + tia bụi, phụ đề karaoke từng từ (từ đang nói trên viên thuốc xanh)",
+   "keyframe": "Chuyển động bằng keyframe Premiere (nảy / trượt / hiện dần)"
+  }
+ },
+ "chinh": [
+  "mo_dau",
+  "chuyen_dong",
+  "chu",
+  "ket"
+ ],
+ "premiere": {
+  "mo_dau": [
+   "chu_zoom",
+   "montage",
+   "punch_mo"
+  ],
+  "chuyen_dong": [
+   "zoom_xen_ke",
+   "zoom_vao",
+   "punch_nhip"
+  ],
+  "nhip": [
+   "nhanh",
+   "vua"
+  ],
+  "chuyen_canh": [
+   "cat_cung",
+   "hoa_tan_nhanh",
+   "truot_ngang",
+   "zoom_xuyen",
+   "mo_tron",
+   "tron_poly"
+  ],
+  "chu": [
+   "bong_bong",
+   "vien_den",
+   "dai_trang",
+   "nen_xanh",
+   "vang_tieu_de",
+   "toi_gian",
+   "nhan_lon",
+   "hop_doi",
+   "vang_pill",
+   "the_bia"
+  ],
+  "vi_tri_chu": [
+   "tren",
+   "giua_tren",
+   "giua"
+  ],
+  "mau": [
+   "trung_tinh"
+  ],
+  "ket": [
+   "the_comment",
+   "the_xanh",
+   "the_den",
+   "vong_lap"
+  ],
+  "thanh_tien_trinh": [
+   "khong",
+   "co"
+  ],
+  "diem_nhan": [
+   "khong",
+   "zoom_dap",
+   "rung_nhip",
+   "chop_trang"
+  ],
+  "lop_phu": [
+   "khong",
+   "toi_vien",
+   "loa_sang"
+  ],
+  "phu_de": [
+   "ca_cau",
+   "cum_ngan"
+  ],
+  "am_nhan": [
+   "co",
+   "khong"
+  ],
+  "bo_font": [
+   "poly_goc",
+   "tiktok_dam",
+   "cao_gon",
+   "cong_nghe",
+   "vui_tron"
+  ],
+  "hoat_hinh": [
+   "mov",
+   "keyframe"
+  ]
+ },
+ "trong_so": {
+  "_ghi_chu": "Không ghi = 1. Số lớn = hay được chọn hơn.",
+  "chu": {
+   "bong_bong": 3,
+   "vien_den": 2,
+   "nen_xanh": 1,
+   "vang_tieu_de": 1,
+   "dai_trang": 1,
+   "toi_gian": 6,
+   "nhan_lon": 4,
+   "hop_doi": 4,
+   "vang_pill": 3,
+   "the_bia": 3
+  },
+  "phu_de": {
+   "cum_ngan": 3,
+   "ca_cau": 1
+  },
+  "ket": {
+   "the_comment": 3,
+   "the_xanh": 1,
+   "the_den": 1,
+   "vong_lap": 1
+  },
+  "nhip": {
+   "nhanh": 3,
+   "vua": 1
+  },
+  "chuyen_canh": {
+   "cat_cung": 4,
+   "nhay_trang": 2,
+   "hoa_tan_nhanh": 1,
+   "truot_ngang": 1,
+   "truot_doc": 1,
+   "zoom_xuyen": 1,
+   "lau_mem": 1,
+   "mo_tron": 1,
+   "mo_chuyen_dong": 1,
+   "vo_diem": 1,
+   "tron_poly": 8
+  },
+  "diem_nhan": {
+   "khong": 3,
+   "chop_trang": 2,
+   "zoom_dap": 2,
+   "rung_nhip": 1,
+   "glitch_rgb": 1
+  },
+  "lop_phu": {
+   "khong": 6,
+   "hat_film": 1,
+   "toi_vien": 1,
+   "loa_sang": 1
+  },
+  "thanh_tien_trinh": {
+   "khong": 3,
+   "co": 1
+  },
+  "mo_dau": {
+   "chu_zoom": 3,
+   "punch_mo": 3,
+   "dong_bang": 2,
+   "hoi_truoc": 2,
+   "montage": 1
+  },
+  "am_nhan": {
+   "co": 4,
+   "khong": 1
+  },
+  "bo_font": {
+   "poly_goc": 2,
+   "tiktok_dam": 3,
+   "cao_gon": 3,
+   "cong_nghe": 2,
+   "vui_tron": 2
+  },
+  "hoat_hinh": {
+   "mov": 4,
+   "keyframe": 1
+  }
+ },
+ "khong_boc": [
+  "vi_tri_chu"
+ ],
+ "gu_kenh": {
+  "_ghi_chu": "Luật cố định cho mọi video @poly.store, từ 19 video kênh (poly-edit/gu-kenh-poly-store.md). duyet.py kiểm độ dài, chữ trong 0,3s đầu, cảnh liền; ve_chu.py kiểm cỡ chữ và lớp đè nhau. Mẫu nhỏ: là hướng đi, chưa phải chứng minh.",
+  "do_dai_nen": [
+   75,
+   95
+  ],
+  "do_dai_toi_da": 100,
+  "hook_hien_cham_nhat": 0.3,
+  "phu_de_co_chu_nho_nhat": 54,
+  "ket_mac_dinh": [
+   "Anh em cần hỏi gì để lại comment",
+   "Poly hỗ trợ nha ♥"
+  ],
+  "khong_dung": [
+   "chữ neon phát sáng",
+   "chữ mặc định không viền",
+   "khung đen trượt ở giây đầu",
+   "làm nét gắt",
+   "phụ đề tí hon",
+   "nhân vật hoạt hình có bản quyền do hệ thống tự chèn"
+  ],
+  "canh_lien_toi_da": 8.0,
+  "ket_dia_chi": [
+   "Ghé Poly test máy nha",
+   "125/16/26 Bùi Đình Túy, Bình Thạnh"
+  ],
+  "_do_dai": "Anh chốt 28/10: video dài khoảng 1 phút 30 (75–95s). Số liệu 19 video cũ: video trên 60s ít view hơn — theo dõi lại sau 2 tuần."
+ },
+ "xu_huong": {
+  "_ghi_chu": "Luật dựng theo xu hướng TikTok 10/2026 (bản tổng hợp nguồn công khai: hướng dẫn TikTok Shop, bài tổng hợp OpusClip, wayin, newengen 10/2026). Là hướng đi chung của nền tảng, chưa đo trên kênh Poly: xem lại sau 2 tuần cùng số TikTok Studio.",
+  "chuyen_dong_khung_dau": "Khung đầu phải có chữ VÀ chuyển động (zoom bật / nảy chữ) trong 0,5s đầu — người xem quyết định lướt trong ~1s",
+  "doi_khung_giay": [
+   2,
+   4
+  ],
+  "doi_khung": "Đổi khung (cắt, đổi cỡ cảnh, zoom bật, chèn cảnh cận 1–3s) mỗi 2–4s; không đoạn nào đứng yên > 4s kể cả khi đang nói",
+  "phu_de": "Phụ đề cụm 1–3 từ IN HOA nảy theo nhịp nói, từ khoá (số, giá, tên máy) tô vàng",
+  "chu_nhan": "Nhãn / chữ phủ ≤ 6 từ, hiện có chuyển động (trượt, nảy), đúng lúc nói tới",
+  "cau_truc": "Hook → nội dung đánh số (Mẹo 1/2/3, Lý do 1/2/3) → kêu comment; video bán máy: hook nỗi đau / câu hỏi, cho thấy máy thật sớm",
+  "am_nhan": "Âm nhấn nhỏ ở chuyển cảnh và lúc chữ hiện (sound design), không lấn tiếng nói; nhạc trend gắn trong app khi đăng",
+  "ket": "Kêu comment hoặc kết vòng lặp (khung cuối nối về khung đầu) để xem lại",
+  "khong": "Không hiệu ứng sến / dồn dập: tối đa 2 hiệu ứng hình mỗi video (chuyển cảnh + điểm nhấn HOẶC lớp phủ)"
+ },
+ "mau_thuong_hieu": {
+  "_ghi_chu": "Bảng màu Poly Store — mọi chữ / khối / thẻ / lớp hiệu ứng chỉ dùng các màu này (ve_chu.kiem_mau tự soát, báo trong canh_bao). Anh 29/10: 'tone xanh lá sang hơn, đừng xanh lè' → xanh lục bảo sâu, khối xanh đổ dải + vệt bóng; không dùng xanh lá tươi (#22C55E…). Cảnh quay giữ màu thật (khách xem màu máy).",
+  "xanh": [
+   7,
+   77,
+   58
+  ],
+  "xanh_hex": "#074D3A",
+  "xanh_sang": "xanh pha 22% trắng (viền thẻ tối, mép sáng)",
+  "xanh_toi": "xanh pha 55% đen = 'đen Poly' (nền mờ phụ đề, thẻ tối, viền chữ vàng kiểu khối)",
+  "khoi_xanh": "dải dọc: trên pha 12% trắng → xanh → dưới pha 32% đen; vệt bóng trắng 70/255 mép trên",
+  "vang": [
+   255,
+   214,
+   0
+  ],
+  "vang_hex": "#FFD600",
+  "trang": [
+   255,
+   255,
+   255
+  ],
+  "den": "chỉ viền chữ / bóng đổ",
+  "xanh_cu": [
+   6,
+   78,
+   36
+  ],
+  "xanh_cu_hex": "#064E24 (tới 28/10)"
+ },
+ "vung_an_toan": {
+  "x0": 90,
+  "x1": 900,
+  "y0": 220,
+  "y1": 1380
+ },
+ "chuyen_canh_ky_thuat": {
+  "cat_cung": {
+   "giay": 0.0
+  },
+  "hoa_tan_nhanh": {
+   "giay": 0.2,
+   "xfade": "fade",
+   "premiere": "cross dissolve"
+  },
+  "nhay_trang": {
+   "giay": 0.16,
+   "xfade": "fadewhite",
+   "premiere": "dip to white"
+  },
+  "truot_ngang": {
+   "giay": 0.3,
+   "xfade": "slideleft",
+   "premiere": "push"
+  },
+  "truot_doc": {
+   "giay": 0.3,
+   "xfade": "slideup"
+  },
+  "zoom_xuyen": {
+   "giay": 0.35,
+   "xfade": "zoomin",
+   "premiere": "cross zoom"
+  },
+  "lau_mem": {
+   "giay": 0.3,
+   "xfade": "smoothleft"
+  },
+  "mo_tron": {
+   "giay": 0.35,
+   "xfade": "circleopen",
+   "premiere": "iris round"
+  },
+  "mo_chuyen_dong": {
+   "giay": 0.3,
+   "xfade": "hblur"
+  },
+  "vo_diem": {
+   "giay": 0.35,
+   "xfade": "pixelize"
+  },
+  "tron_poly": {
+   "giay": 0.3,
+   "xfade": "fade",
+   "premiere": "cross dissolve",
+   "_ghi_chu": "Chủ shop 28/10: chuyển cảnh đa dạng hơn. Film Impact có sẵn trong Premiere ≥ 25.5 (Adobe mua lại 9/2025), đặt theo match_name. Tổng số chỗ có chuyển cảnh ≈ ty_le_nhanh × số chỗ đổi cảnh: luôn có vao_bai (chỗ nối đầu tiên sau hook) và ket (vào cảnh cuối); rồi cách 1 lấy 1 chỗ có nhãn mục mới (±0,5s) dùng doi_y; còn chỗ thì rải nhanh vào các chỗ khác (dac_biet tối đa 1). Mỗi kiểu dùng tối đa toi_da_moi_kieu lần, không lặp liền nhau. xfade = bản gần nhất cho dựng máy chủ.",
+   "ty_le_nhanh": 0.4,
+   "nhom": {
+    "vao_bai": [
+     {
+      "ten": "Impact Zoom Blur",
+      "match": "AE.AE_Impact_Zoom_Blur",
+      "xfade": "zoomin",
+      "giay": 0.3
+     }
+    ],
+    "nhanh": [
+     {
+      "ten": "Impact Zoom Blur",
+      "match": "AE.AE_Impact_Zoom_Blur",
+      "xfade": "zoomin",
+      "giay": 0.3
+     },
+     {
+      "ten": "Impact Whip",
+      "match": "AE.Impact_Whip",
+      "xfade": "hblur",
+      "giay": 0.25
+     },
+     {
+      "ten": "Impact Push",
+      "match": "AE.AE_Impact_Push",
+      "xfade": "slideleft",
+      "giay": 0.3
+     },
+     {
+      "ten": "Impact Stretch",
+      "match": "AE.AE_Impact_Stretch",
+      "xfade": "squeezeh",
+      "giay": 0.3
+     }
+    ],
+    "dac_biet": [
+     {
+      "ten": "Impact Glitch",
+      "match": "AE.AE_Impact_Glitch",
+      "xfade": "pixelize",
+      "giay": 0.25
+     }
+    ],
+    "doi_y": [
+     {
+      "ten": "Impact Flash",
+      "match": "AE.AE_Impact_Flash",
+      "xfade": "fadewhite",
+      "giay": 0.25
+     },
+     {
+      "ten": "Impact Light Sweep",
+      "match": "AE.AE_Impact_Light_Sweep",
+      "xfade": "smoothleft",
+      "giay": 0.35
+     },
+     {
+      "ten": "Impact Zoom Blur",
+      "match": "AE.AE_Impact_Zoom_Blur",
+      "xfade": "zoomin",
+      "giay": 0.3
+     },
+     {
+      "ten": "Impact Push",
+      "match": "AE.AE_Impact_Push",
+      "xfade": "slideleft",
+      "giay": 0.3
+     }
+    ],
+    "ket": [
+     {
+      "ten": "Impact Blur Dissolve",
+      "match": "AE.AE_Impact_Blur_dissolve",
+      "xfade": "fade",
+      "giay": 0.35
+     },
+     {
+      "ten": "Impact Light Leaks",
+      "match": "AE.AE_Impact_Light_Leaks",
+      "xfade": "fadewhite",
+      "giay": 0.4
+     }
+    ]
+   },
+   "toi_da_moi_kieu": 3
+  },
+  "de_luot": {
+   "giay": 0.3,
+   "xfade": "custom",
+   "expr": "if(gte((trunc(-H*(P^4))+Y),0),ifnot(PLANE,b0(X,(trunc(-H*(P^4))+Y)),ifnot(1-PLANE,b1(X,(trunc(-H*(P^4))+Y)),ifnot(2-PLANE,b2(X,(trunc(-H*(P^4))+Y)),b3(X,(trunc(-H*(P^4))+Y))))),A)",
+   "xfade_du_phong": "coverup",
+   "ten": "Đè lên kiểu lướt",
+   "premiere_gan_nhat": "push (lên)",
+   "them_giay_1080": 4.5
+  },
+  "truot_ngang_muot": {
+   "giay": 0.3,
+   "xfade": "custom",
+   "expr": "if(gte((trunc(-W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X),0),ifnot(PLANE,b0((trunc(-W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X),Y),ifnot(1-PLANE,b1((trunc(-W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X),Y),ifnot(2-PLANE,b2((trunc(-W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X),Y),b3((trunc(-W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X),Y)))),ifnot(PLANE,a0((trunc(-W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X)+W,Y),ifnot(1-PLANE,a1((trunc(-W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X)+W,Y),ifnot(2-PLANE,a2((trunc(-W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X)+W,Y),a3((trunc(-W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X)+W,Y)))))",
+   "xfade_du_phong": "slideleft",
+   "ten": "Trượt ngang mượt",
+   "premiere_gan_nhat": "push (trái)",
+   "them_giay_1080": 11.2
+  },
+  "truot_doc_muot": {
+   "giay": 0.3,
+   "xfade": "custom",
+   "expr": "if(gte((trunc(-H*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+Y),0),ifnot(PLANE,b0(X,(trunc(-H*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+Y)),ifnot(1-PLANE,b1(X,(trunc(-H*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+Y)),ifnot(2-PLANE,b2(X,(trunc(-H*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+Y)),b3(X,(trunc(-H*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+Y))))),ifnot(PLANE,a0(X,(trunc(-H*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+Y)+H),ifnot(1-PLANE,a1(X,(trunc(-H*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+Y)+H),ifnot(2-PLANE,a2(X,(trunc(-H*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+Y)+H),a3(X,(trunc(-H*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+Y)+H)))))",
+   "xfade_du_phong": "slideup",
+   "ten": "Trượt dọc mượt",
+   "premiere_gan_nhat": "push (lên)",
+   "them_giay_1080": 9.6
+  },
+  "keo_len": {
+   "giay": 0.3,
+   "xfade": "custom",
+   "expr": "if(gte((trunc(-H*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+Y),0),B,ifnot(PLANE,a0(X,(trunc(-H*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+Y)+H),ifnot(1-PLANE,a1(X,(trunc(-H*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+Y)+H),ifnot(2-PLANE,a2(X,(trunc(-H*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+Y)+H),a3(X,(trunc(-H*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+Y)+H)))))",
+   "xfade_du_phong": "revealup",
+   "ten": "Kéo lên lộ cảnh",
+   "premiere_gan_nhat": "slide",
+   "them_giay_1080": 5.7
+  },
+  "de_ngang": {
+   "giay": 0.3,
+   "xfade": "custom",
+   "expr": "if(gte((trunc(-W*(P^4))+X),0),ifnot(PLANE,b0((trunc(-W*(P^4))+X),Y),ifnot(1-PLANE,b1((trunc(-W*(P^4))+X),Y),ifnot(2-PLANE,b2((trunc(-W*(P^4))+X),Y),b3((trunc(-W*(P^4))+X),Y)))),A)",
+   "xfade_du_phong": "coverleft",
+   "ten": "Đè ngang",
+   "premiere_gan_nhat": "slide",
+   "them_giay_1080": 4.1
+  },
+  "lau_mem_doc": {
+   "giay": 0.3,
+   "xfade": "smoothup",
+   "ten": "Lau mềm dọc",
+   "premiere_gan_nhat": "wipe (mép mềm, lên)",
+   "them_giay_1080": 0.0
+  },
+  "mo_cua": {
+   "giay": 0.35,
+   "xfade": "vertopen",
+   "ten": "Mở cửa giữa",
+   "premiere_gan_nhat": "barn doors",
+   "them_giay_1080": 0.1
+  },
+  "hoa_tan_sang": {
+   "giay": 0.25,
+   "xfade": "fadefast",
+   "ten": "Hòa tan nhanh theo sáng",
+   "premiere_gan_nhat": "cross dissolve",
+   "them_giay_1080": 0.5
+  },
+  "lau_cheo": {
+   "giay": 0.35,
+   "xfade": "diagtl",
+   "ten": "Lau chéo mềm",
+   "premiere_gan_nhat": "wipe (chéo, mép mềm)",
+   "them_giay_1080": 0.1
+  },
+  "nhay_den": {
+   "giay": 0.25,
+   "xfade": "fadeblack",
+   "ten": "Nháy đen",
+   "premiere_gan_nhat": "dip to black",
+   "them_giay_1080": 0.0
+  },
+  "hoa_tan_dai": {
+   "giay": 0.45,
+   "xfade": "fade",
+   "ten": "Hòa tan dài",
+   "premiere_gan_nhat": "cross dissolve",
+   "them_giay_1080": 0.1,
+   "mo_ta": "Hòa tan chậm 0,45s: vào cảnh cuối, cảnh cảm xúc",
+   "nguon": "xfade có sẵn của ffmpeg"
+  },
+  "truot_phai_muot": {
+   "giay": 0.3,
+   "xfade": "custom",
+   "expr": "if(lt((trunc(W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X),W),ifnot(PLANE,b0((trunc(W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X),Y),ifnot(1-PLANE,b1((trunc(W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X),Y),ifnot(2-PLANE,b2((trunc(W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X),Y),b3((trunc(W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X),Y)))),ifnot(PLANE,a0((trunc(W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X)-W,Y),ifnot(1-PLANE,a1((trunc(W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X)-W,Y),ifnot(2-PLANE,a2((trunc(W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X)-W,Y),a3((trunc(W*(if(lt(P,0.5),4*P^3,1-4*(1-P)^3)))+X)-W,Y)))))",
+   "xfade_du_phong": "slideright",
+   "ten": "Trượt phải mượt",
+   "premiere_gan_nhat": "push (phải)",
+   "them_giay_1080": 6.6,
+   "mo_ta": "Trượt sang phải có gia tốc: quay lại máy trước, so sánh",
+   "nguon": "viết lại từ xfade-easing (MIT, © 2025 Raymond Luckhurst), không st/ld — tai-nguyen/GIAY-PHEP.md"
+  },
+  "de_phai": {
+   "giay": 0.3,
+   "xfade": "coverright",
+   "ten": "Đè sang phải",
+   "premiere_gan_nhat": "slide",
+   "them_giay_1080": 0.1,
+   "mo_ta": "Cảnh sau trượt từ trái sang đè lên cảnh trước",
+   "nguon": "xfade có sẵn của ffmpeg"
+  },
+  "keo_ngang": {
+   "giay": 0.3,
+   "xfade": "revealleft",
+   "ten": "Kéo ngang lộ cảnh",
+   "premiere_gan_nhat": "slide",
+   "them_giay_1080": 0.1,
+   "mo_ta": "Cảnh trước trượt sang trái, lộ cảnh sau đứng yên",
+   "nguon": "xfade có sẵn của ffmpeg"
+  },
+  "lau_mem_xuong": {
+   "giay": 0.3,
+   "xfade": "smoothdown",
+   "ten": "Lau mềm xuống",
+   "premiere_gan_nhat": "wipe",
+   "them_giay_1080": 0.1,
+   "mo_ta": "Mép mờ quét từ trên xuống",
+   "nguon": "xfade có sẵn của ffmpeg"
+  },
+  "lau_mem_phai": {
+   "giay": 0.3,
+   "xfade": "smoothright",
+   "ten": "Lau mềm sang phải",
+   "premiere_gan_nhat": "wipe",
+   "them_giay_1080": 0.1,
+   "mo_ta": "Mép mờ quét sang phải",
+   "nguon": "xfade có sẵn của ffmpeg"
+  },
+  "lau_cheo_nguoc": {
+   "giay": 0.35,
+   "xfade": "diagbr",
+   "ten": "Lau chéo ngược",
+   "premiere_gan_nhat": "wipe",
+   "them_giay_1080": 0.1,
+   "mo_ta": "Mép mờ chéo từ góc dưới phải",
+   "nguon": "xfade có sẵn của ffmpeg"
+  },
+  "lau_len": {
+   "giay": 0.25,
+   "xfade": "wipeup",
+   "ten": "Lau lên",
+   "premiere_gan_nhat": "wipe",
+   "them_giay_1080": 0.1,
+   "mo_ta": "Mép gọn quét từ dưới lên: đổi ý, lướt dọc",
+   "nguon": "xfade có sẵn của ffmpeg"
+  },
+  "lat_doc": {
+   "giay": 0.3,
+   "xfade": "hrslice",
+   "ten": "Lát dọc",
+   "premiere_gan_nhat": "band wipe",
+   "them_giay_1080": 0.1,
+   "mo_ta": "Các lát dọc lật dần sang phải: video công nghệ",
+   "nguon": "xfade có sẵn của ffmpeg"
+  },
+  "zoom_ra": {
+   "giay": 0.35,
+   "xfade": "custom",
+   "expr": "ifnot(PLANE,a0((W/2+(X-W/2)/(1+0.25*(1-P)^2)),(H/2+(Y-H/2)/(1+0.25*(1-P)^2))),ifnot(1-PLANE,a1((W/2+(X-W/2)/(1+0.25*(1-P)^2)),(H/2+(Y-H/2)/(1+0.25*(1-P)^2))),ifnot(2-PLANE,a2((W/2+(X-W/2)/(1+0.25*(1-P)^2)),(H/2+(Y-H/2)/(1+0.25*(1-P)^2))),a3((W/2+(X-W/2)/(1+0.25*(1-P)^2)),(H/2+(Y-H/2)/(1+0.25*(1-P)^2))))))*(1-((1-P)*(1-P)*(3-2*(1-P))))+ifnot(PLANE,b0((W/2+(X-W/2)/(1+0.5*P^2)),(H/2+(Y-H/2)/(1+0.5*P^2))),ifnot(1-PLANE,b1((W/2+(X-W/2)/(1+0.5*P^2)),(H/2+(Y-H/2)/(1+0.5*P^2))),ifnot(2-PLANE,b2((W/2+(X-W/2)/(1+0.5*P^2)),(H/2+(Y-H/2)/(1+0.5*P^2))),b3((W/2+(X-W/2)/(1+0.5*P^2)),(H/2+(Y-H/2)/(1+0.5*P^2))))))*((1-P)*(1-P)*(3-2*(1-P)))",
+   "ten": "Zoom ra",
+   "premiere_gan_nhat": "cross zoom",
+   "them_giay_1080": 20.8,
+   "mo_ta": "Cảnh sau từ 150% lùi về 100%: lộ toàn cảnh sau cảnh cận, mở hộp",
+   "nguon": "Poly tự viết (CC0), không st/ld — tai-nguyen/DANH-MUC.md"
+  },
+  "mo_cua_ngang": {
+   "giay": 0.35,
+   "xfade": "horzopen",
+   "ten": "Mở cửa ngang",
+   "premiere_gan_nhat": "barn doors (ngang)",
+   "them_giay_1080": 0.1,
+   "mo_ta": "Khe ngang mở từ giữa lên / xuống: mở hộp",
+   "nguon": "xfade có sẵn của ffmpeg"
+  },
+  "cua_lua": {
+   "giay": 0.4,
+   "xfade": "custom",
+   "expr": "if(lt(X,W/2),if(lt(X+(W/2*(if(lt((1-P),0.5),4*(1-P)^3,1-4*(1-(1-P))^3))),W/2),ifnot(PLANE,a0(X+(W/2*(if(lt((1-P),0.5),4*(1-P)^3,1-4*(1-(1-P))^3))),Y),ifnot(1-PLANE,a1(X+(W/2*(if(lt((1-P),0.5),4*(1-P)^3,1-4*(1-(1-P))^3))),Y),ifnot(2-PLANE,a2(X+(W/2*(if(lt((1-P),0.5),4*(1-P)^3,1-4*(1-(1-P))^3))),Y),a3(X+(W/2*(if(lt((1-P),0.5),4*(1-P)^3,1-4*(1-(1-P))^3))),Y)))),B),if(gte(X-(W/2*(if(lt((1-P),0.5),4*(1-P)^3,1-4*(1-(1-P))^3))),W/2),ifnot(PLANE,a0(X-(W/2*(if(lt((1-P),0.5),4*(1-P)^3,1-4*(1-(1-P))^3))),Y),ifnot(1-PLANE,a1(X-(W/2*(if(lt((1-P),0.5),4*(1-P)^3,1-4*(1-(1-P))^3))),Y),ifnot(2-PLANE,a2(X-(W/2*(if(lt((1-P),0.5),4*(1-P)^3,1-4*(1-(1-P))^3))),Y),a3(X-(W/2*(if(lt((1-P),0.5),4*(1-P)^3,1-4*(1-(1-P))^3))),Y)))),B))",
+   "ten": "Cửa lùa",
+   "premiere_gan_nhat": "split",
+   "them_giay_1080": 9.0,
+   "mo_ta": "Cảnh trước tách đôi, 2 nửa trượt ra 2 bên lộ cảnh sau: mở màn, lộ máy",
+   "nguon": "Poly tự viết (CC0), không st/ld — tai-nguyen/DANH-MUC.md"
+  },
+  "lat_the": {
+   "giay": 0.4,
+   "xfade": "custom",
+   "expr": "if(lte(abs(X-W/2),max(abs(cos(PI*(1-P))),0.001)*W/2),if(gt(P,0.5),ifnot(PLANE,a0((W/2+(X-W/2)/max(abs(cos(PI*(1-P))),0.001)),(H/2+(Y-H/2)/(1+0.06*sin(PI*(1-P))))),ifnot(1-PLANE,a1((W/2+(X-W/2)/max(abs(cos(PI*(1-P))),0.001)),(H/2+(Y-H/2)/(1+0.06*sin(PI*(1-P))))),ifnot(2-PLANE,a2((W/2+(X-W/2)/max(abs(cos(PI*(1-P))),0.001)),(H/2+(Y-H/2)/(1+0.06*sin(PI*(1-P))))),a3((W/2+(X-W/2)/max(abs(cos(PI*(1-P))),0.001)),(H/2+(Y-H/2)/(1+0.06*sin(PI*(1-P)))))))),ifnot(PLANE,b0((W/2+(X-W/2)/max(abs(cos(PI*(1-P))),0.001)),(H/2+(Y-H/2)/(1+0.06*sin(PI*(1-P))))),ifnot(1-PLANE,b1((W/2+(X-W/2)/max(abs(cos(PI*(1-P))),0.001)),(H/2+(Y-H/2)/(1+0.06*sin(PI*(1-P))))),ifnot(2-PLANE,b2((W/2+(X-W/2)/max(abs(cos(PI*(1-P))),0.001)),(H/2+(Y-H/2)/(1+0.06*sin(PI*(1-P))))),b3((W/2+(X-W/2)/max(abs(cos(PI*(1-P))),0.001)),(H/2+(Y-H/2)/(1+0.06*sin(PI*(1-P))))))))),ifnot(PLANE,37,ifnot(1-PLANE,129,115)))",
+   "ten": "Lật thẻ",
+   "premiere_gan_nhat": "flip",
+   "them_giay_1080": 10.8,
+   "mo_ta": "Cảnh trước lật như tấm thẻ, cảnh sau mở ra: so sánh trước / sau, lật mặt lưng",
+   "nguon": "Poly tự viết (CC0), không st/ld — tai-nguyen/DANH-MUC.md"
+  },
+  "lac_keo": {
+   "giay": 0.35,
+   "xfade": "custom",
+   "expr": "ifnot(PLANE,a0((W/2+(X-W/2)/(1+0.25*sin(PI*(1-P)))+(W*0.09*sin(PI*(1-P))*sin((1-P)*6*PI))),(H/2+(Y-H/2)/(1+0.25*sin(PI*(1-P)))+(H*0.02*sin(PI*(1-P))*cos((1-P)*8*PI)))),ifnot(1-PLANE,a1((W/2+(X-W/2)/(1+0.25*sin(PI*(1-P)))+(W*0.09*sin(PI*(1-P))*sin((1-P)*6*PI))),(H/2+(Y-H/2)/(1+0.25*sin(PI*(1-P)))+(H*0.02*sin(PI*(1-P))*cos((1-P)*8*PI)))),ifnot(2-PLANE,a2((W/2+(X-W/2)/(1+0.25*sin(PI*(1-P)))+(W*0.09*sin(PI*(1-P))*sin((1-P)*6*PI))),(H/2+(Y-H/2)/(1+0.25*sin(PI*(1-P)))+(H*0.02*sin(PI*(1-P))*cos((1-P)*8*PI)))),a3((W/2+(X-W/2)/(1+0.25*sin(PI*(1-P)))+(W*0.09*sin(PI*(1-P))*sin((1-P)*6*PI))),(H/2+(Y-H/2)/(1+0.25*sin(PI*(1-P)))+(H*0.02*sin(PI*(1-P))*cos((1-P)*8*PI)))))))*(1-clip(((1-P)-0.42)/0.16,0,1))+ifnot(PLANE,b0((W/2+(X-W/2)/(1+0.25*sin(PI*(1-P)))+(W*0.09*sin(PI*(1-P))*sin((1-P)*6*PI))),(H/2+(Y-H/2)/(1+0.25*sin(PI*(1-P)))+(H*0.02*sin(PI*(1-P))*cos((1-P)*8*PI)))),ifnot(1-PLANE,b1((W/2+(X-W/2)/(1+0.25*sin(PI*(1-P)))+(W*0.09*sin(PI*(1-P))*sin((1-P)*6*PI))),(H/2+(Y-H/2)/(1+0.25*sin(PI*(1-P)))+(H*0.02*sin(PI*(1-P))*cos((1-P)*8*PI)))),ifnot(2-PLANE,b2((W/2+(X-W/2)/(1+0.25*sin(PI*(1-P)))+(W*0.09*sin(PI*(1-P))*sin((1-P)*6*PI))),(H/2+(Y-H/2)/(1+0.25*sin(PI*(1-P)))+(H*0.02*sin(PI*(1-P))*cos((1-P)*8*PI)))),b3((W/2+(X-W/2)/(1+0.25*sin(PI*(1-P)))+(W*0.09*sin(PI*(1-P))*sin((1-P)*6*PI))),(H/2+(Y-H/2)/(1+0.25*sin(PI*(1-P)))+(H*0.02*sin(PI*(1-P))*cos((1-P)*8*PI)))))))*clip(((1-P)-0.42)/0.16,0,1)",
+   "ten": "Lắc kéo",
+   "premiere_gan_nhat": "shake",
+   "them_giay_1080": 38.4,
+   "mo_ta": "Khung lắc ngang tắt dần rồi hoà sang cảnh sau: giá sốc (tối đa 1 lần / video)",
+   "nguon": "Poly tự viết (CC0), không st/ld — tai-nguyen/DANH-MUC.md"
+  },
+  "ep_ngang": {
+   "giay": 0.3,
+   "xfade": "squeezeh",
+   "ten": "Ép ngang",
+   "premiere_gan_nhat": "stretch",
+   "them_giay_1080": 0.1,
+   "mo_ta": "Cảnh trước ép dẹt rồi biến mất",
+   "nguon": "xfade có sẵn của ffmpeg"
+  },
+  "tron_moi": {
+   "_ghi_chu": "r35 11/11/2026 (anh duyệt bộ chuyển cảnh mới): trộn như tron_poly (cùng cách chọn chỗ: vào bài sau hook, nhãn mục mới, vào cảnh cuối, rải nhanh; hạt ngẫu nhiên theo tên video) nhưng mỗi chỗ là 1 kiểu mới 'poly-chuyen-1' (engine/chuyen-canh/<id>.json, chuyen_moi.py). Chỉ POLY Cut chọn (sua_tay_may.KIEU_THEM), không có trong muc nên chon_kieu không bốc; giay 0 = chỗ không được chọn thì cắt thẳng. Premiere: Film Impact theo premiere_match của từng kiểu.",
+   "giay": 0.0,
+   "ten": "Trộn chuyển cảnh mới",
+   "ty_le_nhanh": 0.4,
+   "toi_da_moi_kieu": 2,
+   "nhom": {
+    "vao_bai": ["zoom_mo_vao", "lia_ngang"],
+    "nhanh": ["lia_ngang", "lia_doc", "zoom_mo_vao", "de_bong", "chop_mat", "xoay_nhanh"],
+    "dac_biet": ["giat_canh", "tach_mau", "lat_3d"],
+    "doi_y": ["chop_sang", "vet_sang", "bat_the", "zoom_mo_ra"],
+    "ket": ["hoa_tan_mo", "vet_sang"]
+   }
+  }
+ },
+ "chi_premiere": {
+  "_ghi_chu": "Giá trị chỉ đường Premiere làm được (máy chủ chưa có): chon_kieu.py --duong may_chu không bốc.",
+  "am_nhan": [
+   "co"
+  ],
+  "hoat_hinh": [
+   "mov"
+  ]
+ },
+ "chuyen_canh_rieng": {
+  "_an_ghi_chu": "r35 11/11/2026 (anh duyệt: ẩn kiểu cũ xấu / chậm / trùng, thay bằng 15 kiểu mới engine/chuyen-canh): chỉ ẩn khỏi Thư viện / danh sách chọn của POLY Cut; khoá vẫn giữ, kế hoạch cũ dựng y hệt, video đang dùng kiểu ẩn vẫn hiện đúng tên và đổi được.",
+  "an": ["zoom_xuyen", "mo_chuyen_dong", "vo_diem", "lat_the", "lac_keo", "zoom_ra", "truot_ngang_muot", "truot_doc_muot", "truot_phai_muot", "de_luot", "keo_len", "de_ngang", "de_phai", "keo_ngang", "lat_doc", "ep_ngang", "lau_len", "mo_tron", "mo_cua", "mo_cua_ngang", "hoa_tan_sang", "lau_mem_phai", "lau_mem_doc", "lau_mem_xuong", "lau_cheo_nguoc", "cua_lua", "nhay_trang"],
+  "_ghi_chu": "3/11 (POLY Cut, menu Hiệu ứng): chuyển cảnh CHỈ gắn riêng từng cảnh (plan.canh[].chuyen), không nằm trong muc.chuyen_canh nên chon_kieu không bốc cho cả video (5 kiểu custom tốn 4–11s dựng mỗi chỗ nối ở 1080p). Nguồn: tai-nguyen/de-xuat-tich-hop.json, giấy phép trong GIAY-PHEP.md (custom = viết lại từ xfade-easing, MIT; còn lại = xfade có sẵn của ffmpeg).",
+  "ds": [
+   "de_luot",
+   "truot_ngang_muot",
+   "truot_doc_muot",
+   "keo_len",
+   "de_ngang",
+   "lau_mem_doc",
+   "mo_cua",
+   "hoa_tan_sang",
+   "lau_cheo",
+   "nhay_den",
+   "hoa_tan_dai",
+   "truot_phai_muot",
+   "de_phai",
+   "keo_ngang",
+   "lau_mem_xuong",
+   "lau_mem_phai",
+   "lau_cheo_nguoc",
+   "lau_len",
+   "lat_doc",
+   "zoom_ra",
+   "mo_cua_ngang",
+   "cua_lua",
+   "lat_the",
+   "lac_keo",
+   "ep_ngang"
+  ],
+  "nhom": {
+   "_ghi_chu": "4/11 tối (r20, anh: thư viện còn ít): nhóm hiện trong Thư viện › Chuyển cảnh, chỉ để chia nhóm, không ảnh hưởng dựng. 15 kiểu thêm vào ds ở trên (xfade có sẵn + custom không st/ld), vẫn KHÔNG có trong muc.chuyen_canh nên chon_kieu không bốc.",
+   "ten": {
+    "co_ban": "Cơ bản",
+    "truot": "Trượt",
+    "lau": "Lau",
+    "zoom": "Zoom",
+    "dac_biet": "Đặc biệt"
+   },
+   "co_ban": ["cat_cung", "hoa_tan_nhanh", "hoa_tan_sang", "hoa_tan_dai", "nhay_trang", "nhay_den"],
+   "truot": ["truot_ngang", "truot_ngang_muot", "truot_phai_muot", "truot_doc", "truot_doc_muot", "de_luot", "de_ngang", "de_phai", "keo_len", "keo_ngang"],
+   "lau": ["lau_mem", "lau_mem_phai", "lau_mem_doc", "lau_mem_xuong", "lau_cheo", "lau_cheo_nguoc", "lau_len", "lat_doc"],
+   "zoom": ["zoom_xuyen", "zoom_ra", "mo_tron"],
+   "dac_biet": ["mo_cua", "mo_cua_ngang", "cua_lua", "lat_the", "mo_chuyen_dong", "vo_diem", "ep_ngang", "lac_keo"]
+  }
+ },
+ "hieu_ung_canh": {
+  "_ghi_chu": "3/11 (POLY Cut): hiệu ứng hình gắn theo cảnh (plan.canh[].hieu_ung). filter chèn vào chuỗi -vf của từng cảnh sau zoom / lia, trước chữ; dau_canh = chỉ phần đầu của cảnh (tính giờ từ đầu cảnh). '(on-1)/30' được đổi theo fps lúc dựng. Chỉ đường máy chủ (ffmpeg); Premiere bỏ qua.",
+  "lay_net_nhe": {
+   "ten": "Làm nét nhẹ",
+   "filter": "cas=strength=0.35",
+   "dau_canh": false,
+   "nhom": "chat_anh",
+   "chi_phi_1080_moi_giay": 0.82
+  },
+  "khu_nhieu_nhe": {
+   "ten": "Khử nhiễu nhẹ",
+   "filter": "hqdn3d=2:1.5:3:3",
+   "dau_canh": false,
+   "nhom": "chat_anh",
+   "chi_phi_1080_moi_giay": 0.49
+  },
+  "mau_san_pham": {
+   "ten": "Màu ảnh sản phẩm",
+   "filter": "curves=m='0/0 0.25/0.23 0.5/0.5 0.75/0.78 1/1',vibrance=intensity=0.08",
+   "dau_canh": false,
+   "nhom": "mau",
+   "chi_phi_1080_moi_giay": 0.72
+  },
+  "trang_sach": {
+   "ten": "Trắng sạch",
+   "filter": "eq=brightness=0.025:contrast=1.04:gamma=1.04,colortemperature=temperature=7000:mix=0.6",
+   "dau_canh": false,
+   "nhom": "mau",
+   "chi_phi_1080_moi_giay": 1.0
+  },
+  "zoom_nay": {
+   "ten": "Zoom nảy đầu cảnh",
+   "filter": "perspective=x0='W/2-W/(2*(max(1,1+0.15*exp(-6.5*((on-1)/30))*cos(16*((on-1)/30)))))+(0)':y0='H/2-H/(2*(max(1,1+0.15*exp(-6.5*((on-1)/30))*cos(16*((on-1)/30)))))+(0)':x1='W/2+W/(2*(max(1,1+0.15*exp(-6.5*((on-1)/30))*cos(16*((on-1)/30)))))+(0)':y1='H/2-H/(2*(max(1,1+0.15*exp(-6.5*((on-1)/30))*cos(16*((on-1)/30)))))+(0)':x2='W/2-W/(2*(max(1,1+0.15*exp(-6.5*((on-1)/30))*cos(16*((on-1)/30)))))+(0)':y2='H/2+H/(2*(max(1,1+0.15*exp(-6.5*((on-1)/30))*cos(16*((on-1)/30)))))+(0)':x3='W/2+W/(2*(max(1,1+0.15*exp(-6.5*((on-1)/30))*cos(16*((on-1)/30)))))+(0)':y3='H/2+H/(2*(max(1,1+0.15*exp(-6.5*((on-1)/30))*cos(16*((on-1)/30)))))+(0)':interpolation=cubic:eval=frame:enable='lt(t,0.7)'",
+   "dau_canh": true,
+   "nhom": "diem_nhan",
+   "chi_phi_1080_moi_giay": 0.35
+  },
+  "lay_net_vao": {
+   "ten": "Lấy nét vào",
+   "filter": "split[f0][f1];[f1]gblur=sigma=14:enable='lt(t,0.45)'[f2];[f0][f2]blend=all_expr='A+(B-A)*pow(clip(1-T/0.4,0,1),2)':enable='lt(t,0.45)'",
+   "dau_canh": true,
+   "nhom": "diem_nhan",
+   "chi_phi_1080_moi_giay": 2.17
+  },
+  "vet_sang_quet": {
+   "ten": "Vệt sáng quét",
+   "filter": "split=3[v0][v1][v2];[v1]lutyuv=y=235:u=128:v=128[vw];[v2]trim=0:0.75,scale=iw/4:ih/4,geq=lum='140*exp(-pow(((X/SW/W+0.35*Y/SH/H)-(-0.25+1.7*(T-0.1)/0.6))/0.09,2))':cb='140*exp(-pow(((X/SW/W+0.35*Y/SH/H)-(-0.25+1.7*(T-0.1)/0.6))/0.09,2))':cr='140*exp(-pow(((X/SW/W+0.35*Y/SH/H)-(-0.25+1.7*(T-0.1)/0.6))/0.09,2))',scale=iw*4:ih*4[vm];[v0][vw][vm]maskedmerge",
+   "dau_canh": true,
+   "nhom": "diem_nhan",
+   "chi_phi_1080_moi_giay": 0.43
+  },
+  "mo_chuyen_dong": {
+   "ten": "Mờ chuyển động",
+   "filter": "tmix=frames=3:weights='1 2 1'",
+   "dau_canh": false,
+   "nhom": "chuyen_dong",
+   "chi_phi_1080_moi_giay": 0.25
+  },
+  "toi_vien_nhe": {
+   "ten": "Viền tối nhẹ",
+   "filter": "vignette=angle=PI/6",
+   "dau_canh": false,
+   "nhom": "lop_phu",
+   "chi_phi_1080_moi_giay": 0.33,
+   "mo_ta": "Tối 4 góc rất nhẹ, dồn mắt vào máy"
+  },
+  "hat_phim_nhe": {
+   "ten": "Hạt phim nhẹ",
+   "filter": "noise=c0s=5:c0f=t+u",
+   "dau_canh": false,
+   "nhom": "lop_phu",
+   "chi_phi_1080_moi_giay": 0.05,
+   "mo_ta": "Hạt mịn chỉ ở độ sáng, không hạt màu: cảm giác phim"
+  },
+  "lam_net_ro": {
+   "ten": "Làm nét rõ",
+   "filter": "cas=strength=0.7",
+   "dau_canh": false,
+   "nhom": "chat_anh",
+   "chi_phi_1080_moi_giay": 0.82,
+   "mo_ta": "Nét hơn Làm nét nhẹ: chữ trên màn hình, viền phím, số seri"
+  },
+  "lam_min": {
+   "ten": "Làm mịn",
+   "filter": "hqdn3d=3:2.5:4:3.5",
+   "dau_canh": false,
+   "nhom": "chat_anh",
+   "chi_phi_1080_moi_giay": 0.5,
+   "mo_ta": "Mịn mặt da / nền, bớt sạn khi quay tối (mạnh hơn Khử nhiễu nhẹ)"
+  },
+  "lay_net_giua": {
+   "ten": "Lấy nét giữa",
+   "filter": "split=3[n0][n1][n2];[n2]trim=end_frame=1,geq=lum='255*exp(-pow((Y/SH/H-0.5)/0.30,4))':cb='255*exp(-pow((Y/SH/H-0.5)/0.30,4))':cr='255*exp(-pow((Y/SH/H-0.5)/0.30,4))'[nm];[n1]gblur=sigma=9[nb];[nb][n0][nm]maskedmerge",
+   "dau_canh": false,
+   "nhom": "chat_anh",
+   "chi_phi_1080_moi_giay": 0.68,
+   "mo_ta": "Giữa khung nét, mép trên / dưới mờ dần: máy đặt giữa bàn"
+  },
+  "glow_nhe": {
+   "ten": "Sáng mờ vùng sáng",
+   "filter": "format=gbrp,split[g0][g1];[g1]scale=iw/4:ih/4,curves=all='0/0 0.55/0 1/1',gblur=sigma=4,scale=iw*4:ih*4[g2];[g0][g2]blend=all_mode=screen:all_opacity=0.45,format=yuv420p",
+   "dau_canh": false,
+   "nhom": "lop_phu",
+   "chi_phi_1080_moi_giay": 1.42,
+   "mo_ta": "Chỗ sáng (logo, màn hình, viền kim loại) toả sáng mờ nhẹ"
+  },
+  "thu_khung": {
+   "ten": "Thu khung (điện ảnh)",
+   "filter": "drawbox=x=0:y=0:w=iw:h=ih*0.085:color=black:t=fill,drawbox=x=0:y=ih*0.915:w=iw:h=ih*0.085+2:color=black:t=fill",
+   "dau_canh": false,
+   "nhom": "lop_phu",
+   "chi_phi_1080_moi_giay": 0.05,
+   "mo_ta": "2 dải đen trên / dưới như khung phim (letterbox)"
+  },
+  "mo_vao": {
+   "ten": "Mờ vào từ đen",
+   "filter": "fade=t=in:st=0:d=0.3",
+   "dau_canh": true,
+   "nhom": "diem_nhan",
+   "chi_phi_1080_moi_giay": 0.03,
+   "mo_ta": "Đầu cảnh hiện dần từ đen 0,3s"
+  },
+  "chop_sang_mem": {
+   "ten": "Chớp sáng mềm",
+   "filter": "fade=t=in:st=0:d=0.18:color=white",
+   "dau_canh": true,
+   "nhom": "diem_nhan",
+   "chi_phi_1080_moi_giay": 0.06,
+   "mo_ta": "Đầu cảnh hiện ra từ trắng 0,18s"
+  },
+  "nhay_sang": {
+   "ten": "Nháy khung",
+   "filter": "eq=brightness='0.22*(between(t,0,0.05)+between(t,0.12,0.17))':eval=frame:enable='lt(t,0.2)'",
+   "dau_canh": true,
+   "nhom": "diem_nhan",
+   "chi_phi_1080_moi_giay": 0.05,
+   "mo_ta": "Khung nháy sáng 2 nhịp nhanh ở đầu cảnh, như chớp máy ảnh"
+  },
+  "rung_nhe": {
+   "ten": "Rung nhẹ đầu cảnh",
+   "filter": "perspective=x0='W/2-W/(2*(1+0.035*exp(-8*((on-1)/30))))+(W*0.012*exp(-8*((on-1)/30))*sin(75*((on-1)/30)))':y0='H/2-H/(2*(1+0.035*exp(-8*((on-1)/30))))+(H*0.007*exp(-8*((on-1)/30))*cos(61*((on-1)/30)))':x1='W/2+W/(2*(1+0.035*exp(-8*((on-1)/30))))+(W*0.012*exp(-8*((on-1)/30))*sin(75*((on-1)/30)))':y1='H/2-H/(2*(1+0.035*exp(-8*((on-1)/30))))+(H*0.007*exp(-8*((on-1)/30))*cos(61*((on-1)/30)))':x2='W/2-W/(2*(1+0.035*exp(-8*((on-1)/30))))+(W*0.012*exp(-8*((on-1)/30))*sin(75*((on-1)/30)))':y2='H/2+H/(2*(1+0.035*exp(-8*((on-1)/30))))+(H*0.007*exp(-8*((on-1)/30))*cos(61*((on-1)/30)))':x3='W/2+W/(2*(1+0.035*exp(-8*((on-1)/30))))+(W*0.012*exp(-8*((on-1)/30))*sin(75*((on-1)/30)))':y3='H/2+H/(2*(1+0.035*exp(-8*((on-1)/30))))+(H*0.007*exp(-8*((on-1)/30))*cos(61*((on-1)/30)))':interpolation=cubic:eval=frame:enable='lt(t,0.5)'",
+   "dau_canh": true,
+   "nhom": "diem_nhan",
+   "chi_phi_1080_moi_giay": 0.27,
+   "mo_ta": "Rung tắt dần 0,35s, không lộ viền: giá sốc"
+  },
+  "zoom_lui_vao": {
+   "ten": "Zoom lùi vào",
+   "filter": "perspective=x0='W/2-W/(2*(1+0.5*pow(max(0,1-((on-1)/30)/0.35),2)))+(0)':y0='H/2-H/(2*(1+0.5*pow(max(0,1-((on-1)/30)/0.35),2)))+(0)':x1='W/2+W/(2*(1+0.5*pow(max(0,1-((on-1)/30)/0.35),2)))+(0)':y1='H/2-H/(2*(1+0.5*pow(max(0,1-((on-1)/30)/0.35),2)))+(0)':x2='W/2-W/(2*(1+0.5*pow(max(0,1-((on-1)/30)/0.35),2)))+(0)':y2='H/2+H/(2*(1+0.5*pow(max(0,1-((on-1)/30)/0.35),2)))+(0)':x3='W/2+W/(2*(1+0.5*pow(max(0,1-((on-1)/30)/0.35),2)))+(0)':y3='H/2+H/(2*(1+0.5*pow(max(0,1-((on-1)/30)/0.35),2)))+(0)':interpolation=cubic:eval=frame:enable='lt(t,0.36)'",
+   "dau_canh": true,
+   "nhom": "diem_nhan",
+   "chi_phi_1080_moi_giay": 0.21,
+   "mo_ta": "Đầu cảnh phóng 150% rồi lùi về 100% trong 0,35s"
+  },
+  "den_trang": {
+   "ten": "Đen trắng",
+   "filter": "hue=s=0",
+   "dau_canh": false,
+   "nhom": "mau",
+   "chi_phi_1080_moi_giay": 0.1,
+   "mo_ta": "Bỏ màu: hoài niệm, so sánh trước / sau (không dùng cảnh khoe màu máy)"
+  },
+  "tong_lanh": {
+   "ten": "Tông lạnh nhẹ",
+   "filter": "colortemperature=temperature=7600:mix=0.5",
+   "dau_canh": false,
+   "nhom": "mau",
+   "chi_phi_1080_moi_giay": 1.0,
+   "mo_ta": "Hơi xanh mát: máy bạc, đen, công nghệ"
+  },
+  "tong_am": {
+   "ten": "Tông ấm nhẹ",
+   "filter": "colortemperature=temperature=5400:mix=0.5,eq=saturation=1.03",
+   "dau_canh": false,
+   "nhom": "mau",
+   "chi_phi_1080_moi_giay": 1.3,
+   "mo_ta": "Hơi ấm như đèn vàng tiệm: tư vấn, mở hộp"
+  }
+ }
+}

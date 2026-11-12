@@ -1,0 +1,10 @@
+{
+ "loai": "script",
+ "phien_ban": "1.0",
+ "thang": "2026-11",
+ "tac_gia": "Claude",
+ "nguon": "goc",
+ "ten": "Nhãn theo mô tả cảnh",
+ "mo_ta": "Cảnh nào có ghi chú (mô tả cảnh) thì thêm nhãn chữ to bằng ghi chú đó ở đầu cảnh, dính theo cảnh. Bỏ qua cảnh ngắn hơn 1 giây. Sửa chữ nhãn ở tab Chữ.",
+ "hoi": []
+}

@@ -1,0 +1,17 @@
+{
+ "loai": "script",
+ "phien_ban": "1.1",
+ "thang": "2026-11",
+ "tac_gia": "Claude",
+ "nguon": "goc",
+ "ten": "Cắt video còn X giây",
+ "mo_ta": "Video (tính cả chỗ chuyển cảnh chồng nhau) dài hơn số giây chọn thì bớt dần đuôi các cảnh dài nhất (mỗi cảnh giữ ít nhất 1,5 giây) tới khi vừa. Không xoá cảnh nào. Nên xem lại chỗ cắt có ngang câu nói không.",
+ "hoi": [
+  {
+   "ten": "giay",
+   "nhan": "Độ dài muốn còn (giây)",
+   "mac_dinh": "45",
+   "kieu": "so"
+  }
+ ]
+}
